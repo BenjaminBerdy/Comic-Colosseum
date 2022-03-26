@@ -15,6 +15,24 @@ function generateToken(user){
 }
 
 module.exports = {
+    Query:{
+        async getUsers(){
+            try{
+                const user = await User.find();
+                return user;
+            }catch(err){
+                throw new Error(err);
+            }
+        },
+        async getUser(_,{id}){
+            try{
+                const user = await User.findById(id);
+                return user;
+            }catch(err){
+                throw new Error(err);
+            } 
+        }
+    },
     Mutation: {
         async login(_,{username,password}){
             const {errors,valid} = validateLoginInput(username,password);
@@ -65,8 +83,7 @@ module.exports = {
             const newUser = new User({
                 email,
                 username,
-                password,
-                createdAt: new Date().toISOString()
+                password
             });
             const res = await newUser.save();
             const token = generateToken(res);

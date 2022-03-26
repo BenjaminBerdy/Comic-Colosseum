@@ -18,10 +18,16 @@ module.exports = gql`
         email: String!
         token: String!
         username: String!
-        createdAt: String!
+        profileImageURL: String!
     }
     type Query{
         getComments: [Comment]
+    }
+    type Query{
+        getUsers: [User]
+    }
+    type Query{
+        getUser(id: ID!): User
     }
     type Mutation{
         register(registerInput: RegisterInput): User!
