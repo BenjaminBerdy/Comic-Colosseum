@@ -20,17 +20,42 @@ module.exports = gql`
         username: String!
         profileImageURL: String!
     }
+    type Comic{
+        id: ID!
+        title: String!
+        author: String!
+        authorID: String!
+        publishDate: String!
+        likes: Int!
+        comments: [Comment],
+        canvas: [String]!
+        xpos:[Int]!
+        ypos:[Int]!
+        textFonts: [String]!
+        textSizes: [Int]!
+        comicText: [String]!
+        textColor: [String]!
+        backgroundColor: String!
+    }
     type Query{
         getComments: [Comment]
-    }
-    type Query{
         getUsers: [User]
-    }
-    type Query{
         getUser(id: ID!): User
+        getComics: [Comic]
+        getComic(id: ID!): Comic
     }
     type Mutation{
         register(registerInput: RegisterInput): User!
         login(username: String!, password: String!): User!
+        createComic(author: String!, authorID: String!): Comic!
+        deleteComic(id: ID!): String!
+        publishComic(id: ID!): String!
+        updateComic(id: ID!, title: String!, author: String!, authorID: String!,
+            publishDate: String!, likes: Int!, comments: [Comment], canvas: [String]!,
+            xpos:[Int]!, ypos:[Int]!, textFonts: [String]!
+            textSizes: [Int]!
+            comicText: [String]!
+            textColor: [String]!
+            backgroundColor: String!): Comic!
     }
 `

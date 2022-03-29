@@ -1,7 +1,6 @@
 const{ model, Schema} = require('mongoose');
 
 const comicSchema = new Schema({
-    id: String,
     title: String,
     author: String,
     authorID: String,
