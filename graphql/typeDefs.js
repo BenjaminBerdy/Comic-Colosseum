@@ -51,7 +51,7 @@ module.exports = gql`
         deleteComic(id: ID!): String!
         publishComic(id: ID!): String!
         updateComic(id: ID!, title: String!, author: String!, authorID: String!,
-            publishDate: String!, likes: Int!, comments: [Comment], canvas: [String]!,
+            publishDate: String!, likes: Int!, canvas: [String]!,
             xpos:[Int]!, ypos:[Int]!, textFonts: [String]!
             textSizes: [Int]!
             comicText: [String]!
