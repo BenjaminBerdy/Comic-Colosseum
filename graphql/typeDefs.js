@@ -5,7 +5,6 @@ module.exports = gql`
         id: ID!
         body: String!
         user: User!
-        comicId: String!
         createdAt: String!
         comicId: String!
     }
