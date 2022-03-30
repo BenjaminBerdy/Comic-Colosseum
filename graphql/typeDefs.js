@@ -4,9 +4,10 @@ module.exports = gql`
     type Comment{
         id: ID!
         body: String!
-        user: User!
+        username: String!
         createdAt: String!
         comicOrStoryId: String!
+        userId: String!
     }
     input RegisterInput{
         username: String!
@@ -55,13 +56,17 @@ module.exports = gql`
         y: [Int]!
     }
     type Query{
-        getComments(comicOrStoryId: String!): [Comment]
-        getUsers: [User]
-        getUser(id: ID!): User
-        getComics: [Comic]
-        getComic(id: ID!): Comic
-        getStories: [Story]
-        getStory(id: ID!): Story
+        getComments(comicOrStoryId: String!): [Comment]!
+        getUsers: [User]!
+        getUser(id: ID!): User!
+        getComics: [Comic]!
+        getComic(id: ID!): Comic!
+        getStories: [Story]!
+        getStory(id: ID!): Story!
+        searchComicTitle(title: String!): [Comic]!
+        searchComicName(author: String!): [Comic]!
+        searchStoryTitle(title: String!): [Story]!
+        searchStoryName(author: String!): [Story]!
     }
     type Mutation{
         register(registerInput: RegisterInput): User!
@@ -84,5 +89,7 @@ module.exports = gql`
             publishDate: String!, likes: Int!, backgroundColor: String!, fontFamily: [String]!, 
             fontSize: [Int]!, text: [String]!, x: [Int]!, y: [Int]!): Story!
         likedStoriesListUpdate(id: ID!, likedComics: [String]!): User!
+        createComment(body: String!, username: String!, comicOrStoryId: String!, userId: String!): Comment!
+        deleteComment(id: ID!): String!
     }
 `

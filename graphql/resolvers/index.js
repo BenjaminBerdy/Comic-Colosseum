@@ -7,11 +7,13 @@ module.exports = {
     Query:{
         ...commentsResolvers.Query,
         ...userResolvers.Query,
-        ...storiesResolvers.Query
+        ...storiesResolvers.Query,
+        ...comicsResolvers.Query
     },
     Mutation:{
         ...userResolvers.Mutation,
         ...comicsResolvers.Mutation,
-        ...storiesResolvers.Mutation
+        ...storiesResolvers.Mutation,
+        ...commentsResolvers.Mutation
     }
 }

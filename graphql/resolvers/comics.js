@@ -23,6 +23,24 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
+    },
+    async searchComicTitle(_, { title }) {
+
+        try {
+            const comics = await Comic.find({title});
+            return comics;
+        } catch (err) {
+            throw new Error(err);
+        }
+    },
+    async searchComicName(_, { author }) {
+
+        try {
+            const comics = await Comic.find({author});
+            return comics;
+        } catch (err) {
+            throw new Error(err);
+        }
     }
   },
   Mutation: {

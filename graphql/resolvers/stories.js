@@ -23,7 +23,25 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    }
+    },
+    async searchStoryTitle(_, { title }) {
+
+      try {
+          const stories = await Story.find({title});
+          return stories;
+      } catch (err) {
+          throw new Error(err);
+      }
+  },
+  async searchStoryName(_, { author }) {
+
+      try {
+          const stories = await Story.find({author});
+          return stories;
+      } catch (err) {
+          throw new Error(err);
+      }
+  }
   },
   Mutation: {
     async createStory(_, { author, authorId }) {
