@@ -20,14 +20,12 @@ module.exports = gql`
         token: String!
         username: String!
         profileImageURL: String!
-        likedComics: [Comic]!,
-        likedStories: [Story]!,
         followedCreators: [User]!
     }
     type Comic{
         id: ID!
         title: String!
-        author: 
+        author: String!
         publishDate: String!
         likes: Int!
         comments: [Comment],
@@ -40,18 +38,12 @@ module.exports = gql`
         textColor: [String]!
         backgroundColor: String!
     }
-    type Search{
-        body: String!
-        users: [User]
-    }
     type Query{
-        getComments(comicId: ID!): [Comment]
+        getComments(comicId: String!): [Comment]
         getUsers: [User]
         getUser(id: ID!): User
         getComics: [Comic]
         getComic(id: ID!): Comic
-        getUserSearch(body: String!): [User]
-        getComicSearch(body: String!): [Comic]
     }
     type Mutation{
         register(registerInput: RegisterInput): User!
