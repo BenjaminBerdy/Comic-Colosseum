@@ -34,32 +34,6 @@ module.exports = {
         }
     },
     Mutation: {
-        async login(_,{username,password}){
-            const {errors,valid} = validateLoginInput(username,password);
-            if(!valid){
-                throw new UserInputError('Errors',{errors});
-            }
-
-            const user = await User.findOne({username});
-            if(!user){
-                errors.general = 'User not found'
-                throw new UserInputError('User not found',{errors});
-            }
-            const match = await bcrypt.compare(password,user.password);
-            if(!match){ 
-                errors.general = 'Incorrect username or password'
-                throw new UserInputError('Incorrect username or password',{errors});
-            }
-
-            const token = generateToken(user)
-
-            return{
-                ...user._doc,
-                id: user._id,
-                token
-            };
-
-        },
         async register(
             _,
             {
@@ -93,6 +67,55 @@ module.exports = {
                 id: res._id,
                 token
             };
+        },
+        async login(_,{username,password}){
+            const {errors,valid} = validateLoginInput(username,password);
+            if(!valid){
+                throw new UserInputError('Errors',{errors});
+            }
+
+            const user = await User.findOne({username});
+            if(!user){
+                errors.general = 'User not found'
+                throw new UserInputError('User not found',{errors});
+            }
+            const match = await bcrypt.compare(password,user.password);
+            if(!match){ 
+                errors.general = 'Incorrect username or password'
+                throw new UserInputError('Incorrect username or password',{errors});
+            }
+
+            const token = generateToken(user)
+
+            return{
+                ...user._doc,
+                id: user._id,
+                token
+            };
+
+        },
+        async changePassword(_, {id, password, newpassword}){
+            const {errors,valid} = validateLoginInput(username,password);
+            if(!valid){
+                throw new UserInputError('Errors',{errors});
+            }
+
+            const user = await User.findOne({username});
+            if(!user){
+                errors.general = 'User not found'
+                throw new UserInputError('User not found',{errors});
+            }
+            const match = await bcrypt.compare(password,user.password);
+            if(!match){ 
+                errors.general = 'Incorrect username or password'
+                throw new UserInputError('Incorrect username or password',{errors});
+            }
+
+            newpassword = await bcrypt.hash(newpassword,12);
+
+            user = await user.findByIdAndUpdate(id,{password: newpassword});
+            return user
+
         },
         async follow(_, { id, followedCreators }) {
 
