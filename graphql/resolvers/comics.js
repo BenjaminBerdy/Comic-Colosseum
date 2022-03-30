@@ -12,9 +12,9 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async getComic(_, { comicId }) {
+    async getComic(_, { id }) {
       try {
-        const comic = await Comic.findById(comicId);
+        const comic = await Comic.findById(id);
         if (comic) {
           return comic;
         } else {
@@ -49,10 +49,10 @@ module.exports = {
 
       return comic;
     },
-    async deleteComic(_, { comicId }) {
+    async deleteComic(_, { id }) {
 
       try {
-        const comic = await Comic.findById(comicId);
+        const comic = await Comic.findById(id);
         if (user.username === comic.author) {
           await comic.delete();
           return 'Comic Deleted Successfully';
@@ -62,6 +62,34 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
+    },
+    async updateComic(_, { id, title, backgroundColor, points, strokeWidth, stroke, fontFamily, fontSize, text, x, y }) {
+
+        try {
+            const comic = await Comic.findByIdAndUpdate(id, {title: title, backgroundColor: backgroundColor, points: points,
+            strokeWidth: strokeWidth, stroke: stroke, fontFamily: fontFamily, fontSize: fontSize, text: text, x: x, y:y});
+            return comic;
+        } catch (err) {
+            throw new Error(err);
+        }
+    },
+    async publishComic(_, { id }) {
+
+        try {
+            const comic = await Comic.findByIdAndUpdate(id, {publishDate: new Date().toISOString()});
+            return comic;
+        } catch (err) {
+            throw new Error(err);
+        }
+    },
+    async likeComic(_, { id, likes }) {
+
+        try {
+            const comic = await Comic.findByIdAndUpdate(id, {likes: likes});
+            return comic;
+        } catch (err) {
+            throw new Error(err);
+        }
     }
   }
 };

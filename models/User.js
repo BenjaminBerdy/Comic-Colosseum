@@ -6,7 +6,8 @@ const userSchema = new Schema({
     email: String,
     createdAt: String,
     profileImageURL: String,
-    followedCreators: {type: Schema.Types.ObjectId,  ref: 'users'}
+    followedCreators: [String],
+    likedComics: [String]
 })
 
 module.exports = model('User', userSchema)

@@ -93,6 +93,24 @@ module.exports = {
                 id: res._id,
                 token
             };
+        },
+        async follow(_, { id, followedCreators }) {
+
+            try {
+                const user = await User.findByIdAndUpdate(id, {followedCreators: followedCreators});
+                return user;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
+        async likedComicsListUpdate(_, { id, likedComics }) {
+
+            try {
+                const user = await User.findByIdAndUpdate(id, {likedComics: likedComics});
+                return user;
+            } catch (err) {
+                throw new Error(err);
+            }
         }
     }
 }
