@@ -4,7 +4,8 @@ module.exports = gql`
     type Comment{
         id: ID!
         body: String!
-        username: String!
+        user: User!
+        comicId: String!
         createdAt: String!
         comicId: String!
     }
@@ -20,12 +21,14 @@ module.exports = gql`
         token: String!
         username: String!
         profileImageURL: String!
+        likedComics: [Comic]!,
+        likedStories: [Story]!,
+        followedCreators: [User]!
     }
     type Comic{
         id: ID!
         title: String!
-        author: String!
-        authorID: String!
+        author: 
         publishDate: String!
         likes: Int!
         comments: [Comment],
@@ -43,7 +46,11 @@ module.exports = gql`
         users: [User]
     }
     type Query{
+<<<<<<< HEAD
         getComments(comicId: String!): [Comment]
+=======
+        getComments(comicId: ID!): [Comment]
+>>>>>>> 687e6b9a46bbdfb3537aeebff06cbe8c6a199671
         getUsers: [User]
         getUser(id: ID!): User
         getComics: [Comic]
