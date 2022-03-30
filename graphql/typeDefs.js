@@ -6,7 +6,7 @@ module.exports = gql`
         body: String!
         user: User!
         createdAt: String!
-        comicId: String!
+        comicOrStoryId: String!
     }
     input RegisterInput{
         username: String!
@@ -40,16 +40,33 @@ module.exports = gql`
         x: [Int]!
         y: [Int]!
     }
+    type Story{
+        id: ID!
+        title: String!
+        author: String!
+        authorId: String!
+        publishDate: String!
+        likes: Int!
+        backgroundColor: String!
+        fontFamily: [String]!
+        fontSize: [Int]!
+        text: [String]!
+        x: [Int]!
+        y: [Int]!
+    }
     type Query{
-        getComments(comicId: String!): [Comment]
+        getComments(comicOrStoryId: String!): [Comment]
         getUsers: [User]
         getUser(id: ID!): User
         getComics: [Comic]
         getComic(id: ID!): Comic
+        getStories: [Story]
+        getStory(id: ID!): Story
     }
     type Mutation{
         register(registerInput: RegisterInput): User!
         login(username: String!, password: String!): User!
+        follow(id: ID!, followedCreators: [String]!): User!
         createComic(author: String!, authorId: String!): Comic!
         deleteComic(id: ID!): String!
         publishComic(id: ID!): String!
@@ -58,7 +75,14 @@ module.exports = gql`
             publishDate: String!, likes: Int!, backgroundColor: String!,
             points: [Int]!, strokeWidth: [Int]!, stroke: [String]!, fontFamily: [String]!,
             fontSize: [Int]!, text: [String]!, x: [Int]!, y: [Int]!): Comic!
-        follow(id: ID!, followedCreators: [String]!): User!
         likedComicsListUpdate(id: ID!, likedComics: [String]!): User!
+        createStory(author: String!, authorId: String!): Story!
+        deleteStory(id: ID!): String!
+        publishStory(id: ID!): String!
+        likeStory(id: ID!, likes: Int): Story!
+        updateStory(id: ID!, title: String!, author: String!, authorId: String!,
+            publishDate: String!, likes: Int!, backgroundColor: String!, fontFamily: [String]!, 
+            fontSize: [Int]!, text: [String]!, x: [Int]!, y: [Int]!): Story!
+        likedStoriesListUpdate(id: ID!, likedComics: [String]!): User!
     }
 `

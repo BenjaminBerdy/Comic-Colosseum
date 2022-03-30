@@ -111,6 +111,15 @@ module.exports = {
             } catch (err) {
                 throw new Error(err);
             }
+        },
+        async likedStoriesListUpdate(_, { id, likedStories }) {
+
+            try {
+                const user = await User.findByIdAndUpdate(id, {likedStories: likedStories});
+                return user;
+            } catch (err) {
+                throw new Error(err);
+            }
         }
     }
 }

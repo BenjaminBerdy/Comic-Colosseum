@@ -4,7 +4,7 @@ const commentSchema = new Schema({
     body: String,
     username: String,
     createdAt: String,
-    comicId: String,
+    comicOrStoryId: String,
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users'

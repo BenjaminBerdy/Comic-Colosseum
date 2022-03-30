@@ -7,7 +7,8 @@ const userSchema = new Schema({
     createdAt: String,
     profileImageURL: String,
     followedCreators: [String],
-    likedComics: [String]
+    likedComics: [String],
+    likedStories: [String],
 })
 
 module.exports = model('User', userSchema)
