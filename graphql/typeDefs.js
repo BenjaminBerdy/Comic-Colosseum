@@ -26,17 +26,18 @@ module.exports = gql`
         id: ID!
         title: String!
         author: String!
+        authorId: String!
         publishDate: String!
         likes: Int!
-        comments: [Comment],
-        canvas: [String]!
-        xpos:[Int]!
-        ypos:[Int]!
-        textFonts: [String]!
-        textSizes: [Int]!
-        comicText: [String]!
-        textColor: [String]!
         backgroundColor: String!
+        points: [Int]!
+        strokeWidth: [Int]!
+        stroke: [String]!
+        fontFamily: [String]!
+        fontSize: [Int]!
+        text: [String]!
+        x: [Int]!
+        y: [Int]!
     }
     type Query{
         getComments(comicId: String!): [Comment]
@@ -48,15 +49,12 @@ module.exports = gql`
     type Mutation{
         register(registerInput: RegisterInput): User!
         login(username: String!, password: String!): User!
-        createComic(author: String!, authorID: String!): Comic!
+        createComic(author: String!, authorId: String!): Comic!
         deleteComic(id: ID!): String!
         publishComic(id: ID!): String!
-        updateComic(id: ID!, title: String!, author: String!, authorID: String!,
-            publishDate: String!, likes: Int!, canvas: [String]!,
-            xpos:[Int]!, ypos:[Int]!, textFonts: [String]!
-            textSizes: [Int]!
-            comicText: [String]!
-            textColor: [String]!
-            backgroundColor: String!): Comic!
+        updateComic(id: ID!, title: String!, author: String!, authorId: String!,
+            publishDate: String!, likes: Int!, backgroundColor: String!,
+            points: [Int]!, strokeWidth: [Int]!, stroke: [String]!, fontFamily: [String]!,
+            fontSize: [Int]!, text: [String]!, x: [Int]!, y: [Int]!): Comic!
     }
 `

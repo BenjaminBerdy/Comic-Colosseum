@@ -2,17 +2,19 @@ const{ model, Schema} = require('mongoose');
 
 const comicSchema = new Schema({
     title: String,
-    author: {type: Schema.Types.ObjectId,  ref: 'users'},
+    author: String,
+    authorId: String,
     publishDate: String,
-    likes: Int,
-    canvas: [[String]],
-    xpos:[Int],
-    ypos:[Int],
-    textFonts: [String],
-    textSizes: [Int],
-    comicText: [String],
-    textColor: [String],
+    likes: Number,
     backgroundColor: String,
+    points: [Number],
+    strokeWidth: [Number],
+    stroke: [String],
+    fontFamily: [String],
+    fontSize: [Number],
+    text: [String],
+    x: [Number],
+    y: [Number],
 })
 
 module.exports = model('Comic', comicSchema)
