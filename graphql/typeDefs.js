@@ -7,6 +7,7 @@ module.exports = gql`
         user: User!
         comicId: String!
         createdAt: String!
+        comicId: String!
     }
     input RegisterInput{
         username: String!
