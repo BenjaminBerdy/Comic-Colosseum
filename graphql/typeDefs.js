@@ -37,12 +37,18 @@ module.exports = gql`
         textColor: [String]!
         backgroundColor: String!
     }
+    type Search{
+        body: String!
+        users: [User]
+    }
     type Query{
         getComments: [Comment]
         getUsers: [User]
         getUser(id: ID!): User
         getComics: [Comic]
         getComic(id: ID!): Comic
+        getUserSearch(body: String!): [User]
+        getComicSearch(body: String!): [Comic]
     }
     type Mutation{
         register(registerInput: RegisterInput): User!
