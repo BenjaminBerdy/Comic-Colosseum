@@ -2,11 +2,9 @@ const{ model, Schema} = require('mongoose');
 
 const comicSchema = new Schema({
     title: String,
-    author: String,
-    authorID: String,
+    author: {type: Schema.Types.ObjectId,  ref: 'users'},
     publishDate: String,
     likes: Int,
-    comments: [{type: Schema.Types.ObjectId,  ref: 'comments'}],
     canvas: [[String]],
     xpos:[Int],
     ypos:[Int],
