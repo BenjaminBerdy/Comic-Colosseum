@@ -6,6 +6,7 @@ module.exports = gql`
         body: String!
         username: String!
         createdAt: String!
+        comicId: String!
     }
     input RegisterInput{
         username: String!
@@ -42,7 +43,7 @@ module.exports = gql`
         users: [User]
     }
     type Query{
-        getComments: [Comment]
+        getComments(comicId: String!): [Comment]
         getUsers: [User]
         getUser(id: ID!): User
         getComics: [Comic]
