@@ -7,14 +7,14 @@ const comicSchema = new Schema({
     publishDate: String,
     likes: Number,
     backgroundColor: String,
-    points: [Number],
+    points: [[Number]],
     strokeWidth: [Number],
     stroke: [String],
     fontFamily: [String],
     fontSize: [Number],
     text: [String],
-    x: [Number],
-    y: [Number],
+    textx: [Number],
+    texty: [Number],
 })
 
 module.exports = model('Comic', comicSchema)

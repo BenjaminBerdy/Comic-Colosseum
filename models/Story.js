@@ -10,8 +10,8 @@ const storySchema = new Schema({
     fontFamily: [String],
     fontSize: [Number],
     text: [String],
-    x: [Number],
-    y: [Number],
+    textx: [Number],
+    texty: [Number],
 })
 
 module.exports = model('Story', storySchema)

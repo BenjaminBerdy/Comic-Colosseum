@@ -53,14 +53,14 @@ module.exports = {
         publishDate: "",
         likes: 0,
         backgroundColor: "",
-        points: [],
+        points: [[]],
         strokeWidth: [],
         stroke: [],
         fontFamily: [],
         fontSize: [],
         text: [],
-        x: [],
-        y: [],
+        textx: [],
+        texty: [],
       });
 
       const comic = await newComic.save();
@@ -81,11 +81,11 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async updateComic(_, { id, title, backgroundColor, points, strokeWidth, stroke, fontFamily, fontSize, text, x, y }) {
+    async updateComic(_, { id, title, backgroundColor, points, strokeWidth, stroke, fontFamily, fontSize, text, textx, texty }) {
 
         try {
             const comic = await Comic.findByIdAndUpdate(id, {title: title, backgroundColor: backgroundColor, points: points,
-            strokeWidth: strokeWidth, stroke: stroke, fontFamily: fontFamily, fontSize: fontSize, text: text, x: x, y:y});
+            strokeWidth: strokeWidth, stroke: stroke, fontFamily: fontFamily, fontSize: fontSize, text: text, textx: textx, texty:texty});
             return comic;
         } catch (err) {
             throw new Error(err);

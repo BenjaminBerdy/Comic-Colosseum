@@ -32,14 +32,14 @@ module.exports = gql`
         publishDate: String!
         likes: Int!
         backgroundColor: String!
-        points: [Int]!
+        points: [[Int]]!
         strokeWidth: [Int]!
         stroke: [String]!
         fontFamily: [String]!
         fontSize: [Int]!
         text: [String]!
-        x: [Int]!
-        y: [Int]!
+        textx: [Int]!
+        texty: [Int]!
     }
     type Story{
         id: ID!
@@ -52,8 +52,8 @@ module.exports = gql`
         fontFamily: [String]!
         fontSize: [Int]!
         text: [String]!
-        x: [Int]!
-        y: [Int]!
+        textx: [Int]!
+        texty: [Int]!
     }
     type Query{
         getUsers: [User]!
@@ -71,7 +71,6 @@ module.exports = gql`
     type Mutation{
         register(registerInput: RegisterInput): User!
         login(username: String!, password: String!): User!
-        changeUsername(id: ID!, newusername: String!):User!
         changePassword(id:ID!,username:String!, password: String!, newpassword: String!):User!
         forgotPassword(email:String!): String!
         resetPassword(token: String! id:ID!, newpassword:String!,confirmpassword:String!): User!
@@ -82,8 +81,8 @@ module.exports = gql`
 
         createComic(author: String!, authorId: String!): Comic!
         updateComic(id: ID!, title: String!, backgroundColor: String!,
-            points: [Int]!, strokeWidth: [Int]!, stroke: [String]!, fontFamily: [String]!,
-            fontSize: [Int]!, text: [String]!, x: [Int]!, y: [Int]!): Comic!
+            points: [[Int]]!, strokeWidth: [Int]!, stroke: [String]!, fontFamily: [String]!,
+            fontSize: [Int]!, text: [String]!, textx: [Int]!, texty: [Int]!): Comic!
         publishComic(id: ID!): String!
         likeComic(id: ID!, likes: Int): Comic!
         deleteComic(id: ID!): String!
@@ -91,7 +90,7 @@ module.exports = gql`
         createStory(author: String!, authorId: String!): Story!
         updateStory(id: ID!, title: String!, author: String!, authorId: String!,
             publishDate: String!, likes: Int!, backgroundColor: String!, fontFamily: [String]!, 
-            fontSize: [Int]!, text: [String]!, x: [Int]!, y: [Int]!): Story!
+            fontSize: [Int]!, text: [String]!, textx: [Int]!, texty: [Int]!): Story!
         publishStory(id: ID!): String!
         likeStory(id: ID!, likes: Int): Story!
         deleteStory(id: ID!): String!

@@ -101,17 +101,6 @@ module.exports = {
             };
 
         },
-        async changeUsername(_,{id,newusername}){
-            var user = await User.findOne({newusername})
-            if(user){
-                throw new UserInputError('Username is taken',{
-                    errors:{
-                        username: 'This username is taken'
-                    }})
-            }
-            user = await User.findByIdAndUpdate(id,{username: newusername});
-            return user
-        },
         async changePassword(_, {id, username, password, newpassword}){
             const {errors,valid} = validateLoginInput(username,password);
             if(!valid){
@@ -168,7 +157,7 @@ module.exports = {
                 }
                 newpassword = await bcrypt.hash(newpassword,12);
                 user = await User.findByIdAndUpdate(id,{password: newpassword});
-
+                return user;
             }catch(err){
                 throw new Error(err)
             }
