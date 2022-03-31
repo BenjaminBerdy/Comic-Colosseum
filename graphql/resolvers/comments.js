@@ -16,13 +16,14 @@ module.exports = {
         async createComment(_, {body, username, comicOrStoryId, userId }){
 
             try {
-                const comments = new Comment({
+                const newcomment = new Comment({
                     body: body,
                     username: username,
                     createdAt: new Date().toISOString(),
                     comicOrStoryId: comicOrStoryId,
                     userId: userId
                 })
+                const comments = await newcomment.save();
                 return comments;
             } catch (err){
                 throw new Error(err);
