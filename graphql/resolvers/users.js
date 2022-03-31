@@ -113,7 +113,7 @@ module.exports = {
 
             newpassword = await bcrypt.hash(newpassword,12);
 
-            user = await user.findByIdAndUpdate(id,{password: newpassword});
+            user = await User.findByIdAndUpdate(id,{password: newpassword});
             return user
 
         },
