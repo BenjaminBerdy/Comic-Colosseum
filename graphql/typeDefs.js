@@ -56,7 +56,6 @@ module.exports = gql`
         y: [Int]!
     }
     type Query{
-        getComments(comicOrStoryId: String!): [Comment]!
         getUsers: [User]!
         getUser(id: ID!): User!
         getComics: [Comic]!
@@ -64,9 +63,10 @@ module.exports = gql`
         getStories: [Story]!
         getStory(id: ID!): Story!
         searchComicTitle(title: String!): [Comic]!
-        searchComicName(author: String!): [Comic]!
+        searchComicAuthor(author: String!): [Comic]!
         searchStoryTitle(title: String!): [Story]!
-        searchStoryName(author: String!): [Story]!
+        searchStoryAuthor(author: String!): [Story]!
+        getComments(comicOrStoryId: String!): [Comment]!
     }
     type Mutation{
         register(registerInput: RegisterInput): User!

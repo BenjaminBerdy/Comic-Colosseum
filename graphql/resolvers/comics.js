@@ -33,7 +33,7 @@ module.exports = {
             throw new Error(err);
         }
     },
-    async searchComicName(_, { author }) {
+    async searchComicAuthor(_, { author }) {
 
         try {
             const comics = await Comic.find({author});
