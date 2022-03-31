@@ -56,8 +56,8 @@ module.exports = {
         fontFamily: [],
         fontSize: [],
         text: [],
-        x: [],
-        y: [],
+        textx: [],
+        texty: [],
       });
 
       const story = await newStory.save();
@@ -78,10 +78,10 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async updateStory(_, { id, title, backgroundColor, fontFamily, fontSize, text, x, y }) {
+    async updateStory(_, { id, title, backgroundColor, fontFamily, fontSize, text, textx, texty }) {
 
         try {
-            const story = await Story.findByIdAndUpdate(id, {title: title, backgroundColor: backgroundColor, fontFamily: fontFamily, fontSize: fontSize, text: text, x: x, y:y});
+            const story = await Story.findByIdAndUpdate(id, {title: title, backgroundColor: backgroundColor, fontFamily: fontFamily, fontSize: fontSize, text: text, textx: textx, texty:texty});
             return story;
         } catch (err) {
             throw new Error(err);
