@@ -5,7 +5,6 @@ const userSchema = new Schema({
     password: String,
     email: String,
     createdAt: String,
-    profileImageURL: String,
     followedCreators: [String],
     likedComics: [String],
     likedStories: [String],

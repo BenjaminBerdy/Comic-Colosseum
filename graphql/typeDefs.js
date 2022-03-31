@@ -20,9 +20,9 @@ module.exports = gql`
         email: String!
         token: String!
         username: String!
-        profileImageURL: String!
         followedCreators: [String]!
         likedComics: [String]!
+        likedStories: [String]!
     }
     type Comic{
         id: ID!
@@ -89,7 +89,7 @@ module.exports = gql`
         updateStory(id: ID!, title: String!, author: String!, authorId: String!,
             publishDate: String!, likes: Int!, backgroundColor: String!, fontFamily: [String]!, 
             fontSize: [Int]!, text: [String]!, x: [Int]!, y: [Int]!): Story!
-        likedStoriesListUpdate(id: ID!, likedComics: [String]!): User!
+        likedStoriesListUpdate(id: ID!, likedStories: [String]!): User!
         createComment(body: String!, username: String!, comicOrStoryId: String!, userId: String!): Comment!
         deleteComment(id: ID!): String!
     }
