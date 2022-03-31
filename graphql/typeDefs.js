@@ -71,12 +71,14 @@ module.exports = gql`
     type Mutation{
         register(registerInput: RegisterInput): User!
         login(username: String!, password: String!): User!
+        changeUsername(id: ID!, newusername: String!):User!
         changePassword(id:ID!,username:String!, password: String!, newpassword: String!):User!
         forgotPassword(email:String!): String!
         resetPassword(token: String! id:ID!, newpassword:String!,confirmpassword:String!): User!
         follow(id: ID!, followedCreators: [String]!): User!
         likedComicsListUpdate(id: ID!, likedComics: [String]!): User!
         likedStoriesListUpdate(id: ID!, likedStories: [String]!): User!
+        deleteUser(username: String!, password: String!): String!
 
         createComic(author: String!, authorId: String!): Comic!
         updateComic(id: ID!, title: String!, author: String!, authorId: String!,

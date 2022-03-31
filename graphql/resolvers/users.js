@@ -101,6 +101,17 @@ module.exports = {
             };
 
         },
+        async changeUsername(_,{id,newusername}){
+            var user = await User.findOne({newusername})
+            if(user){
+                throw new UserInputError('Username is taken',{
+                    errors:{
+                        username: 'This username is taken'
+                    }})
+            }
+            user = await User.findByIdAndUpdate(id,{username: newusername});
+            return user
+        },
         async changePassword(_, {id, username, password, newpassword}){
             const {errors,valid} = validateLoginInput(username,password);
             if(!valid){
@@ -189,6 +200,25 @@ module.exports = {
             } catch (err) {
                 throw new Error(err);
             }
+        },
+        async deleteUser(_,{username,password}){
+            const {errors,valid} = validateLoginInput(username,password);
+            if(!valid){
+                throw new UserInputError('Errors',{errors});
+            }
+
+            var user = await User.findOne({username});
+            if(!user){
+                errors.general = 'User not found'
+                throw new UserInputError('User not found',{errors});
+            }
+            const match = await bcrypt.compare(password,user.password);
+            if(!match){ 
+                errors.general = 'Incorrect username or password'
+                throw new UserInputError('Incorrect username or password',{errors});
+            }
+            await User.findByIdAndDelete(user.id);
+            return 'Comment Deleted Successfully';
         }
     }
 }
