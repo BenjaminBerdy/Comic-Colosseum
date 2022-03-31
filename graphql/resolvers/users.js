@@ -94,7 +94,7 @@ module.exports = {
             };
 
         },
-        async changePassword(_, {id, password, newpassword}){
+        async changePassword(_, {id, username, password, newpassword}){
             const {errors,valid} = validateLoginInput(username,password);
             if(!valid){
                 throw new UserInputError('Errors',{errors});
