@@ -64,11 +64,11 @@ module.exports = {
 
       return story;
     },
-    async deleteStory(_, { id }) {
+    async deleteStory(_, { id, userId }) {
 
       try {
         const story = await Story.findById(id);
-        if (user.username === story.author) {
+        if (userId === story.authorId) {
           await story.delete();
           return 'Story Deleted Successfully';
         } else {

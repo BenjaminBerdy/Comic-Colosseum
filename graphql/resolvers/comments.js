@@ -30,11 +30,11 @@ module.exports = {
             }
 
         },
-        async deleteComment(_, { id }) {
+        async deleteComment(_, { id,userId }) {
     
           try {
             const comment = await Comment.findById(id);
-            if (user.username === comment.username) {
+            if (userId === comment.userId) {
               await comment.delete();
               return 'Comment Deleted Successfully';
             } else {

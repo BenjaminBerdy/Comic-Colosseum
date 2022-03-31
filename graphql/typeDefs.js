@@ -85,7 +85,7 @@ module.exports = gql`
             fontSize: [Int]!, text: [String]!, textx: [Int]!, texty: [Int]!): Comic!
         publishComic(id: ID!): String!
         likeComic(id: ID!, likes: Int): Comic!
-        deleteComic(id: ID!): String!
+        deleteComic(id: ID!, userId: ID!): String!
 
         createStory(author: String!, authorId: String!): Story!
         updateStory(id: ID!, title: String!, author: String!, authorId: String!,
@@ -93,9 +93,9 @@ module.exports = gql`
             fontSize: [Int]!, text: [String]!, textx: [Int]!, texty: [Int]!): Story!
         publishStory(id: ID!): String!
         likeStory(id: ID!, likes: Int): Story!
-        deleteStory(id: ID!): String!
+        deleteStory(id: ID!, userId: ID!): String!
 
         createComment(body: String!, username: String!, comicOrStoryId: String!, userId: String!): Comment!
-        deleteComment(id: ID!): String!
+        deleteComment(id: ID!, userId: ID!): String!
     }
 `
