@@ -72,24 +72,29 @@ module.exports = gql`
         register(registerInput: RegisterInput): User!
         login(username: String!, password: String!): User!
         changePassword(id:ID!,username:String!, password: String!, newpassword: String!):User!
+        forgotPassword(email:String!): String!
+        resetPassword(token: String! id:ID!, newpassword:String!,confirmpassword:String!): User!
         follow(id: ID!, followedCreators: [String]!): User!
+        likedComicsListUpdate(id: ID!, likedComics: [String]!): User!
+        likedStoriesListUpdate(id: ID!, likedStories: [String]!): User!
+
         createComic(author: String!, authorId: String!): Comic!
-        deleteComic(id: ID!): String!
-        publishComic(id: ID!): String!
-        likeComic(id: ID!, likes: Int): Comic!
         updateComic(id: ID!, title: String!, author: String!, authorId: String!,
             publishDate: String!, likes: Int!, backgroundColor: String!,
             points: [Int]!, strokeWidth: [Int]!, stroke: [String]!, fontFamily: [String]!,
             fontSize: [Int]!, text: [String]!, x: [Int]!, y: [Int]!): Comic!
-        likedComicsListUpdate(id: ID!, likedComics: [String]!): User!
+        publishComic(id: ID!): String!
+        likeComic(id: ID!, likes: Int): Comic!
+        deleteComic(id: ID!): String!
+
         createStory(author: String!, authorId: String!): Story!
-        deleteStory(id: ID!): String!
-        publishStory(id: ID!): String!
-        likeStory(id: ID!, likes: Int): Story!
         updateStory(id: ID!, title: String!, author: String!, authorId: String!,
             publishDate: String!, likes: Int!, backgroundColor: String!, fontFamily: [String]!, 
             fontSize: [Int]!, text: [String]!, x: [Int]!, y: [Int]!): Story!
-        likedStoriesListUpdate(id: ID!, likedStories: [String]!): User!
+        publishStory(id: ID!): String!
+        likeStory(id: ID!, likes: Int): Story!
+        deleteStory(id: ID!): String!
+
         createComment(body: String!, username: String!, comicOrStoryId: String!, userId: String!): Comment!
         deleteComment(id: ID!): String!
     }

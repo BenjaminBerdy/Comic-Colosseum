@@ -45,11 +45,18 @@ module.exports = {
                 throw new UserInputError('Errors', { errors });
             }
             //TODO Make sure user doesnt already exist
-            const user = await User.findOne({username})
+            var user = await User.findOne({username})
             if(user){
                 throw new UserInputError('Username is taken',{
                     errors:{
                         username: 'This username is taken'
+                    }})
+            }
+            user = await User.findOne({email})
+            if(user){
+                throw new UserInputError('Email is taken',{
+                    errors:{
+                        email: 'This email is already being used'
                     }})
             }
             //TODO hash password and create auth token
@@ -115,6 +122,45 @@ module.exports = {
 
             user = await User.findByIdAndUpdate(id,{password: newpassword});
             return user
+
+        },
+        async forgotPassword(_,{email}){
+            const errors = {}
+            const user = await User.findOne({email});
+            if(!user){
+                errors.general = 'No account with this email exists'
+                throw new UserInputError('No account with this email exists',{errors});
+            }
+            const secret = SECRET_KEY + user.password;
+            const token = jwt.sign({
+                id: user.id,
+                email: user.email,
+            },secret,{expiresIn: '15m'});
+
+            const link = `testurl/resetpassword/${user.id}/${token}`;
+            return link;
+
+        },
+        async resetPassword(_,{token,id,newpassword,confirmpassword}){
+            
+            var user = await User.findById(id);
+            if(!user){
+                errors.general = 'Invalid ID'
+                throw new UserInputError('Invalid ID',{errors});
+            }
+            const secret = SECRET_KEY + user.password;
+            try{
+                const payload = jwt.verify(token,secret)
+                if (newpassword !== confirmpassword){
+                    errors.general = 'New password doesnt match'
+                    throw new UserInputError('New password doesnt match',{errors});
+                }
+                newpassword = await bcrypt.hash(newpassword,12);
+                user = await User.findByIdAndUpdate(id,{password: newpassword});
+
+            }catch(err){
+                throw new Error(err)
+            }
 
         },
         async follow(_, { id, followedCreators }) {
