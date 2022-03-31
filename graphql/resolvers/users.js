@@ -100,7 +100,7 @@ module.exports = {
                 throw new UserInputError('Errors',{errors});
             }
 
-            const user = await User.findOne({username});
+            var user = await User.findOne({username});
             if(!user){
                 errors.general = 'User not found'
                 throw new UserInputError('User not found',{errors});
