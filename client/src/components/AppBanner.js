@@ -17,8 +17,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 
 export default function AppBanner() {
-    //const [activeItem, setActiveItem] = useState('');
-    const book = "Stories";
+
+    var book = "Stories"; //Changes to either stories or comics
 
 
 //Template from MUI:
@@ -178,5 +178,5 @@ export default function AppBanner() {
     </React.Fragment>
   );
 
-  return /* (auth.loggedIn) */ loggedInMenu;
+  return /* (auth.loggedIn)?loggedInMenu:loggedOutMenu; */ loggedInMenu;
 }

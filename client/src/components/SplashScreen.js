@@ -7,13 +7,11 @@ function SplashScreen(){
     return(
         <div id="splash-screen">
             <div id="splash-welcome"><h5>Welcome to <br/> Comic Colessuem</h5></div>
-            <div id="splash-message">A place where anyone can <br/>
-            create and read their <br/>
+            <div id="splash-message"><i>Read and Make epic<br/></i>
             Comics and Stories<br/>
             </div>
             <Link to='/storypage/'><Button class="splash-button1">Stories</Button></Link>
             <Link to='/comicpage/'><Button class="splash-button2">Comics</Button></Link>
-        <div id="splash-student"><strong>©</strong></div>
         </div>
     )
 }
