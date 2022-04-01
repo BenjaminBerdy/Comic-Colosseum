@@ -1,8 +1,35 @@
 import './App.css';
+import {React} from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Container from '@mui/material/Container';
+//import 'semantic-ui-css/semantic.min.css';
+import {UserProfile} from './components';
+import { AuthContextProvider } from './auth';
+import { GlobalStoreContextProvider } from './store';
+import {
+    AppBanner,
+    HomeWrapper,
+    RegisterScreen,
+    LoginScreen,
+    SplashScreen,
+    ComicPage,
+    StoryPage
+} from './components';
 
 function App() {
   return (
-    <div><h1>Comic Colosseum</h1></div>
+    <BrowserRouter>
+      <Container>
+        <Routes>
+          <Route path='/' element ={<SplashScreen/>} />
+          <Route path="/register/" element={<RegisterScreen/>} />
+          <Route path="/login/"  element={<LoginScreen/>} /> 
+          <Route path="/comicpage/"  element={<ComicPage/>} />
+          <Route path="/storypage/"  element={<StoryPage/>} /> 
+          <Route path= "/userprofile" element = {<UserProfile/>}/>
+        </Routes>
+      </Container>
+    </BrowserRouter>
   );
 }
 

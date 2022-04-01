@@ -4,17 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "serve": "node index",
     "start": "node index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.5.3",
     "apollo-server": "^3.6.5",
     "bcryptjs": "^2.4.3",
     "graphql": "^16.3.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.8"
+    "mongoose": "^6.2.8",
+    "react-router-dom": "^6.3.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.1.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
