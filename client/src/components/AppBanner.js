@@ -1,6 +1,6 @@
 //import * as React from 'react';
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -83,9 +83,9 @@ export default function AppBanner() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem>
+        <Link to='/userprofile/'><MenuItem>
           <Avatar /> Profile
-        </MenuItem>
+        </MenuItem></Link>
         <MenuItem>
           <UploadIcon/> Create {book}
         </MenuItem>

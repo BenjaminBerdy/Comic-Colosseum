@@ -1,7 +1,7 @@
 import React from "react";
 import '../App.css';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 function SplashScreen(){
     return(
@@ -11,8 +11,8 @@ function SplashScreen(){
             create and read their <br/>
             Comics and Stories<br/>
             </div>
-            <Button class="splash-button1">Stories</Button>
-            <Button class="splash-button2">Comics</Button>
+            <Link to='/storypage/'><Button class="splash-button1">Stories</Button></Link>
+            <Link to='/comicpage/'><Button class="splash-button2">Comics</Button></Link>
         <div id="splash-student"><strong>©</strong></div>
         </div>
     )
