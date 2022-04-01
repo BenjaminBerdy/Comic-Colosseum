@@ -67,11 +67,11 @@ module.exports = {
 
       return comic;
     },
-    async deleteComic(_, { id, userId }) {
+    async deleteComic(_, { id, authorId }) {
 
       try {
         const comic = await Comic.findById(id);
-        if (userId === comic.authorId) {
+        if (authorId === comic.authorId) {
           await comic.delete();
           return 'Comic Deleted Successfully';
         } else {
