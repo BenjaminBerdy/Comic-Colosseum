@@ -7,6 +7,7 @@ import LoginScreen from './LoginScreen'
 import ComicPage from './ComicPage'
 import StoryPage from './StoryPage'
 import UserProfile from './UserProfile'
+import SideBar from './SideBar'
 
 export { 
     AppBanner, 
@@ -17,5 +18,6 @@ export {
     LoginScreen,
     ComicPage,
     StoryPage,
-    UserProfile
+    UserProfile,
+    SideBar
  }
