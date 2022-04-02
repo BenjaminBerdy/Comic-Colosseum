@@ -10,7 +10,7 @@
 }
 
 #root {
-    background-color: var(--swatch-primary);
+    background-image: linear-gradient(to bottom, #c61806, #5d2a2a);
     font-family: "Lexend Exa";
     height: 100%;
     position: absolute;
@@ -31,32 +31,34 @@ body {
     margin: 0;
 }
 
-#splash-screen {
+#splash-screen-left {
     background-image: url("https://wallpapersmug.com/download/1024x768/c805c3/colosseum-ancient-architecture-rome.jpg");
     background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    width: 50%;
+    position: absolute;
+    left: 0px;
+    height: 100%;
+}
+
+#splash-screen-right {
     color: white;
-    font-size: 5vw;
-    border-color: black;
-    border-width: 2px;
-    border-style: solid;
+    font-size: 4vw;
     text-align: center;
     height: 100%;
     position: absolute;
-    left: 0;
-    width: 100%;
+    right: 0;
+    width: 50%;
     overflow: hidden;
     font-family: fantasy;
 }
  #splash-welcome {
-     color: var(--swatch-status);
+     color: white;
  }
 
  #splash-message {
      font-size: 2vw;
      position: absolute;
-     bottom: 2vw;
+     bottom: 5vw;
  }
 
 .splash-button1 {
@@ -68,7 +70,7 @@ body {
     cursor: pointer;
     opacity: 100%;
     margin-right: 1%;
-    margin-top: 1%;
+    margin-top: 5%;
     font-family: fantasy;
 }
 
