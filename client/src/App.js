@@ -15,7 +15,12 @@ import {
     ForgotPassword,
     SplashScreen,
     ComicPage,
-    StoryPage
+    StoryPage,
+    CreateComicScreen,
+    CreateStoryScreen,
+    ViewComicScreen,
+    ViewStoryScreen,
+    ViewUserScreen
 } from './components';
 
 function App() {
@@ -30,6 +35,11 @@ function App() {
           <Route path="/storypage/"  element={<StoryPage/>} /> 
           <Route path= "/userprofile" element = {<UserProfile/>}/>
           <Route path= "/forgotpassword/" element={<ForgotPassword/>}/>
+          <Route path= "/createcomic/:id" element={<CreateComicScreen/>}/>
+          <Route path= "/createstory/:id" element={<CreateStoryScreen/>}/>
+          <Route path= "/viewcomic/:id" element={<ViewComicScreen/>}/>
+          <Route path= "/viewstory/:id" element={<ViewStoryScreen/>}/>
+          <Route path= "/viewuser/:id" element={<ViewUserScreen/>}/>
         </Routes>
       </Container>
     </BrowserRouter>
