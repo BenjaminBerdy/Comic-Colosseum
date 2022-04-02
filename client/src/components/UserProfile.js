@@ -1,9 +1,11 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { AccountProfile } from './account/account-profile';
 import { AccountProfileDetails } from './account/account-profile-details';
+import AppBanner from "./AppBanner";
+
 
 function UserProfile (){
-    return(<>
+    return(<><AppBanner/><br/>  
         <Box
           component="main"
           sx={{

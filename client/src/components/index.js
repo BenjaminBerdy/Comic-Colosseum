@@ -6,7 +6,6 @@ import LoginScreen from './LoginScreen'
 import ComicPage from './ComicPage'
 import StoryPage from './StoryPage'
 import UserProfile from './UserProfile'
-import SideBar from './SideBar'
 import ForgotPassword from './ForgotPassword'
 import CreateComicScreen from './CreateComicScreen'
 import CreateStoryScreen from './CreateStoryScreen'
@@ -25,7 +24,6 @@ export {
     ComicPage,
     StoryPage,
     UserProfile,
-    SideBar,
     CreateComicScreen,
     CreateStoryScreen,
     ViewComicScreen,
