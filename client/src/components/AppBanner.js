@@ -4,15 +4,13 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import { createTheme } from '@mui/material/styles';
+
 
 
 export default function MenuAppBar() {
@@ -35,10 +33,16 @@ export default function MenuAppBar() {
     setAnchorEl(null);
     setAuth(!auth);
   };
-
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#B40000',     
+      }
+    }
+  });
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" theme={theme}>
         <Toolbar>
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
           <Link to='/' style={{ color: 'white', textDecoration: 'none' }}>
