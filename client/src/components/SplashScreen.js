@@ -6,12 +6,11 @@ import { Link } from 'react-router-dom';
 function SplashScreen(){
     return(
         <div id="splash-screen">
-            <div id="splash-welcome"><h5>Welcome to <br/> Comic Colosseum</h5></div>
-            <div id="splash-message"><i>Read and Make epic<br/></i>
-            Comics and Stories<br/>
+            <div id="splash-welcome">Entering the Colosseum</div>
+            <div id="splash-message">Browse, create, and interact with stories and comics. Compete for likes for yours to be on the top!
+                <Link to='/storypage/'><Button class="splash-button1">Stories</Button></Link>
+                <Link to='/comicpage/'><Button class="splash-button2">Comics</Button></Link>
             </div>
-            <Link to='/storypage/'><Button class="splash-button1">Stories</Button></Link>
-            <Link to='/comicpage/'><Button class="splash-button2">Comics</Button></Link>
         </div>
     )
 }

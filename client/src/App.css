@@ -12,13 +12,13 @@
 #root {
     background-color: var(--swatch-primary);
     font-family: "Lexend Exa";
+    height: 100%;
     position: absolute;
-    width: 80%;
-    left: 10%;
-    height: 90%;
-    top: 5%;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
 }
-  
+
 #app-root {
     position: absolute;
     width: 100%;
@@ -27,59 +27,58 @@
     left: 0%;
 }
 
+body {
+    margin: 0;
+}
+
 #splash-screen {
-    background-image: linear-gradient(to bottom, #790000, #d67418);
+    background-image: url("https://wallpapersmug.com/download/1024x768/c805c3/colosseum-ancient-architecture-rome.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     color: white;
     font-size: 5vw;
     border-color: black;
     border-width: 2px;
     border-style: solid;
-    border-radius: 10px;
-    padding-left: 10%;
-    padding-top: 5%;
-    padding-bottom: 5%;
-    height:70%;
     text-align: center;
-    vertical-align: center;
-}
- 
-#splash-welcome{
-    position: relative;
-    top:-60px;
-    left: -5%;
+    height: 100%;
+    position: absolute;
+    left: 0;
     width: 100%;
-    color: white;
-  
+    overflow: hidden;
+    font-family: fantasy;
 }
-  #splash-message{
-    position: relative;
-    top:-120px;
-    left: -5%;
-    width: 100%;
-    font-size: 25px;
-    color: white;
-}
-  .splash-button1 {
-    position: relative;
+ #splash-welcome {
+     color: var(--swatch-status);
+ }
+
+ #splash-message {
+     font-size: 2vw;
+     position: absolute;
+     bottom: 2vw;
+ }
+
+.splash-button1 {
     font-size: 20pt;
-    top:-120px;
     border-width: 5px;
-    right: 10%;
     width: 20%;
     color: white;
     background-color: var(--swatch-status);
     cursor: pointer;
     opacity: 100%;
+    margin-right: 1%;
+    margin-top: 1%;
+    font-family: fantasy;
 }
-  .splash-button2 {
-    position: relative;
+
+.splash-button2 {
     font-size: 20pt;
-    top:-120px;
     border-width: 5px;
-    right: 0%;
     width: 20%;
     color: white;
     background-color: var(--swatch-status);
     cursor: pointer;
     opacity: 100%;
+    font-family: fantasy;
 }
