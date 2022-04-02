@@ -1,6 +1,8 @@
 const { UserInputError } = require('apollo-server');
 
 const Story = require('../../models/Story');
+const User = require('../../models/User');
+
 
 module.exports = {
   Query: {
@@ -45,6 +47,12 @@ module.exports = {
   },
   Mutation: {
     async createStory(_, { author, authorId }) {
+      const errors = {};
+      const user = await User.findById(authorId);
+      if(!user){
+        errors.general = 'User not found'
+        throw new UserInputError('User not found',{errors});
+      }
 
       const newStory = new Story({
         title: "Untitled Name",
@@ -65,6 +73,12 @@ module.exports = {
       return story;
     },
     async deleteStory(_, { id, authorId }) {
+      const errors = {};
+      const user = await User.findById(authorId);
+      if(!user){
+        errors.general = 'User not found'
+        throw new UserInputError('User not found',{errors});
+      }
 
       try {
         const story = await Story.findById(id);
@@ -99,7 +113,8 @@ module.exports = {
     async likeStory(_, { id, likes }) {
 
         try {
-            const story = await Story.findByIdAndUpdate(id, {likes: likes});
+            var story = await Story.findById(id);
+            story = await Story.findByIdAndUpdate(id, {likes: story.likes+likes});
             return story;
         } catch (err) {
             throw new Error(err);
