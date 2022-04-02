@@ -12,6 +12,7 @@ import {
     HomeWrapper,
     RegisterScreen,
     LoginScreen,
+    ForgotPassword,
     SplashScreen,
     ComicPage,
     StoryPage
@@ -28,6 +29,7 @@ function App() {
           <Route path="/comicpage/"  element={<ComicPage/>} />
           <Route path="/storypage/"  element={<StoryPage/>} /> 
           <Route path= "/userprofile" element = {<UserProfile/>}/>
+          <Route path= "/forgotpassword/" element={<ForgotPassword/>}/>
         </Routes>
       </Container>
     </BrowserRouter>

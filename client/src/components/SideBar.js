@@ -94,7 +94,7 @@ export default function SideBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Comic Colessuem
+            Comic Colosseum
           </Typography>
         </Toolbar>
       </AppBar>

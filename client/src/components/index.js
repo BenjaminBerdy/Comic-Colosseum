@@ -8,6 +8,7 @@ import ComicPage from './ComicPage'
 import StoryPage from './StoryPage'
 import UserProfile from './UserProfile'
 import SideBar from './SideBar'
+import ForgotPassword from './ForgotPassword'
 
 export { 
     AppBanner, 
@@ -16,6 +17,7 @@ export {
     RegisterScreen,
     SplashScreen,
     LoginScreen,
+    ForgotPassword,
     ComicPage,
     StoryPage,
     UserProfile,

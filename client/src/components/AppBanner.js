@@ -79,7 +79,8 @@ export default function AppBanner() {
         <Toolbar>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Typography sx={{ minWidth: 150 }}>New {book}</Typography>
-        <Typography sx={{ minWidth: 150 }}>Following {book}</Typography>
+        <Typography sx={{ minWidth: 150 }}>Followers {book}</Typography>
+        <Typography sx={{ minWidth: 150 }}>Liked {book}</Typography>
         <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -89,7 +90,7 @@ export default function AppBanner() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-        <Tooltip title="Account settings">
+        <Tooltip title="Profile">
           <IconButton
             onClick={handleClick}
             size="small"
@@ -136,25 +137,13 @@ export default function AppBanner() {
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        
       >
         <Link to='/userprofile/'><MenuItem>
           <Avatar /> Profile
         </MenuItem></Link>
         <MenuItem>
-          <UploadIcon/> Create {book}
-        </MenuItem>
-        <MenuItem>
-          <ThumbUpTwoToneIcon/>
-          Liked {book}
-        </MenuItem>
-        <Divider />
-        <MenuItem>
-          <SettingsIcon/>
-          Settings
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-          </ListItemIcon>
+          
           Logout
         </MenuItem>
       </Menu>
@@ -167,7 +156,7 @@ export default function AppBanner() {
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Typography sx={{ minWidth: 150 }}>New {book}</Typography>
         <Typography sx={{ minWidth: 150 }}> x {book}</Typography>
-        <Tooltip title="Account settings">
+        <Tooltip title="Profile">
           <IconButton
             onClick={handleClick}
             size="small"
