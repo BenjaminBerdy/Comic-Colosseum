@@ -2,9 +2,7 @@ import './App.css';
 import {React} from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Container from '@mui/material/Container';
-//import 'semantic-ui-css/semantic.min.css'; for some reason, when enabled, client compiles forever
 import {UserProfile} from './components';
-import { SideBar } from './components';
 import { AuthContextProvider } from './auth';
 import { GlobalStoreContextProvider } from './store';
 import {
