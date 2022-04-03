@@ -7,7 +7,7 @@ import AppBanner from "./AppBanner";
 function UserProfile (){
     return(
       <div>
-            <AppBanner/><br/>
+            <AppBanner/><br/><br/><br/>
             <h1>User Profile Page</h1>
 
         </div>
