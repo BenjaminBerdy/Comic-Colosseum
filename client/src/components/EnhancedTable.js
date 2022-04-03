@@ -13,37 +13,38 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import { Link } from 'react-router-dom';
 
-function createData(name, calories, fat, carbs, protein) {
+
+function createData(title, author, date, likes,id ) {
   return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
+    title,
+    author,
+    date,
+    likes,
+    id
   };
 }
 
 const rows = [
-  createData('img', 'Comic305', 'Author1', '1/1/1', 46),
-  createData('img', 'Comic452', 'Author1', '1/1/1', 45),
-  createData('img', 'Comic262', 'Author1', '1/1/1', 64),
-  createData('img', 'Comic159', 'Author1', '1/1/1', 43),
-  createData('img', 'Comic356', 'Author1', '1/1/1', 32),
-  createData('img', 'Comic408', 'Author1', '1/1/1', 61),
-  createData('img', 'Comic237', 'Author1', '1/1/1', 43),
-  createData('img', 'Comic375', 'Author1', '1/1/1', 0),
-  createData('img', 'Comic518', 'Author1', '1/1/1', 70),
-  createData('img', 'Comic392', 'Author1', '1/1/1', 0),
-  createData('img', 'Comic318', 'Author1', '1/1/1', 20),
+  createData('Comic1', 'author1', '1-1-2', 67, "1"),
+  createData('Comic2', 'author2', '1-1-3', 51, "2"),
+  createData('Comic3', 'author3', '1-1-4', 24, "3"),
+  createData('Comic4', 'author4','1-1-5', 24, "4"),
+  createData('Comic5', 'author5','1-1-6', 49, "5"),
+  createData('Comic6', 'author6', '1-1-7', 87, "6"),
+  createData('Comic7', 'author7', '1-1-8', 37, "7"),
+  createData('Comic8', 'author8', '1-1-9', 94, "8"),
+  createData('Comic9', 'author9','1-2-1', 65, "9"),
+  createData('Comic10', 'author10', '1-2-2', 98, "10"),
+  createData('Comic11', 'author11','1-2-3', 81, "11"),
+  createData('Comic12', 'author12', '1-2-4', 9, "12"),
+  createData('Comic13', 'author13', '1-2-5', 63, "13"),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -78,15 +79,9 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'selectAll',
+    id: 'title',
     numeric: false,
     disablePadding: true,
-    label: 'Select All',
-  },
-  {
-    id: 'title',
-    numeric: true,
-    disablePadding: false,
     label: 'Title',
   },
   {
@@ -96,10 +91,10 @@ const headCells = [
     label: 'Author',
   },
   {
-    id: 'created',
+    id: 'date',
     numeric: true,
     disablePadding: false,
-    label: 'Created',
+    label: 'Publish Date',
   },
   {
     id: 'likes',
@@ -120,15 +115,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
+          
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
@@ -195,7 +182,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Your Comics
+          Comics
         </Typography>
       )}
 
@@ -222,9 +209,10 @@ EnhancedTableToolbar.propTypes = {
 
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState('title');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
+  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -235,19 +223,20 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n) => n.title);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, title) => {
+
+    const selectedIndex = selected.indexOf(title);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, title);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -271,21 +260,22 @@ export default function EnhancedTable() {
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+
+  const isSelected = (title) => selected.indexOf(title) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%'}}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={'medium'}
+            size={dense ? 'small' : 'medium'}
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -301,27 +291,21 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.title);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      component={Link} to={'/viewcomic/' + row.id} style={{ color: 'white', textDecoration: 'none' }}
+                      /*onClick={(event) => handleClick(event, row.title)}*/
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.title}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
                       </TableCell>
                       <TableCell
                         component="th"
@@ -329,19 +313,18 @@ export default function EnhancedTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row.title}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="right">{row.author}</TableCell>
+                      <TableCell align="right">{row.date}</TableCell>
+                      <TableCell align="right">{row.likes}</TableCell>
                     </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (53) * emptyRows,
+                    height: (dense ? 33 : 53) * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />

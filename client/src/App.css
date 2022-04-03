@@ -85,3 +85,49 @@ body {
     font-family: fantasy;
 }
 
+#enhancedtable{
+    margin-top: 5%;
+    margin-left: 20%;
+}
+
+#toolbar{
+    margin-top: 5%;
+    margin-left:10%
+}
+
+#canvas {
+    background-color: #ffffff;
+    position: absolute;
+    bottom: 0;
+    right:0;
+    margin-right: 10%;
+    margin-bottom: 2%;
+   }
+
+#editbar {
+    background-color: #ea5c5c;
+    position: absolute;
+    left: 0;
+    width: 30%;
+    height: 100%;
+}
+
+#whitebuttontext{
+    color: "#ffffff"
+}
+
+#colorselector{
+    margin-left: 2%;
+    margin-right: 10%;
+}
+
+.rowC{display:flex; flex-direction:row;}
+
+#createButtons{
+    margin-top: 10%;
+    position: absolute;
+    left: 0
+}
+
+
+

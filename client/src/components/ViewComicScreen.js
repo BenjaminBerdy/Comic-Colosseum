@@ -7,7 +7,7 @@ export default function ViewComicScreen(){
     const { id } = useParams();
     return(
         <div>
-            <AppBanner/><br/>
+            <AppBanner/><br/><br/><br/><br/>
             <h1>View Comic Page</h1>
             <text>{id}</text>
 

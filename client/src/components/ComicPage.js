@@ -1,9 +1,5 @@
 import React from "react";
-import AuthContext from '../auth'
-import { GlobalStoreContext } from '../store'
-import { useContext } from "react";
 import AppBanner from "./AppBanner";
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
@@ -11,6 +7,8 @@ import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import EnhancedTable from "./EnhancedTable";
+import FollowedCreatorsBar from "./followedCreatorsBar";
+
 
 
 
@@ -57,13 +55,11 @@ export default function ComicPage(){
       }));
 
     return(
-        
-
-        
         <div>
-            <AppBanner/><br/>   
+            <AppBanner/>               
+            <FollowedCreatorsBar/>
             <React.Fragment>
-            <Toolbar>
+            <Toolbar id="toolbar">
                 <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                     <Typography sx={{ minWidth: 150 }}>New Comics</Typography>
                     <Typography sx={{ minWidth: 150 }}>Followers Comics</Typography>
@@ -80,8 +76,10 @@ export default function ComicPage(){
                 </Box>
             </Toolbar>
             </React.Fragment>
-            <h1>The Comic Page</h1>
-            <EnhancedTable/>
+            <div id="enhancedtable">
+            <EnhancedTable /> 
+            </div>
+            
         </div>
     );
 
