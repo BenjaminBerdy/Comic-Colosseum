@@ -10,7 +10,7 @@
 }
 
 #root {
-    background-image: linear-gradient(to bottom, #c61806, #5d2a2a);
+    background-image: linear-gradient(to right top, #f27a0a, #dd6711, #c85514, #b14415, #9b3414, #98251f, #931528, #8c0030, #8e004c, #84006d, #671d8e, #0037ac);
     font-family: "Lexend Exa";
     height: 100%;
     position: absolute;
@@ -32,8 +32,9 @@ body {
 }
 
 #splash-screen-left {
-    background-image: url("https://wallpapersmug.com/download/1024x768/c805c3/colosseum-ancient-architecture-rome.jpg");
+    background-image: url("https://wallpaperaccess.com/full/1127899.jpg");
     background-position: center;
+    background-size: cover;
     width: 50%;
     position: absolute;
     left: 0px;
@@ -41,6 +42,7 @@ body {
 }
 
 #splash-screen-right {
+    background: linear-gradient(45deg, rgba(242,122,10,1) 0%, rgba(125,32,17,1) 35%, rgba(0,55,172,1) 100%);
     color: white;
     font-size: 4vw;
     text-align: center;
@@ -66,9 +68,8 @@ body {
     border-width: 5px;
     width: 20%;
     color: white;
-    background-color: var(--swatch-status);
+    background-color: rgba(0,55,172,1);
     cursor: pointer;
-    opacity: 100%;
     margin-right: 1%;
     margin-top: 5%;
     font-family: fantasy;
@@ -79,8 +80,7 @@ body {
     border-width: 5px;
     width: 20%;
     color: white;
-    background-color: var(--swatch-status);
+    background-color: rgba(0,55,172,1);
     cursor: pointer;
-    opacity: 100%;
     font-family: fantasy;
 }
