@@ -10,6 +10,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
+import EnhancedTable from "./EnhancedTable";
 
 
 
@@ -80,6 +81,7 @@ export default function ComicPage(){
             </Toolbar>
             </React.Fragment>
             <h1>The Comic Page</h1>
+            <EnhancedTable/>
         </div>
     );
 

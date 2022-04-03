@@ -12,6 +12,7 @@ import CreateStoryScreen from './CreateStoryScreen'
 import ViewComicScreen from './ViewComicScreen'
 import ViewStoryScreen from './ViewStoryScreen'
 import ViewUserScreen from './ViewUserScreen'
+import EnhancedTable from './EnhancedTable'
 
 
 export { 
@@ -28,6 +29,7 @@ export {
     CreateStoryScreen,
     ViewComicScreen,
     ViewStoryScreen,
-    ViewUserScreen
+    ViewUserScreen,
+    EnhancedTable
 
  }
