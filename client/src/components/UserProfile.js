@@ -6,7 +6,8 @@ import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import EnhancedTable from "./EnhancedTable";
-import Link from '@mui/material/Link';
+import Button from '@mui/material/Button'
+
 
 
 
@@ -56,12 +57,12 @@ export default function UserProfile(){
 
     return(
         <div>
-            <AppBanner/>      
-            <div id="createButtons">       
-            <Link href="/createcomic/123">Create Comic</Link>
-            <br/>
-            <Link href="/createstory/123">Create Story</Link>
-            </div>
+            <AppBanner/>  
+            <div id = "userbar">
+            <h1>Username</h1>
+            <Button href="/createcomic/123" variant="text">Create Comic</Button>
+            <Button href="/createstory/123" variant="text">Create Story</Button>
+            </div>    
             <React.Fragment>
             <Toolbar id="toolbar">
                 <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>

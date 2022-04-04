@@ -33,6 +33,8 @@ export default function RegisterScreen() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            backgroundColor: 'white',
+            padding:3
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>

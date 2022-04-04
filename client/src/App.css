@@ -101,7 +101,7 @@ body {
     bottom: 0;
     right:0;
     margin-right: 10%;
-    margin-bottom: 2%;
+    margin-bottom: 3%;
    }
 
 #editbar {
@@ -110,6 +110,8 @@ body {
     left: 0;
     width: 30%;
     height: 100%;
+    margin-top: 4%;
+    padding: 1%;
 }
 
 #whitebuttontext{
@@ -129,5 +131,32 @@ body {
     left: 0
 }
 
+#userbar{
+    position: absolute;
+    left: 0;
+    background-color: #ffffff;
+    height: 100%;
+    width: 15%;
+}
+
+#loginbox{
+    background-color: #ffffff
+}
+
+#likefollow{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 48%;
+    margin-bottom: 0.3%;
+}
+
+#pageselection{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 10%;
+    margin-bottom: 0.3%;
+}
 
 

@@ -16,6 +16,8 @@ import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
 import MuiInput from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
+import AppBanner from "./AppBanner";
+
 
 
 
@@ -101,6 +103,7 @@ import { styled } from '@mui/material/styles';
     
     return(
         <div>
+          <AppBanner/>
         <div id="editbar">
         <h3>Toolbar</h3>
         <TextField
