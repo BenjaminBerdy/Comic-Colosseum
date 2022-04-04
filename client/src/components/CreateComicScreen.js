@@ -1,7 +1,6 @@
 import React from "react";
-import AppBanner from "./AppBanner";
-import { useParams } from "react-router-dom";
-import { Stage, Layer, Line, Text } from 'react-konva';
+//import { useParams } from "react-router-dom";
+import { Stage, Layer, Line /*,Text*/ } from 'react-konva';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -24,8 +23,8 @@ import { styled } from '@mui/material/styles';
 
 
   export default function CreateComicScreen(){
-    const { id } = useParams();
-    const [tool, setTool] = React.useState('pen');
+    //const { id } = useParams();
+    const [tool] = React.useState('pen');
     const [lines, setLines] = React.useState([]);
     const isDrawing = React.useRef(false);
     const [currentpage, setCurrentPage] = React.useState('Page 1');

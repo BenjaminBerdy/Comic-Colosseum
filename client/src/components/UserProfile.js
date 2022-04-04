@@ -1,14 +1,11 @@
 import React from "react";
 import AppBanner from "./AppBanner";
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import EnhancedTable from "./EnhancedTable";
-import FollowedCreatorsBar from "./followedCreatorsBar";
-import { Button } from "@mui/material";
 import Link from '@mui/material/Link';
 
 
