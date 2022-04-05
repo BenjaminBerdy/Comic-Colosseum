@@ -36,12 +36,12 @@ function renderRow(props) {
         <TextField id="outlined-basic" label="Add a comment..." variant="outlined" />
         <Button>Comment</Button>
             <Box
-            sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 450, bgcolor: 'background.paper', marginTop:'1%', marginLeft:'1%'}}
+            sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: '25%', bgcolor: 'background.paper', marginTop:'1%', marginLeft:'1%'}}
             >
             <br/>
             <FixedSizeList
                 height={350}
-                width={450}
+                width={'100%'}
                 itemSize={46}
                 itemCount={20}
                 overscanCount={5}
