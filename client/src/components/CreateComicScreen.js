@@ -23,7 +23,6 @@ import AppBanner from "./AppBanner";
 
 
 
-
   export default function CreateComicScreen(){
     //const { id } = useParams();
     const [tool] = React.useState('pen');

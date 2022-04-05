@@ -10,15 +10,18 @@ import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
+import { useContext } from "react";
+import { authContext } from "../App";
 
 
 
 export default function MenuAppBar() {
-  const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const {auth,setAuth} = useContext(authContext);
 
   const handleChange = (event) => {
     setAuth(!auth);
+    console.log(auth)
   };
 
   const handleMenu = (event) => {
@@ -32,6 +35,7 @@ export default function MenuAppBar() {
   const handleLogout = (event) => {
     setAnchorEl(null);
     setAuth(!auth);
+    console.log(auth)
   };
   const theme = createTheme({
     palette: {

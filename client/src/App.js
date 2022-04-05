@@ -1,5 +1,5 @@
 import './App.css';
-import {React} from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Container from '@mui/material/Container';
 //import 'semantic-ui-css/semantic.min.css'; for some reason, when enabled, client compiles forever
@@ -19,8 +19,14 @@ import {
     UserProfile
 } from './components';
 
+export const authContext = React.createContext();
+
+
 function App() {
+  const [auth, setAuth] = React.useState(false);
+
   return (
+    <authContext.Provider value = {{auth,setAuth}}>
     <BrowserRouter>
       <Container>
         <Routes>
@@ -40,6 +46,7 @@ function App() {
         </Routes>
       </Container>
     </BrowserRouter>
+    </authContext.Provider>
   );
 }
 

@@ -8,12 +8,17 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import EnhancedTable from "./EnhancedTable";
 import FollowedCreatorsBar from "./followedCreatorsBar";
+import { useContext } from "react";
+import { authContext } from "../App";
 
 
 
 
 
 export default function ComicPage(){
+  const {auth} = useContext(authContext);
+  console.log(auth);
+    
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -57,7 +62,7 @@ export default function ComicPage(){
     return(
         <div>
             <AppBanner/>               
-            <FollowedCreatorsBar/>
+            {auth && <FollowedCreatorsBar/>}
             <React.Fragment>
             <Toolbar id="toolbar">
                 <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
