@@ -29,7 +29,7 @@ function App() {
           <Route path="/login/"  element={<LoginScreen/>} /> 
           <Route path="/comicpage/"  element={<ComicPage/>} />
           <Route path="/storypage/"  element={<StoryPage/>} /> 
-          <Route path= "/userprofile" element = {<UserProfile/>}/>
+          <Route path= "/userprofile/" element = {<UserProfile/>}/>
           <Route path= "/forgotpassword/" element={<ForgotPassword/>}/>
           <Route path="/resetpassword/:id/:token/" element={<ResetPassword/>}/>
           <Route path= "/createcomic/:id/" element={<CreateComicScreen/>}/>
