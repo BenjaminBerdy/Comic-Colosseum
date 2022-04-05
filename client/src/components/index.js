@@ -1,5 +1,4 @@
 import AppBanner from './AppBanner'
-import HomeWrapper from './HomeWrapper'
 import RegisterScreen from './RegisterScreen'
 import SplashScreen from './SplashScreen'
 import LoginScreen from './LoginScreen'
@@ -18,7 +17,6 @@ import ResetPassword from './ResetPassword'
 
 export { 
     AppBanner, 
-    HomeWrapper,
     RegisterScreen,
     SplashScreen,
     LoginScreen,

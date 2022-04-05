@@ -3,7 +3,6 @@ import {React} from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Container from '@mui/material/Container';
 //import 'semantic-ui-css/semantic.min.css'; for some reason, when enabled, client compiles forever
-import {UserProfile} from './components';
 import {
     RegisterScreen,
     LoginScreen,
@@ -16,7 +15,8 @@ import {
     CreateStoryScreen,
     ViewComicScreen,
     ViewStoryScreen,
-    ViewUserScreen
+    ViewUserScreen,
+    UserProfile
 } from './components';
 
 function App() {
@@ -31,12 +31,12 @@ function App() {
           <Route path="/storypage/"  element={<StoryPage/>} /> 
           <Route path= "/userprofile" element = {<UserProfile/>}/>
           <Route path= "/forgotpassword/" element={<ForgotPassword/>}/>
-          <Route path="/resetpassword/:id/:token" element={<ResetPassword/>}/>
-          <Route path= "/createcomic/:id" element={<CreateComicScreen/>}/>
-          <Route path= "/createstory/:id" element={<CreateStoryScreen/>}/>
-          <Route path= "/viewcomic/:id" element={<ViewComicScreen/>}/>
-          <Route path= "/viewstory/:id" element={<ViewStoryScreen/>}/>
-          <Route path= "/viewuser/:id" element={<ViewUserScreen/>}/>
+          <Route path="/resetpassword/:id/:token/" element={<ResetPassword/>}/>
+          <Route path= "/createcomic/:id/" element={<CreateComicScreen/>}/>
+          <Route path= "/createstory/:id/" element={<CreateStoryScreen/>}/>
+          <Route path= "/viewcomic/:id/" element={<ViewComicScreen/>}/>
+          <Route path= "/viewstory/:id/" element={<ViewStoryScreen/>}/>
+          <Route path= "/viewuser/:id/" element={<ViewUserScreen/>}/>
         </Routes>
       </Container>
     </BrowserRouter>

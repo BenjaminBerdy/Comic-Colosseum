@@ -13,7 +13,7 @@ function renderRow(props) {
 
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/viewUser/' + (index+1)} style={{ color: 'black', textDecoration: 'none' }}>
+      <ListItemButton component={Link} to={'/viewuser/' + (index+1)} style={{ color: 'black', textDecoration: 'none' }}>
         <ListItemText primary={`Creator ${index + 1}`} />
       </ListItemButton>
     </ListItem>
