@@ -92,7 +92,7 @@ body {
 
 #toolbar{
     margin-top: 5%;
-    margin-left:10%
+    margin-left:20%
 }
 
 #canvas {
@@ -100,7 +100,7 @@ body {
     position: absolute;
     bottom: 0;
     right:0;
-    margin-right: 10%;
+    margin-right: 5%;
     margin-bottom: 3%;
    }
 
@@ -136,7 +136,7 @@ body {
     left: 0;
     background-color: #ffffff;
     height: 100%;
-    width: 15%;
+    width: 250;
 }
 
 #loginbox{
@@ -147,7 +147,7 @@ body {
     position: absolute;
     bottom: 0;
     right: 0;
-    margin-right: 48%;
+    margin-right: 40%;
     margin-bottom: 0.3%;
 }
 
@@ -155,7 +155,7 @@ body {
     position: absolute;
     bottom: 0;
     right: 0;
-    margin-right: 10%;
+    margin-right: 5%;
     margin-bottom: 0.3%;
 }
 

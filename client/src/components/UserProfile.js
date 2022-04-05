@@ -7,9 +7,24 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import EnhancedTable from "./EnhancedTable";
 import Button from '@mui/material/Button'
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import { FixedSizeList } from 'react-window';
+import { Link } from 'react-router-dom';
 
 
+function renderRow(props) {
+  const { index, style } = props;
 
+  return (
+    <ListItem style={style} key={index} component="div" disablePadding>
+      <ListItemButton component={Link} to={'/viewcomic/' + (index+1)} style={{ color: 'black', textDecoration: 'none' }}>
+        <ListItemText primary={`Comic ${index + 1}`} />
+      </ListItemButton>
+    </ListItem>
+  );
+}
 
 
 
@@ -62,6 +77,21 @@ export default function UserProfile(){
             <h1>Username</h1>
             <Button href="/createcomic/123" variant="text">Create Comic</Button>
             <Button href="/createstory/123" variant="text">Create Story</Button>
+            <Box
+                sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: 'background.paper' }}
+              >
+              <br/>
+              <h2>Unpublished Comics</h2>
+                <FixedSizeList
+                  height={600}
+                  width={250}
+                  itemSize={46}
+                  itemCount={200}
+                  overscanCount={5}
+                >
+                  {renderRow}
+                </FixedSizeList>
+            </Box>
             </div>    
             <React.Fragment>
             <Toolbar id="toolbar">
