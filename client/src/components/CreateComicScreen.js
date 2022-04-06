@@ -103,24 +103,29 @@ import AppBanner from "./AppBanner";
     return(
         <div>
           <AppBanner/>
-        <div id="editbar">
-        <h3>Toolbar</h3>
+        <div id="editbar" style={{ fontFamily: 'system-ui' }}>
+          <h3 style={{ textAlign: 'center' }}>Comic Creation Tools:</h3>
         <TextField
           id="standard-helperText"
           label="Title"
           defaultValue="Untitled Comic"
           variant="standard"
+          style={{ marginBottom: '2vw' }}
+          sx={{ input: { color: 'white' } }}
+          color="secondary" focused
         />
-        <br/><br/>
         <div className='rowC'>
         <FormControl >
-            <InputLabel id="demo-simple-select-label">Current Page</InputLabel>
+            <InputLabel id="demo-simple-select-label" sx={{ input: { color: 'white' } }}
+          color="secondary" focused>Current Page</InputLabel>
             <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={currentpage}
                 label="Current Page"
                 onChange={handlePageChange}
+                style={{width: "9vw", marginRight: "8vw", color: "white"}}
+                focused
             >
                 <MenuItem value={"Page 1"}>Page 1</MenuItem>
                 <MenuItem value={"Page 2"}>Page 2</MenuItem>

@@ -49,7 +49,7 @@ export default function MenuAppBar() {
       <AppBar position="fixed" theme={theme}>
         <Toolbar>
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-          <Link to='/' style={{ color: 'white', textDecoration: 'none' }}>
+          <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>
             Comic Colloseum
             </Link>
           </Typography>
@@ -87,9 +87,10 @@ export default function MenuAppBar() {
           )}
           {!auth && (
             <div>
-              <Button onClick={handleChange} color="inherit">Login(Test)</Button>
-              <Button href='/login/' color="inherit">Login</Button>
-              <Button href='/register/'color="inherit">Register</Button>
+              <Button onClick={handleChange} color="inherit" style={{ fontFamily: 'system-ui' }}>Login(Test)</Button>
+              <Button href='/login/' color="inherit" style={{ fontFamily: 'system-ui' }}>Login</Button>
+              |
+              <Button href='/register/'color="inherit" style={{ fontFamily: 'system-ui' }}>Register</Button>
             </div>
           )}
         </Toolbar>
