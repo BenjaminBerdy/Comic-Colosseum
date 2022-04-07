@@ -9,7 +9,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button'
 import CreateIcon from '@mui/icons-material/Create';
-import DeleteIcon from '@mui/icons-material/Delete';
 import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
 import { Typography } from "@mui/material";
 import Grid from '@mui/material/Grid';
@@ -135,7 +134,7 @@ import { Icon } from '@iconify/react';
             </Select>
         </FormControl>
         <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "2vw", color: "white", height: "3.6vw", width: "8vw"}}>Add Page</Button>
-        <Button variant="text" size="small" variant="outlined" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "3.6vw"}}>Remove Page</Button>
+        <Button variant="text" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "3.6vw"}}>Remove Page</Button>
         </div>
         <div className="rowC">
         <Button variant="text" style={{marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
