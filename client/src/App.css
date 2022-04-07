@@ -135,9 +135,9 @@ body {
 #userbar{
     position: absolute;
     left: 0;
-    background-color: #ffffff;
+    background-color: #4B284F;
     height: 100%;
-    width: 250;
+    width: 250px;
 }
 
 #loginbox{

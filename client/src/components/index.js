@@ -11,7 +11,8 @@ import CreateStoryScreen from './CreateStoryScreen'
 import ViewComicScreen from './ViewComicScreen'
 import ViewStoryScreen from './ViewStoryScreen'
 import ViewUserScreen from './ViewUserScreen'
-import EnhancedTable from './EnhancedTable'
+import ComicEnhancedTable from './ComicEnhancedTable'
+import StoryEnhancedTable from './StoryEnhancedTable'
 import ResetPassword from './ResetPassword'
 
 
@@ -30,6 +31,6 @@ export {
     ViewComicScreen,
     ViewStoryScreen,
     ViewUserScreen,
-    EnhancedTable
-
+    ComicEnhancedTable,
+    StoryEnhancedTable
  }

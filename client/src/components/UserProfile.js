@@ -5,22 +5,37 @@ import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import EnhancedTable from "./EnhancedTable";
+import StoryEnhancedTable from "./StoryEnhancedTable";
+import ComicEnhancedTable from "./ComicEnhancedTable";
 import Button from '@mui/material/Button'
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 
-function renderRow(props) {
+
+function renderComicRow(props) {
   const { index, style } = props;
 
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/viewcomic/' + (index+1)} style={{ color: 'black', textDecoration: 'none' }}>
+      <ListItemButton component={Link} to={'/createcomic/' + (index+1)} style={{ color: 'black', textDecoration: 'none' }}>
         <ListItemText primary={`Comic ${index + 1}`} />
+      </ListItemButton>
+    </ListItem>
+  );
+}
+
+function renderStoryRow(props) {
+  const { index, style } = props;
+
+  return (
+    <ListItem style={style} key={index} component="div" disablePadding>
+      <ListItemButton component={Link} to={'/createcomic/' + (index+1)} style={{ color: 'black', textDecoration: 'none' }}>
+        <ListItemText primary={`Story ${index + 1}`} />
       </ListItemButton>
     </ListItem>
   );
@@ -29,7 +44,7 @@ function renderRow(props) {
 
 
 
-export default function UserProfile(){
+export default function UserProfile(props){
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -70,27 +85,50 @@ export default function UserProfile(){
         },
       }));
 
+    const location = useLocation();
+    let table;
+    let createbutton;
+    let unpublishedbar;
+    if (location.pathname.includes("comic")) {
+      table = <ComicEnhancedTable/>
+      createbutton= <Link to='/createcomic/123'><Button variant="text">Create Comic</Button></Link>
+      unpublishedbar = <div><h2>Unpublished Comics</h2>
+      <FixedSizeList
+        height={600}
+        width={250}
+        itemSize={46}
+        itemCount={200}
+        overscanCount={5}
+      >
+        {renderComicRow}
+      </FixedSizeList></div>
+    }else if(location.pathname.includes("story")){
+      table = <StoryEnhancedTable/>
+      createbutton= <Link to='/createstory/123'><Button variant="text">Create Story</Button></Link>
+      unpublishedbar = <div><h2>Unpublished Stories</h2>
+      <FixedSizeList
+        height={600}
+        width={250}
+        itemSize={46}
+        itemCount={200}
+        overscanCount={5}
+      >
+        {renderStoryRow}
+      </FixedSizeList></div>
+    }
+
     return(
+
         <div>
             <AppBanner/>  
             <div id = "userbar">
             <h1>Username</h1>
-            <Button href="/createcomic/123" variant="text">Create Comic</Button>
-            <Button href="/createstory/123" variant="text">Create Story</Button>
+            {createbutton}
             <Box
                 sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: '#4B284F' }}
               >
               <br/>
-              <h2>Unpublished Comics</h2>
-                <FixedSizeList
-                  height={600}
-                  width={250}
-                  itemSize={46}
-                  itemCount={200}
-                  overscanCount={5}
-                >
-                  {renderRow}
-                </FixedSizeList>
+              {unpublishedbar}
             </Box>
             </div>    
             <React.Fragment>
@@ -109,7 +147,7 @@ export default function UserProfile(){
             </Toolbar>
             </React.Fragment>
             <div id="enhancedtable">
-            <EnhancedTable /> 
+            {table}
             </div>
             
         </div>

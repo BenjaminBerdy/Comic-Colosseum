@@ -8,20 +8,23 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import { useContext } from "react";
 import { authContext } from "../App";
+import { useLocation } from 'react-router-dom';
+
 
 
 
 export default function MenuAppBar() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {auth,setAuth} = useContext(authContext);
 
   const handleChange = (event) => {
     setAuth(!auth);
-    console.log(auth)
   };
 
   const handleMenu = (event) => {
@@ -35,7 +38,13 @@ export default function MenuAppBar() {
   const handleLogout = (event) => {
     setAnchorEl(null);
     setAuth(!auth);
-    console.log(auth)
+    if(location.pathname.includes("create") || location.pathname.includes("userprofile")){
+      if(location.pathname.includes("comic")){
+        navigate('/comicpage/')
+      }else if(location.pathname.includes("story")){
+        navigate('/storypage/')
+      }
+    }
   };
   const theme = createTheme({
     palette: {
@@ -44,14 +53,22 @@ export default function MenuAppBar() {
       }
     }
   });
+
+  let header;
+  let profilebutton;
+  if (location.pathname.includes("comic")) {
+    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Comic Colloseum</Link>
+    profilebutton = <MenuItem component={Link} to='/comic/userprofile/'>Profile</MenuItem>
+  }else if(location.pathname.includes("story")){
+    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Story Colloseum</Link>
+    profilebutton = <MenuItem component={Link} to='/story/userprofile/'>Profile</MenuItem>
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" theme={theme}>
         <Toolbar>
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-          <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>
-            Comic Colloseum
-            </Link>
+          {header}
           </Typography>
           {auth && (
             <div>
@@ -80,7 +97,7 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem component={Link} to='/userprofile/'>Profile</MenuItem>
+                {profilebutton}
                 <MenuItem onClick={handleLogout}>LogOut</MenuItem>
               </Menu>
             </div>

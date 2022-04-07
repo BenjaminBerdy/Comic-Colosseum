@@ -1,6 +1,6 @@
 import React from "react";
 //import { useParams } from "react-router-dom";
-import { Stage, Layer, Line /*,Text*/ } from 'react-konva';
+import { Stage, Layer, /*,Text*/ } from 'react-konva';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -31,7 +31,6 @@ import AppBanner from "./AppBanner";
     const isDrawing = React.useRef(false);
     const [currentpage, setCurrentPage] = React.useState('Page 1');
     const [fontsize, setFontSize] = React.useState(30);
-    const [strokewidth, setStrokeSize] = React.useState(30);
 
 
   const handlePageChange = (event) => {
@@ -78,22 +77,6 @@ import AppBanner from "./AppBanner";
         setFontSize(0);
     } else if (fontsize > 100) {
         setFontSize(100);
-    }
-  };
-
-  const handleStrokeSliderChange = (event, newstrokewidth) => {
-    setStrokeSize(newstrokewidth);
-  };
-
-  const handleStrokeInputChange = (event) => {
-    setStrokeSize(event.target.strokewidth === '' ? '' : Number(event.target.strokewidth));
-  };
-
-  const handleStrokeBlur = () => {
-    if (strokewidth < 0) {
-        setStrokeSize(0);
-    } else if (strokewidth > 100) {
-        setStrokeSize(100);
     }
   };
 
@@ -148,33 +131,6 @@ import AppBanner from "./AppBanner";
         </div>
         <br/><br/>
             <Box sx={{ width: 250 }}>
-            <Typography id="input-slider" gutterBottom>Stroke Width</Typography>
-            <Grid container spacing={2} alignItems="center">
-                <Grid item xs>
-                <Slider
-                    value={typeof strokewidth === 'number' ? strokewidth : 0}
-                    onChange={handleStrokeSliderChange}
-                    aria-labelledby="input-slider"
-                />
-                </Grid>
-                <Grid item>
-                <Input
-                    value={strokewidth}
-                    size="small"
-                    onChange={handleStrokeInputChange}
-                    onBlur={handleStrokeBlur}
-                    inputProps={{
-                    step: 10,
-                    min: 0,
-                    max: 100,
-                    type: 'number',
-                    'aria-labelledby': 'input-slider',
-                    }}
-                />
-                </Grid>
-            </Grid>
-            </Box>
-            <Box sx={{ width: 250 }}>
             <Typography id="input-slider" gutterBottom>Font Size</Typography>
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs>
@@ -201,7 +157,7 @@ import AppBanner from "./AppBanner";
                 </Grid>
             </Grid>
             </Box>
-        <br/><br/>
+        <br/>
         <div className="rowC">           
         <TextField
           id="standard-helperText"
@@ -211,12 +167,21 @@ import AppBanner from "./AppBanner";
         />
         <Button id="whitebuttontext" variant="text">Add Text</Button>
         </div>
-        <br/><br/>           
+        <br/>
+        <div>
+        Current Color: <input id="backgroundColor" type="color"/><br/>
+        Background Color: <input id="backgroundColor" type="color"/>
+        </div>
+        <br/>          
         <div className="rowC">
         <Button id="whitebuttontext" variant="text">Undo</Button>
         <Button variant="text">Redo</Button>
         </div>
-        
+        <div className="rowC">
+        <Button id="whitebuttontext" variant="text">Save</Button>
+        <Button id="whitebuttontext" variant="text">Publish</Button>
+        <Button id="whitebuttontext" variant="text">Delete</Button>
+        </div>
         </div>
 
         <div id="canvas">
@@ -228,19 +193,7 @@ import AppBanner from "./AppBanner";
         onMouseup={handleMouseUp}
       >
         <Layer>
-          {lines.map((line, i) => (
-            <Line
-              key={i}
-              points={line.points}
-              stroke="#df4b26"
-              strokeWidth={5}
-              tension={0.5}
-              lineCap="round"
-              globalCompositeOperation={
-                line.tool === 'eraser' ? 'destination-out' : 'source-over'
-              }
-            />
-          ))}
+          
         </Layer>
       </Stage>
     </div>

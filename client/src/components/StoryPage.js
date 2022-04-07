@@ -6,13 +6,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import EnhancedTable from "./EnhancedTable";
-import FollowedCreatorsBar from "./followedCreatorsBar";  
+import StoryEnhancedTable from "./StoryEnhancedTable";
+import FollowedCreatorsBar from "./followedCreatorsBar";
+import { useContext } from "react";
+import { authContext } from "../App";
 
 
 
 
 export default function StoryPage(){
+  const {auth} = useContext(authContext);
+
   const Search = styled('div')(({ theme }) => ({
       position: 'relative',
       borderRadius: theme.shape.borderRadius,
@@ -56,7 +60,7 @@ export default function StoryPage(){
   return(
       <div>
           <AppBanner/>               
-          <FollowedCreatorsBar/>
+          {auth && <FollowedCreatorsBar/>}
           <React.Fragment>
           <Toolbar id="toolbar">
               <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -76,7 +80,7 @@ export default function StoryPage(){
           </Toolbar>
           </React.Fragment>
           <div id="enhancedtable">
-          <EnhancedTable /> 
+          <StoryEnhancedTable /> 
           </div>
           
       </div>

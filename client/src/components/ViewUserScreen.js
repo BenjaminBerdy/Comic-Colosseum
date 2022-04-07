@@ -5,13 +5,19 @@ import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import EnhancedTable from "./EnhancedTable";
+import ComicEnhancedTable from "./ComicEnhancedTable";
+import StoryEnhancedTable from "./StoryEnhancedTable";
 import { useParams } from "react-router-dom";
 import Button from '@mui/material/Button'
+import { useLocation } from 'react-router-dom';
+import { useContext } from "react";
+import { authContext } from "../App";
 
 
 
 export default function ViewUsercreen(){
+  const {auth} = useContext(authContext);
+
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -53,12 +59,22 @@ export default function ViewUsercreen(){
       }));
 
     const { id } = useParams();
+    const location = useLocation();
+
+
+  let table;
+  if (location.pathname.includes("comic")) {
+    table = <ComicEnhancedTable/>
+  }else if(location.pathname.includes("story")){
+    table = <StoryEnhancedTable/>
+  }
+
     return(
         <div>
             <AppBanner/>               
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
             <h1>Creator {id}</h1>
-            <Button variant="text" size="small" color="secondary" style={{color: "white", height: "3.6vw", width: "8vw"}}>Follow</Button>
+            {auth && (<Button variant="text" size="small" color="secondary" style={{color: "white", height: "3.6vw", width: "8vw"}}>Follow</Button>)}
             </div>
             <React.Fragment>
             <Toolbar id="toolbar">
@@ -76,7 +92,7 @@ export default function ViewUsercreen(){
             </Toolbar>
             </React.Fragment>
             <div id="enhancedtable">
-            <EnhancedTable /> 
+            {table}
             </div>
             
         </div>

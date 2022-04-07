@@ -141,7 +141,7 @@ import { Icon } from '@iconify/react';
         <Button variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
         <Button variant="text" style={{marginTop: "1vw", color: "white"}}><FormatColorFillIcon/></Button>
         </div>
-        <br/><br/>
+        <br/>
             <Box sx={{ width: 250 }}>
             <Typography id="input-slider" gutterBottom>Stroke Width</Typography>
             <Grid container spacing={2} alignItems="center">
@@ -196,7 +196,7 @@ import { Icon } from '@iconify/react';
                 </Grid>
             </Grid>
             </Box>
-        <br/><br/>
+        <br/>
         <div className="rowC">           
         <TextField
           id="standard-helperText"
@@ -206,12 +206,22 @@ import { Icon } from '@iconify/react';
         />
         <Button id="whitebuttontext" variant="text">Add Text</Button>
         </div>
-        <br/><br/>           
+        <br/>      
+        <div>
+        Current Color: <input id="backgroundColor" type="color"/><br/>
+        Background Color: <input id="backgroundColor" type="color"/>
+        </div>
+        <br/>
         <div className="rowC">
         <Button id="whitebuttontext" variant="text">Undo</Button>
         <Button variant="text">Redo</Button>
         </div>
-        
+        <br/>
+        <div className="rowC">
+        <Button id="whitebuttontext" variant="text">Save</Button>
+        <Button id="whitebuttontext" variant="text">Publish</Button>
+        <Button id="whitebuttontext" variant="text">Delete</Button>
+        </div>
         </div>
 
         <div id="canvas">

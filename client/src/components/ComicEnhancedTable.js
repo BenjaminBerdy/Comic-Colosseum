@@ -20,7 +20,6 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 
-
 function createData(title, author, date, likes,id ) {
   return {
     title,
@@ -104,7 +103,7 @@ const headCells = [
   },
 ];
 
-function EnhancedTableHead(props) {
+function ComicEnhancedTableHead(props) {
   const {order, orderBy, onRequestSort } =
     props;
   const createSortHandler = (property) => (event) => {
@@ -143,10 +142,9 @@ function EnhancedTableHead(props) {
   );
 }
 
-EnhancedTableHead.propTypes = {
+ComicEnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -207,7 +205,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable() {
+export default function ComicEnhancedTable() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('title');
   const [selected] = React.useState([]);
@@ -247,7 +245,7 @@ export default function EnhancedTable() {
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
           >
-            <EnhancedTableHead
+            <ComicEnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}

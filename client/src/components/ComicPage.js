@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import EnhancedTable from "./EnhancedTable";
+import ComicEnhancedTable from "./ComicEnhancedTable";
 import FollowedCreatorsBar from "./followedCreatorsBar";
 import { useContext } from "react";
 import { authContext } from "../App";
@@ -17,7 +17,6 @@ import { authContext } from "../App";
 
 export default function ComicPage(){
   const {auth} = useContext(authContext);
-  console.log(auth);
     
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
@@ -82,7 +81,7 @@ export default function ComicPage(){
             </Toolbar>
             </React.Fragment>
             <div id="enhancedtable">
-            <EnhancedTable /> 
+            <ComicEnhancedTable /> 
             </div>
             
         </div>
