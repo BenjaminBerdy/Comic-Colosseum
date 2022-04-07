@@ -112,7 +112,7 @@ import AppBanner from "./AppBanner";
             </Select>
         </FormControl>
         <Button id="whitebuttontext" variant="text">Add Page</Button>
-        <Button variant="text">Remove Current Page</Button>
+        <Button id="whitebuttontext" variant="text">Remove Current Page</Button>
         </div>
         <br/><br/>
         <div className="rowC">
@@ -175,7 +175,7 @@ import AppBanner from "./AppBanner";
         <br/>          
         <div className="rowC">
         <Button id="whitebuttontext" variant="text">Undo</Button>
-        <Button variant="text">Redo</Button>
+        <Button id="whitebuttontext" variant="text">Redo</Button>
         </div>
         <div className="rowC">
         <Button id="whitebuttontext" variant="text">Save</Button>

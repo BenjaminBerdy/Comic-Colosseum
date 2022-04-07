@@ -10,6 +10,8 @@ import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { useContext } from "react";
 import { authContext } from "../App";
+import { Typography } from "@mui/material";
+
 
 
 
@@ -17,9 +19,9 @@ function renderRow(props) {
     const { index, style } = props;
     return (
         <ListItem style={style} key={index} component="div" disablePadding alignItems="flex-start">
-            <ListItemText
+            <ListItemText 
             primary="Username : 1/1/1"
-            secondary={"Hello Loved the Story"}/>
+            secondary={<Typography style={{ color: '#999999' }}>Hello loved the comic</Typography>}/>
         </ListItem>
     );
   }
@@ -37,8 +39,8 @@ function renderRow(props) {
         <h3>Published: 1/1/1 </h3>  
         <div id = "Comments">
         <h1>Comments</h1>
-        {auth && (<div><TextField id="outlined-basic" label="Add a comment..." variant="outlined" />
-        <Button>Comment</Button></div>)}
+        {auth && (<div><TextField id="outlined-basic" sx={{input: { color: '#999999' }}} label="Add a comment..." variant="outlined" />
+        <Button id="whitebuttontext">Comment</Button></div>)}
         <Box
             sx={{ width: '100%', height: '100%', color: "white", bgcolor: '#4B284F', marginTop:'1%', marginLeft:'1%'}}
             >
@@ -62,12 +64,12 @@ function renderRow(props) {
     </div>
 
         <div id = "likefollow" className="rowC">
-            <Button>Like</Button>
-            <Button>Follow Creator</Button>
+            <Button id="whitebuttontext">Like</Button>
+            <Button id="whitebuttontext">Follow Creator</Button>
         </div>
         <div id = "pageselection" className="rowC">
-            <Button>Previous Page</Button>
-            <Button>Next Page</Button>
+            <Button id="whitebuttontext">Previous Page</Button>
+            <Button id="whitebuttontext">Next Page</Button>
         </div>
     
     </div>

@@ -214,7 +214,7 @@ import { Icon } from '@iconify/react';
         <br/>
         <div className="rowC">
         <Button id="whitebuttontext" variant="text">Undo</Button>
-        <Button variant="text">Redo</Button>
+        <Button id="whitebuttontext" variant="text">Redo</Button>
         </div>
         <br/>
         <div className="rowC">

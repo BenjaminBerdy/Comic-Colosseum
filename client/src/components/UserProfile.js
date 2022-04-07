@@ -22,7 +22,7 @@ function renderComicRow(props) {
 
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/createcomic/' + (index+1)} style={{ color: 'black', textDecoration: 'none' }}>
+      <ListItemButton component={Link} to={'/createcomic/' + (index+1)} style={{ color: 'white', textDecoration: 'none'}}>
         <ListItemText primary={`Comic ${index + 1}`} />
       </ListItemButton>
     </ListItem>
@@ -34,7 +34,7 @@ function renderStoryRow(props) {
 
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/createcomic/' + (index+1)} style={{ color: 'black', textDecoration: 'none' }}>
+      <ListItemButton component={Link} to={'/createcomic/' + (index+1)} style={{ color: 'white', textDecoration: 'none'}}>
         <ListItemText primary={`Story ${index + 1}`} />
       </ListItemButton>
     </ListItem>
@@ -91,7 +91,7 @@ export default function UserProfile(props){
     let unpublishedbar;
     if (location.pathname.includes("comic")) {
       table = <ComicEnhancedTable/>
-      createbutton= <Link to='/createcomic/123'><Button variant="text">Create Comic</Button></Link>
+      createbutton= <Link to='/createcomic/123'><Button id="whitebuttontext" variant="text">Create Comic</Button></Link>
       unpublishedbar = <div><h2>Unpublished Comics</h2>
       <FixedSizeList
         height={600}
@@ -104,7 +104,7 @@ export default function UserProfile(props){
       </FixedSizeList></div>
     }else if(location.pathname.includes("story")){
       table = <StoryEnhancedTable/>
-      createbutton= <Link to='/createstory/123'><Button variant="text">Create Story</Button></Link>
+      createbutton= <Link to='/createstory/123'><Button id="whitebuttontext" variant="text">Create Story</Button></Link>
       unpublishedbar = <div><h2>Unpublished Stories</h2>
       <FixedSizeList
         height={600}
@@ -121,7 +121,7 @@ export default function UserProfile(props){
 
         <div>
             <AppBanner/>  
-            <div id = "userbar">
+            <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
             <h1>Username</h1>
             {createbutton}
             <Box

@@ -1,7 +1,6 @@
 import React from "react";
 import AppBanner from "./AppBanner";
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
@@ -10,6 +9,7 @@ import ComicEnhancedTable from "./ComicEnhancedTable";
 import FollowedCreatorsBar from "./followedCreatorsBar";
 import { useContext } from "react";
 import { authContext } from "../App";
+import { Button } from "@mui/material";
 
 
 
@@ -65,9 +65,9 @@ export default function ComicPage(){
             <React.Fragment>
             <Toolbar id="toolbar">
                 <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                    <Typography sx={{ minWidth: 150 }}>New Comics</Typography>
-                    <Typography sx={{ minWidth: 150 }}>Followers Comics</Typography>
-                    <Typography sx={{ minWidth: 150 }}>Liked Comics</Typography>
+                    {auth && <Button id="whitebuttontext"   sx={{ minWidth: 150 }}>New Comics</Button>}
+                    {auth && <Button id="whitebuttontext" sx={{ minWidth: 150 }}>Followers Comics</Button>}
+                    {auth && <Button id="whitebuttontext" sx={{ minWidth: 150 }}>Liked Comics</Button>}
                     <Search>
                         <SearchIconWrapper>
                         <SearchIcon />

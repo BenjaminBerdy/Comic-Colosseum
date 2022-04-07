@@ -1,7 +1,6 @@
 import React from "react";
 import AppBanner from "./AppBanner";
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
@@ -10,8 +9,7 @@ import StoryEnhancedTable from "./StoryEnhancedTable";
 import FollowedCreatorsBar from "./followedCreatorsBar";
 import { useContext } from "react";
 import { authContext } from "../App";
-
-
+import { Button } from "@mui/material";
 
 
 export default function StoryPage(){
@@ -64,9 +62,9 @@ export default function StoryPage(){
           <React.Fragment>
           <Toolbar id="toolbar">
               <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                  <Typography sx={{ minWidth: 150 }}>New Stories</Typography>
-                  <Typography sx={{ minWidth: 150 }}>Followers Stories</Typography>
-                  <Typography sx={{ minWidth: 150 }}>Liked Stories</Typography>
+                    {auth && <Button id="whitebuttontext" sx={{ minWidth: 150 }}>New Stories</Button>}
+                    {auth && <Button id="whitebuttontext" sx={{ minWidth: 150 }}>Followers Stories</Button>}
+                    {auth && <Button id="whitebuttontext" sx={{ minWidth: 150 }}>Liked Stories</Button>}
                   <Search>
                       <SearchIconWrapper>
                       <SearchIcon />
