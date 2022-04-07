@@ -36,7 +36,7 @@ function renderRow(props) {
         <TextField id="outlined-basic" label="Add a comment..." variant="outlined" />
         <Button>Comment</Button>
             <Box
-            sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: '25%', bgcolor: 'background.paper', marginTop:'1%', marginLeft:'1%'}}
+            sx={{ width: '100%', height: '100%', color: "white", bgcolor: '#4B284F', marginTop:'1%', marginLeft:'1%'}}
             >
             <br/>
             <FixedSizeList

@@ -17,6 +17,7 @@ import Slider from '@mui/material/Slider';
 import MuiInput from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 import AppBanner from "./AppBanner";
+import { Icon } from '@iconify/react';
 
 
 
@@ -112,7 +113,8 @@ import AppBanner from "./AppBanner";
           variant="standard"
           style={{ marginBottom: '2vw' }}
           sx={{ input: { color: 'white' } }}
-          color="secondary" focused
+          color="secondary"
+          focused
         />
         <div className='rowC'>
         <FormControl >
@@ -124,31 +126,21 @@ import AppBanner from "./AppBanner";
                 value={currentpage}
                 label="Current Page"
                 onChange={handlePageChange}
-                style={{width: "9vw", marginRight: "8vw", color: "white"}}
-                focused
+                color="secondary"
+                style={{width: "8vw", marginRight: "2vw", color: "white"}}
             >
                 <MenuItem value={"Page 1"}>Page 1</MenuItem>
                 <MenuItem value={"Page 2"}>Page 2</MenuItem>
                 <MenuItem value={"Page 3"}>Page 3</MenuItem>
             </Select>
         </FormControl>
-        <Button id="whitebuttontext" variant="text">Add Page</Button>
-        <Button variant="text">Remove Current Page</Button>
+        <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "2vw", color: "white", height: "3.6vw", width: "8vw"}}>Add Page</Button>
+        <Button variant="text" size="small" variant="outlined" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "3.6vw"}}>Remove Page</Button>
         </div>
-        <br/><br/>
         <div className="rowC">
-        <Button variant="text"><CreateIcon/></Button>
-        <Button variant="text"><DeleteIcon/></Button>
-        <Button variant="text"><FormatColorFillIcon/></Button>
-        <TextField
-          id="standard-read-only-input"
-          label="Current Tool"
-          defaultValue="Pen"
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="standard"
-        />
+        <Button variant="text" style={{marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
+        <Button variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
+        <Button variant="text" style={{marginTop: "1vw", color: "white"}}><FormatColorFillIcon/></Button>
         </div>
         <br/><br/>
             <Box sx={{ width: 250 }}>

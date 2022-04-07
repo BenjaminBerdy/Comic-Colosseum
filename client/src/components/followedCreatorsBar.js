@@ -13,7 +13,7 @@ function renderRow(props) {
 
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/viewuser/' + (index+1)} style={{ color: 'black', textDecoration: 'none' }}>
+      <ListItemButton component={Link} to={'/viewuser/' + (index+1)} style={{ color: 'white', textDecoration: 'none'}}>
         <ListItemText primary={`Creator ${index + 1}`} />
       </ListItemButton>
     </ListItem>
@@ -23,10 +23,9 @@ function renderRow(props) {
 export default function VirtualizedList() {
   return (
     <Box
-      sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: 'background.paper' }}
+      sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: '#4B284F', color: "white", textAlign: "center"}}
     >
-    <br/>
-    <h2>Followed Creators</h2>
+    <h2 styles={{fontFamily: "fantasy", textAlign: "center"}}>Followed Creators</h2>
       <FixedSizeList
         height={600}
         width={250}

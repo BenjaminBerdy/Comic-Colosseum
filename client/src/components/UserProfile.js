@@ -78,7 +78,7 @@ export default function UserProfile(){
             <Button href="/createcomic/123" variant="text">Create Comic</Button>
             <Button href="/createstory/123" variant="text">Create Story</Button>
             <Box
-                sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: 'background.paper' }}
+                sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: '#4B284F' }}
               >
               <br/>
               <h2>Unpublished Comics</h2>

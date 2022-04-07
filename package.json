@@ -28,6 +28,7 @@
     "semantic-ui-react": "^2.1.2"
   },
   "devDependencies": {
+    "@iconify/react": "^3.2.1",
     "nodemon": "^2.0.15"
   }
 }
