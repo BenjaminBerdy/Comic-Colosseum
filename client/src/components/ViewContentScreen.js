@@ -12,6 +12,8 @@ import { useContext } from "react";
 import { authContext } from "../App";
 import { Typography } from "@mui/material";
 import Link from '@mui/material/Link';
+import { useLocation } from 'react-router-dom';
+
 
 
 
@@ -21,21 +23,32 @@ function renderRow(props) {
         <ListItem style={style} key={index} component="div" disablePadding alignItems="flex-start">
             <ListItemText 
             primary="Username commented on: 1/1/1"
-            secondary={<Typography style={{ color: '#999999' }}>Hey! I loved the story!!</Typography>}/>
+            secondary={<Typography style={{ color: '#999999' }}>Hey! I love your content!!</Typography>}/>
         </ListItem>
     );
   }
 
-  export default function ViewStoryScreen(){
+  export default function ViewContentScreen(){
     const { id } = useParams();
     const {auth} = useContext(authContext);
+    const location = useLocation();
+
+    let authorlink;
+    let title;
+    if (location.pathname.includes("comic")) {
+        authorlink = <h3>By:<Link href='/comic/viewuser/1' style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>
+        title = <h3>Comic {id}</h3>
+    }else if(location.pathname.includes("story")){
+        authorlink = <h3>By:<Link href='/story/viewuser/1' style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>
+        title = <h3>Story {id}</h3>
+    }
 
     return(
     <div>
       <AppBanner/>
     <div id="editbar">
-        <h3>Story {id}</h3> 
-        <h3>By:<Link href='/story/viewuser/1' style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>  
+        {title} 
+        {authorlink}  
         <h3>Published: 1/1/1 </h3>  
         <div id = "Comments">
         <h2 style={{textAlign: "left"}}>Community Interaction</h2>

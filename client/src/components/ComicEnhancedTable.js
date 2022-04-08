@@ -264,7 +264,7 @@ export default function ComicEnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      component={Link} to={'/viewcomic/' + row.id} style={{ color: 'white', textDecoration: 'none' }}
+                      component={Link} to={'/comic/viewcontent/' + row.id} style={{ color: 'white', textDecoration: 'none' }}
                       /*onClick={(event) => handleClick(event, row.title)}*/
                       role="checkbox"
                       aria-checked={isItemSelected}

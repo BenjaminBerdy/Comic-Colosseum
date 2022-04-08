@@ -264,7 +264,7 @@ export default function StoryEnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      component={Link} to={'/viewstory/' + row.id} style={{ color: 'white', textDecoration: 'none' }}
+                      component={Link} to={'/story/viewcontent/' + row.id} style={{ color: 'white', textDecoration: 'none' }}
                       /*onClick={(event) => handleClick(event, row.title)}*/
                       role="checkbox"
                       aria-checked={isItemSelected}

@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button'
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
 import { Typography } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
@@ -100,6 +101,7 @@ return(
   </div>
   <div className="rowC">
   <Button variant="text" style={{marginLeft: "5vw", marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
+  <Button variant="text" style={{marginTop: "1vw", color: "white"}}><FormatColorFillIcon/></Button>
   </div>
   <br/>
       <Box sx={{ width: 250 }}>

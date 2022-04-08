@@ -9,12 +9,10 @@ import {
     ForgotPassword,
     ResetPassword,
     SplashScreen,
-    ComicPage,
-    StoryPage,
+    HomePage,
     CreateComicScreen,
     CreateStoryScreen,
-    ViewComicScreen,
-    ViewStoryScreen,
+    ViewContentScreen,
     ViewUserScreen,
     UserProfile
 } from './components';
@@ -33,15 +31,13 @@ function App() {
           <Route path='/' element ={<SplashScreen/>} />
           <Route path="/register/" element={<RegisterScreen/>} />
           <Route path="/login/"  element={<LoginScreen/>} /> 
-          <Route path="/comicpage/"  element={<ComicPage/>} />
-          <Route path="/storypage/"  element={<StoryPage/>} /> 
+          <Route path="/:comicstory/homepage/"  element={<HomePage/>} />
           <Route path= ":comicstory/userprofile/" element = {<UserProfile/>}/>
           <Route path= "/forgotpassword/" element={<ForgotPassword/>}/>
           <Route path="/resetpassword/:id/:token/" element={<ResetPassword/>}/>
           <Route path= "/createcomic/:id/" element={<CreateComicScreen/>}/>
           <Route path= "/createstory/:id/" element={<CreateStoryScreen/>}/>
-          <Route path= "/viewcomic/:id/" element={<ViewComicScreen/>}/>
-          <Route path= "/viewstory/:id/" element={<ViewStoryScreen/>}/>
+          <Route path= "/:comicstory/viewcontent/:id/" element={<ViewContentScreen/>}/>
           <Route path= "/:comicstory/viewuser/:id/" element={<ViewUserScreen/>}/>
         </Routes>
       </Container>

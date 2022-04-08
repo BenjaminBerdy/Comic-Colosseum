@@ -2,14 +2,12 @@ import AppBanner from './AppBanner'
 import RegisterScreen from './RegisterScreen'
 import SplashScreen from './SplashScreen'
 import LoginScreen from './LoginScreen'
-import ComicPage from './ComicPage'
-import StoryPage from './StoryPage'
+import HomePage from './HomePage'
 import UserProfile from './UserProfile'
 import ForgotPassword from './ForgotPassword'
 import CreateComicScreen from './CreateComicScreen'
 import CreateStoryScreen from './CreateStoryScreen'
-import ViewComicScreen from './ViewComicScreen'
-import ViewStoryScreen from './ViewStoryScreen'
+import ViewContentScreen from './ViewContentScreen'
 import ViewUserScreen from './ViewUserScreen'
 import ComicEnhancedTable from './ComicEnhancedTable'
 import StoryEnhancedTable from './StoryEnhancedTable'
@@ -23,13 +21,11 @@ export {
     LoginScreen,
     ForgotPassword,
     ResetPassword,
-    ComicPage,
-    StoryPage,
+    HomePage,
     UserProfile,
     CreateComicScreen,
     CreateStoryScreen,
-    ViewComicScreen,
-    ViewStoryScreen,
+    ViewContentScreen,
     ViewUserScreen,
     ComicEnhancedTable,
     StoryEnhancedTable

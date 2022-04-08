@@ -61,7 +61,7 @@ export default function RegisterScreen() {
       changeMsg('Please enter the same password twice!');
       handleClickOpen();
     }
-    else navigate('/comicpage/');
+    else navigate('/');
 
   };
 

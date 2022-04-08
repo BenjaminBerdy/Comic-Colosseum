@@ -40,9 +40,9 @@ export default function MenuAppBar() {
     setAuth(!auth);
     if(location.pathname.includes("create") || location.pathname.includes("userprofile")){
       if(location.pathname.includes("comic")){
-        navigate('/comicpage/')
+        navigate('/comic/homepage/')
       }else if(location.pathname.includes("story")){
-        navigate('/storypage/')
+        navigate('/story/homepage/')
       }
     }
   };
