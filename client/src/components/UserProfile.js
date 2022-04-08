@@ -52,7 +52,7 @@ function renderStoryRow(props) {
 
 export default function UserProfile(props){
   const [open, setOpen] = React.useState(false);
-  const [msg, setMsg] = React.useState('Deletion is permanent and cannot be undone. Continue?');
+  const [msg] = React.useState('Deletion is permanent and cannot be undone. Continue?');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -170,7 +170,7 @@ export default function UserProfile(props){
               <br/>
               {unpublishedbar}
             </Box>
-            <Button variant="outlined" size="small" color="secondary" style={{marginLeft: "-11.5vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Change Password</Button>
+            <Link to='/changepassword/1'><Button variant="outlined" size="small" color="secondary" style={{marginLeft: "-11.5vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Change Password</Button></Link>
             <Button onClick={handleClickOpen} variant="outlined" size="small" color="secondary" style={{marginLeft: "-4vw", marginRight: "50vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Delete Profile</Button>
             </div>    
             <React.Fragment>

@@ -12,6 +12,7 @@ import ViewUserScreen from './ViewUserScreen'
 import ComicEnhancedTable from './ComicEnhancedTable'
 import StoryEnhancedTable from './StoryEnhancedTable'
 import ResetPassword from './ResetPassword'
+import ChangePassword from './ChangePassword'
 
 
 export { 
@@ -21,6 +22,7 @@ export {
     LoginScreen,
     ForgotPassword,
     ResetPassword,
+    ChangePassword,
     HomePage,
     UserProfile,
     CreateComicScreen,

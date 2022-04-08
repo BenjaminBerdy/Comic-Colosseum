@@ -8,6 +8,7 @@ import {
     LoginScreen,
     ForgotPassword,
     ResetPassword,
+    ChangePassword,
     SplashScreen,
     HomePage,
     CreateComicScreen,
@@ -35,6 +36,7 @@ function App() {
           <Route path= ":comicstory/userprofile/" element = {<UserProfile/>}/>
           <Route path= "/forgotpassword/" element={<ForgotPassword/>}/>
           <Route path="/resetpassword/:id/:token/" element={<ResetPassword/>}/>
+          <Route path="/changepassword/:id" element={<ChangePassword/>}/>
           <Route path= "/createcomic/:id/" element={<CreateComicScreen/>}/>
           <Route path= "/createstory/:id/" element={<CreateStoryScreen/>}/>
           <Route path= "/:comicstory/viewcontent/:id/" element={<ViewContentScreen/>}/>
