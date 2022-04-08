@@ -65,9 +65,9 @@ export default function ComicPage(){
             <React.Fragment>
             <Toolbar id="toolbar">
                 <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                    {auth && <Button id="whitebuttontext"   sx={{ minWidth: 150 }}>New Comics</Button>}
-                    {auth && <Button id="whitebuttontext" sx={{ minWidth: 150 }}>Followers Comics</Button>}
-                    {auth && <Button id="whitebuttontext" sx={{ minWidth: 150 }}>Liked Comics</Button>}
+                    {auth && <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>New Comics</Button>}
+                    {auth && <Button id="whitebuttontext" variant="outlined"size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Followers Comics</Button>}
+                    {auth && <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Liked Comics</Button>}
                     <Search>
                         <SearchIconWrapper>
                         <SearchIcon />

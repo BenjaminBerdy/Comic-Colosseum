@@ -113,7 +113,6 @@ import { Icon } from '@iconify/react';
           style={{ marginBottom: '2vw' }}
           sx={{ input: { color: 'white' } }}
           color="secondary"
-          focused
         />
         <div className='rowC'>
         <FormControl >

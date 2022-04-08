@@ -73,8 +73,8 @@ export default function ViewUsercreen(){
         <div>
             <AppBanner/>               
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
-            <h1>Creator {id}</h1>
-            {auth && (<Button variant="text" size="small" color="secondary" style={{color: "white", height: "3.6vw", width: "8vw"}}>Follow</Button>)}
+            <h2 styles={{fontFamily: "fantasy"}}>Creator {id}</h2>
+            {auth && (<Button variant="outlined" size="small" color="secondary" style={{color: "white", height: "3.6vw", width: "8vw"}}>Follow</Button>)}
             </div>
             <React.Fragment>
             <Toolbar id="toolbar">

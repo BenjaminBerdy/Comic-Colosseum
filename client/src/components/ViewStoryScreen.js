@@ -11,7 +11,7 @@ import { FixedSizeList } from 'react-window';
 import { useContext } from "react";
 import { authContext } from "../App";
 import { Typography } from "@mui/material";
-
+import Link from '@mui/material/Link';
 
 
 
@@ -20,8 +20,8 @@ function renderRow(props) {
     return (
         <ListItem style={style} key={index} component="div" disablePadding alignItems="flex-start">
             <ListItemText 
-            primary="Username : 1/1/1"
-            secondary={<Typography style={{ color: '#999999' }}>Hello loved the comic</Typography>}/>
+            primary="Username commented on: 1/1/1"
+            secondary={<Typography style={{ color: '#999999' }}>Hey! I loved the story!!</Typography>}/>
         </ListItem>
     );
   }
@@ -35,12 +35,18 @@ function renderRow(props) {
       <AppBanner/>
     <div id="editbar">
         <h3>Story {id}</h3> 
-        <h3>By: Author</h3>  
+        <h3>By:<Link href='/story/viewuser/1' style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>  
         <h3>Published: 1/1/1 </h3>  
         <div id = "Comments">
-        <h1>Comments</h1>
-        {auth && (<div><TextField id="outlined-basic" sx={{input: { color: '#999999' }}} label="Add a comment..." variant="outlined" />
-        <Button id="whitebuttontext">Comment</Button></div>)}
+        <h2 style={{textAlign: "left"}}>Community Interaction</h2>
+        {auth && (<div><TextField
+          label="Comment"
+          defaultValue="Add a comment..."
+          variant="standard"
+          sx={{ input: { color: 'white' } }}
+          color="secondary"
+        />
+        <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginTop: "1vw", marginLeft: "4vw", color: "white", height: "2.5vw"}}>Comment</Button></div>)}
         <Box
             sx={{ width: '100%', height: '100%', color: "white", bgcolor: '#4B284F', marginTop:'1%', marginLeft:'1%'}}
             >
@@ -60,18 +66,18 @@ function renderRow(props) {
     </div>
 
     <div id="canvas">
-      <Stage width={800} height={600}/>
+      <Stage width={1050} height={600}/>
     </div>
-
+    <div id="buttonDiv" style={{backgroundColor: "#4B284F", width: 1050.6, height: 50, position: "absolute", right: 76, bottom: 45}}>
         <div id = "likefollow" className="rowC">
-            <Button id="whitebuttontext">Like</Button>
-            <Button id="whitebuttontext">Follow Creator</Button>
+            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Like</Button>
+            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{color: "white", height: "2.5vw"}}>Follow Creator</Button>
         </div>
         <div id = "pageselection" className="rowC">
-            <Button id="whitebuttontext">Previous Page</Button>
-            <Button id="whitebuttontext">Next Page</Button>
+            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Previous Page</Button>
+            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{color: "white", height: "2.5vw"}}>Next Page</Button>
         </div>
-    
+    </div>
     </div>
     );
 

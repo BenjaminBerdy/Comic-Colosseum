@@ -115,10 +115,6 @@ body {
     color: white;
 }
 
-#whitebuttontext{
-    color: #ffffff
-}
-
 #colorselector{
     margin-left: 2%;
     margin-right: 10%;
@@ -148,16 +144,16 @@ body {
     position: absolute;
     bottom: 0;
     right: 0;
-    margin-right: 40%;
-    margin-bottom: 0.3%;
+    margin-right: 75%;
+    margin-bottom: 0.5%;
 }
 
 #pageselection{
     position: absolute;
     bottom: 0;
     right: 0;
-    margin-right: 5%;
-    margin-bottom: 0.3%;
+    margin-right: 4%;
+    margin-bottom: 0.5%;
 }
 
 

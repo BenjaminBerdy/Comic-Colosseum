@@ -237,11 +237,11 @@ export default function ComicEnhancedTable() {
 
   return (
     <Box sx={{ width: '100%'}}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+      <Paper sx={{ width: '100%', mb: 2, backgroundColor: "#203487", color: "white" }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
-            sx={{ minWidth: 750 }}
+            sx={{ minWidth: 40}}
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
           >

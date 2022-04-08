@@ -61,11 +61,11 @@ export default function StoryPage(){
           {auth && <FollowedCreatorsBar/>}
           <React.Fragment>
           <Toolbar id="toolbar">
-              <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                    {auth && <Button id="whitebuttontext" sx={{ minWidth: 150 }}>New Stories</Button>}
-                    {auth && <Button id="whitebuttontext" sx={{ minWidth: 150 }}>Followers Stories</Button>}
-                    {auth && <Button id="whitebuttontext" sx={{ minWidth: 150 }}>Liked Stories</Button>}
-                  <Search>
+          <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                    {auth && <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>New Stories</Button>}
+                    {auth && <Button id="whitebuttontext" variant="outlined"size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Followers Stories</Button>}
+                    {auth && <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Liked Stories</Button>}
+                    <Search>
                       <SearchIconWrapper>
                       <SearchIcon />
                       </SearchIconWrapper>

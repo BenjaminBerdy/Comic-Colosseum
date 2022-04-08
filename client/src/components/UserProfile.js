@@ -91,7 +91,7 @@ export default function UserProfile(props){
     let unpublishedbar;
     if (location.pathname.includes("comic")) {
       table = <ComicEnhancedTable/>
-      createbutton= <Link to='/createcomic/123'><Button id="whitebuttontext" variant="text">Create Comic</Button></Link>
+      createbutton= <Link to='/createcomic/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Comic</Button></Link>
       unpublishedbar = <div><h2>Unpublished Comics</h2>
       <FixedSizeList
         height={600}
@@ -104,7 +104,7 @@ export default function UserProfile(props){
       </FixedSizeList></div>
     }else if(location.pathname.includes("story")){
       table = <StoryEnhancedTable/>
-      createbutton= <Link to='/createstory/123'><Button id="whitebuttontext" variant="text">Create Story</Button></Link>
+      createbutton= <Link to='/createstory/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Story</Button></Link>
       unpublishedbar = <div><h2>Unpublished Stories</h2>
       <FixedSizeList
         height={600}

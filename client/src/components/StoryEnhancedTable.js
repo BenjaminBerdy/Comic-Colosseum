@@ -237,7 +237,7 @@ export default function StoryEnhancedTable() {
 
   return (
     <Box sx={{ width: '100%'}}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+      <Paper sx={{ width: '100%', mb: 2, backgroundColor: "#203487", color: "white" }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
