@@ -17,7 +17,7 @@ import Slider from '@mui/material/Slider';
 import MuiInput from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 import AppBanner from "./AppBanner";
-
+import { Icon } from '@iconify/react';
 
 
 
@@ -84,120 +84,103 @@ import AppBanner from "./AppBanner";
   width: 42px;
 `;
     
-    return(
-        <div>
-        <AppBanner/>
-        <div id="editbar">
-        <h3>Toolbar</h3>
-        <TextField
-          id="standard-helperText"
-          label="Title"
-          defaultValue="Untitled Story"
-          variant="standard"
-        />
-        <br/><br/>
-        <div className='rowC'>
-        <FormControl >
-            <InputLabel id="demo-simple-select-label">Current Page</InputLabel>
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={currentpage}
-                label="Current Page"
-                onChange={handlePageChange}
-            >
-                <MenuItem value={"Page 1"}>Page 1</MenuItem>
-                <MenuItem value={"Page 2"}>Page 2</MenuItem>
-                <MenuItem value={"Page 3"}>Page 3</MenuItem>
-            </Select>
-        </FormControl>
-        <Button id="whitebuttontext" variant="text">Add Page</Button>
-        <Button id="whitebuttontext" variant="text">Remove Current Page</Button>
-        </div>
-        <br/><br/>
-        <div className="rowC">
-        <Button variant="text"><CreateIcon/></Button>
-        <Button variant="text"><DeleteIcon/></Button>
-        <Button variant="text"><FormatColorFillIcon/></Button>
-        <TextField
-          id="standard-read-only-input"
-          label="Current Tool"
-          defaultValue="Pen"
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="standard"
-        />
-        </div>
-        <br/><br/>
-            <Box sx={{ width: 250 }}>
-            <Typography id="input-slider" gutterBottom>Font Size</Typography>
-            <Grid container spacing={2} alignItems="center">
-                <Grid item xs>
-                <Slider
-                    value={typeof fontsize === 'number' ? fontsize : 0}
-                    onChange={handleFontSliderChange}
-                    aria-labelledby="input-slider"
-                />
-                </Grid>
-                <Grid item>
-                <Input
-                    value={fontsize}
-                    size="small"
-                    onChange={handleFontInputChange}
-                    onBlur={handleFontBlur}
-                    inputProps={{
-                    step: 10,
-                    min: 0,
-                    max: 100,
-                    type: 'number',
-                    'aria-labelledby': 'input-slider',
-                    }}
-                />
-                </Grid>
-            </Grid>
-            </Box>
-        <br/>
-        <div className="rowC">           
-        <TextField
-          id="standard-helperText"
-          label="Text"
-          defaultValue=""
-          variant="standard"
-        />
-        <Button id="whitebuttontext" variant="text">Add Text</Button>
-        </div>
-        <br/>
-        <div>
-        Current Color: <input id="backgroundColor" type="color"/><br/>
-        Background Color: <input id="backgroundColor" type="color"/>
-        </div>
-        <br/>          
-        <div className="rowC">
-        <Button id="whitebuttontext" variant="text">Undo</Button>
-        <Button id="whitebuttontext" variant="text">Redo</Button>
-        </div>
-        <div className="rowC">
-        <Button id="whitebuttontext" variant="text">Save</Button>
-        <Button id="whitebuttontext" variant="text">Publish</Button>
-        <Button id="whitebuttontext" variant="text">Delete</Button>
-        </div>
-        </div>
-
-        <div id="canvas">
-      <Stage
-        width={800}
-        height={600}
-        onMouseDown={handleMouseDown}
-        onMousemove={handleMouseMove}
-        onMouseup={handleMouseUp}
+return(
+  <div>
+    <AppBanner/>
+  <div id="editbar" style={{ fontFamily: 'system-ui' }}>
+    <h3 style={{ textAlign: 'center' }}>Story Creation Tools:</h3>
+  <TextField
+    id="standard-helperText"
+    label="Title"
+    defaultValue="Untitled Comic"
+    variant="standard"
+    style={{ marginBottom: '2vw' }}
+    sx={{ input: { color: 'white' } }}
+    color="secondary"
+  />
+  <div className='rowC'>
+  <FormControl >
+      <InputLabel id="demo-simple-select-label" sx={{ input: { color: 'white' } }}
+    color="secondary" focused>Current Page</InputLabel>
+      <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={currentpage}
+          label="Current Page"
+          onChange={handlePageChange}
+          color="secondary"
+          style={{width: "8vw", marginRight: "2vw", color: "white"}}
       >
-        <Layer>
-          
-        </Layer>
-      </Stage>
-    </div>
-    </div>
-    );
+          <MenuItem value={"Page 1"}>Page 1</MenuItem>
+          <MenuItem value={"Page 2"}>Page 2</MenuItem>
+          <MenuItem value={"Page 3"}>Page 3</MenuItem>
+      </Select>
+  </FormControl>
+  <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "2vw", color: "white", height: "3.6vw", width: "8vw"}}>Add Page</Button>
+  <Button variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "3.6vw"}}>Remove Page</Button>
+  </div>
+  <div className="rowC">
+  <Button variant="text" style={{marginLeft: "5vw", marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
+  <Button variant="text" style={{marginTop: "1vw", color: "white"}}><FormatColorFillIcon/></Button>
+  </div>
+  <br/>
+      <Box sx={{ width: 250 }}>
+      <Typography id="input-slider" gutterBottom>Font Size</Typography>
+      <Grid container spacing={2} alignItems="center">
+          <Grid item xs>
+          <Slider
+              value={typeof fontsize === 'number' ? fontsize : 0}
+              onChange={handleFontSliderChange}
+              aria-labelledby="input-slider"
+              color="secondary"
+              valueLabelDisplay="auto"
+          />
+          </Grid>
+          <Grid item>
+          </Grid>
+      </Grid>
+      </Box>
+  <br/>
+  <div className="rowC">           
+  <TextField
+    id="standard-helperText"
+    label="Text"
+    defaultValue="Untitled Text"
+    variant="standard"
+    style={{ marginBottom: '2vw' }}
+    sx={{ input: { color: 'white' } }}
+    color="secondary"
+  />
+  <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "1vw", height: "3vw", color: "white"}}>Add Text</Button>
+  </div>
+  <div>
+  Current Color: <input id="backgroundColor" type="color"/>
+  </div>
+  <div className="rowC">
+  <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Undo</Button>
+  <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Redo</Button>
+  </div>
+  <br/>
+  </div>
+
+  <div id="canvas">
+<Stage
+  width={1050}
+  height={600}
+  onMouseDown={handleMouseDown}
+  onMousemove={handleMouseMove}
+  onMouseup={handleMouseUp}
+>
+</Stage>
+</div>
+<div id="buttonDiv" style={{backgroundColor: "#4B284F", width: 1050.6, height: 50, position: "absolute", right: 76, bottom: 45}}>
+  <div id = "save-publish-delete" className="rowC">
+      <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Save</Button>
+      <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Publish</Button>
+      <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Delete</Button>
+  </div>
+</div>
+</div>
+);
 
 }

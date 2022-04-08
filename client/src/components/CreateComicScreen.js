@@ -20,9 +20,6 @@ import { Icon } from '@iconify/react';
 
 
 
-
-
-
   export default function CreateComicScreen(){
     //const { id } = useParams();
     const [tool] = React.useState('pen');
@@ -99,7 +96,7 @@ import { Icon } from '@iconify/react';
   const Input = styled(MuiInput)`
   width: 42px;
 `;
-    
+
     return(
         <div>
           <AppBanner/>
@@ -133,10 +130,10 @@ import { Icon } from '@iconify/react';
             </Select>
         </FormControl>
         <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "2vw", color: "white", height: "3.6vw", width: "8vw"}}>Add Page</Button>
-        <Button variant="text" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "3.6vw"}}>Remove Page</Button>
+        <Button variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "3.6vw"}}>Remove Page</Button>
         </div>
         <div className="rowC">
-        <Button variant="text" style={{marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
+        <Button variant="text" style={{marginLeft: "3vw", marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
         <Button variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
         <Button variant="text" style={{marginTop: "1vw", color: "white"}}><FormatColorFillIcon/></Button>
         </div>
@@ -149,22 +146,11 @@ import { Icon } from '@iconify/react';
                     value={typeof strokewidth === 'number' ? strokewidth : 0}
                     onChange={handleStrokeSliderChange}
                     aria-labelledby="input-slider"
+                    color="secondary"
+                    valueLabelDisplay="auto"
                 />
                 </Grid>
                 <Grid item>
-                <Input
-                    value={strokewidth}
-                    size="small"
-                    onChange={handleStrokeInputChange}
-                    onBlur={handleStrokeBlur}
-                    inputProps={{
-                    step: 10,
-                    min: 0,
-                    max: 100,
-                    type: 'number',
-                    'aria-labelledby': 'input-slider',
-                    }}
-                />
                 </Grid>
             </Grid>
             </Box>
@@ -176,22 +162,11 @@ import { Icon } from '@iconify/react';
                     value={typeof fontsize === 'number' ? fontsize : 0}
                     onChange={handleFontSliderChange}
                     aria-labelledby="input-slider"
+                    color="secondary"
+                    valueLabelDisplay="auto"
                 />
                 </Grid>
                 <Grid item>
-                <Input
-                    value={fontsize}
-                    size="small"
-                    onChange={handleFontInputChange}
-                    onBlur={handleFontBlur}
-                    inputProps={{
-                    step: 10,
-                    min: 0,
-                    max: 100,
-                    type: 'number',
-                    'aria-labelledby': 'input-slider',
-                    }}
-                />
                 </Grid>
             </Grid>
             </Box>
@@ -200,32 +175,27 @@ import { Icon } from '@iconify/react';
         <TextField
           id="standard-helperText"
           label="Text"
-          defaultValue=""
+          defaultValue="Untitled Text"
           variant="standard"
+          style={{ marginBottom: '2vw' }}
+          sx={{ input: { color: 'white' } }}
+          color="secondary"
         />
-        <Button id="whitebuttontext" variant="text">Add Text</Button>
+        <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "1vw", height: "3vw", color: "white"}}>Add Text</Button>
         </div>
-        <br/>      
         <div>
-        Current Color: <input id="backgroundColor" type="color"/><br/>
-        Background Color: <input id="backgroundColor" type="color"/>
+        Current Color: <input id="backgroundColor" type="color"/>
+        </div>
+        <div className="rowC">
+        <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Undo</Button>
+        <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Redo</Button>
         </div>
         <br/>
-        <div className="rowC">
-        <Button id="whitebuttontext" variant="text">Undo</Button>
-        <Button id="whitebuttontext" variant="text">Redo</Button>
-        </div>
-        <br/>
-        <div className="rowC">
-        <Button id="whitebuttontext" variant="text">Save</Button>
-        <Button id="whitebuttontext" variant="text">Publish</Button>
-        <Button id="whitebuttontext" variant="text">Delete</Button>
-        </div>
         </div>
 
         <div id="canvas">
       <Stage
-        width={800}
+        width={1050}
         height={600}
         onMouseDown={handleMouseDown}
         onMousemove={handleMouseMove}
@@ -247,6 +217,13 @@ import { Icon } from '@iconify/react';
           ))}
         </Layer>
       </Stage>
+    </div>
+    <div id="buttonDiv" style={{backgroundColor: "#4B284F", width: 1050.6, height: 50, position: "absolute", right: 76, bottom: 45}}>
+        <div id = "save-publish-delete" className="rowC">
+            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Save</Button>
+            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Publish</Button>
+            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Delete</Button>
+        </div>
     </div>
     </div>
     );
