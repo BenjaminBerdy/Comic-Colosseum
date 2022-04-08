@@ -123,6 +123,7 @@ export default function UserProfile(props){
             <AppBanner/>  
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
             <h1>Username</h1>
+            <h3>Followers: 10</h3> <h3>Likes: 10</h3>
             {createbutton}
             <Box
                 sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: '#4B284F' }}

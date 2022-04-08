@@ -13,8 +13,6 @@ import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
 import { Typography } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
-import MuiInput from '@mui/material/Input';
-import { styled } from '@mui/material/styles';
 import AppBanner from "./AppBanner";
 import { Icon } from '@iconify/react';
 
@@ -65,37 +63,10 @@ import { Icon } from '@iconify/react';
     setFontSize(newFontSize);
   };
 
-  const handleFontInputChange = (event) => {
-    setFontSize(event.target.fontsize === '' ? '' : Number(event.target.fontsize));
-  };
-
-  const handleFontBlur = () => {
-    if (fontsize < 0) {
-        setFontSize(0);
-    } else if (fontsize > 100) {
-        setFontSize(100);
-    }
-  };
-
   const handleStrokeSliderChange = (event, newstrokewidth) => {
     setStrokeSize(newstrokewidth);
   };
 
-  const handleStrokeInputChange = (event) => {
-    setStrokeSize(event.target.strokewidth === '' ? '' : Number(event.target.strokewidth));
-  };
-
-  const handleStrokeBlur = () => {
-    if (strokewidth < 0) {
-        setStrokeSize(0);
-    } else if (strokewidth > 100) {
-        setStrokeSize(100);
-    }
-  };
-
-  const Input = styled(MuiInput)`
-  width: 42px;
-`;
 
     return(
         <div>

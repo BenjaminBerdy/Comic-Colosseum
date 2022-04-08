@@ -74,6 +74,7 @@ export default function ViewUsercreen(){
             <AppBanner/>               
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
             <h2 styles={{fontFamily: "fantasy"}}>Creator {id}</h2>
+            <h3>Followers: 10</h3> <h3>Likes: 10</h3>
             {auth && (<Button variant="outlined" size="small" color="secondary" style={{color: "white", height: "3.6vw", width: "8vw"}}>Follow</Button>)}
             </div>
             <React.Fragment>

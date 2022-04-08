@@ -67,10 +67,12 @@ function renderRow(props) {
       <Stage width={1050} height={600}/>
     </div>
     <div id="buttonDiv" style={{backgroundColor: "#4B284F", width: 1050.6, height: 50, position: "absolute", right: 76, bottom: 45}}>
+        {auth && (
         <div id = "likefollow" className="rowC">
             <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Like</Button>
             <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{color: "white", height: "2.5vw"}}>Follow Creator</Button>
         </div>
+        )}
         <div id = "pageselection" className="rowC">
             <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Previous Page</Button>
             <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{color: "white", height: "2.5vw"}}>Next Page</Button>

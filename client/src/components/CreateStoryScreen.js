@@ -1,6 +1,6 @@
 import React from "react";
 //import { useParams } from "react-router-dom";
-import { Stage, Layer, /*,Text*/ } from 'react-konva';
+import { Stage, /*Layer ,Text*/ } from 'react-konva';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -8,14 +8,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button'
-import CreateIcon from '@mui/icons-material/Create';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
 import { Typography } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
-import MuiInput from '@mui/material/Input';
-import { styled } from '@mui/material/styles';
 import AppBanner from "./AppBanner";
 import { Icon } from '@iconify/react';
 
@@ -67,22 +62,6 @@ import { Icon } from '@iconify/react';
   const handleFontSliderChange = (event, newFontSize) => {
     setFontSize(newFontSize);
   };
-
-  const handleFontInputChange = (event) => {
-    setFontSize(event.target.fontsize === '' ? '' : Number(event.target.fontsize));
-  };
-
-  const handleFontBlur = () => {
-    if (fontsize < 0) {
-        setFontSize(0);
-    } else if (fontsize > 100) {
-        setFontSize(100);
-    }
-  };
-
-  const Input = styled(MuiInput)`
-  width: 42px;
-`;
     
 return(
   <div>
@@ -121,7 +100,6 @@ return(
   </div>
   <div className="rowC">
   <Button variant="text" style={{marginLeft: "5vw", marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
-  <Button variant="text" style={{marginTop: "1vw", color: "white"}}><FormatColorFillIcon/></Button>
   </div>
   <br/>
       <Box sx={{ width: 250 }}>
