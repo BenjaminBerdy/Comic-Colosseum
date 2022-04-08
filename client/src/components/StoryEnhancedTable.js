@@ -122,15 +122,17 @@ function StoryEnhancedTableHead(props) {
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
+            style={{ color: 'white'}}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
+              style={{ color: 'white'}}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
+                <Box component="span" sx={visuallyHidden} >
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
               ) : null}
@@ -148,6 +150,7 @@ StoryEnhancedTableHead.propTypes = {
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
+  
 };
 
 const EnhancedTableToolbar = (props) => {
@@ -193,7 +196,7 @@ const EnhancedTableToolbar = (props) => {
       ) : (
         <Tooltip title="Filter list">
           <IconButton>
-            <FilterListIcon />
+            <FilterListIcon style={{ color: 'white'}}/>
           </IconButton>
         </Tooltip>
       )}
@@ -279,12 +282,13 @@ export default function StoryEnhancedTable() {
                         id={labelId}
                         scope="row"
                         padding="none"
+                        style={{ color: 'white'}}
                       >
                         {row.title}
                       </TableCell>
-                      <TableCell align="right">{row.author}</TableCell>
-                      <TableCell align="right">{row.date}</TableCell>
-                      <TableCell align="right">{row.likes}</TableCell>
+                      <TableCell style={{ color: 'white'}} align="right">{row.author}</TableCell>
+                      <TableCell style={{ color: 'white'}} align="right">{row.date}</TableCell>
+                      <TableCell style={{ color: 'white'}} align="right">{row.likes}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -308,6 +312,7 @@ export default function StoryEnhancedTable() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          style={{ color: 'white'}}
         />
       </Paper>
     </Box>
