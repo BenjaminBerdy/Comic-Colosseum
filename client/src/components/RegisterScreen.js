@@ -52,8 +52,8 @@ export default function RegisterScreen() {
       handleClickOpen();
     }
     else if (data.get('password').length < 8){
-      console.log("Password must be atleast 8 characters long");
-      changeMsg('Password must be atleast 8 characters long');
+      console.log("Password must be at least 8 characters long");
+      changeMsg('Password must be at least 8 characters long');
       handleClickOpen();
     }
     else if (data.get('password') !== data.get('confirmpassword')){
