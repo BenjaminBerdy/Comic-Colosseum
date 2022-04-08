@@ -15,6 +15,12 @@ import { FixedSizeList } from 'react-window';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 
 function renderComicRow(props) {
@@ -45,6 +51,16 @@ function renderStoryRow(props) {
 
 
 export default function UserProfile(props){
+  const [open, setOpen] = React.useState(false);
+  const [msg, setMsg] = React.useState('Deletion is permanent and cannot be undone. Continue?');
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -120,6 +136,29 @@ export default function UserProfile(props){
     return(
 
         <div>
+          <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Delete Account?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {msg}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={handleClose}>Confirm</Button>
+          <Button onClick={handleClose} autoFocus>
+            Dismiss
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+          
             <AppBanner/>  
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
             <h1>Username</h1>
@@ -132,7 +171,7 @@ export default function UserProfile(props){
               {unpublishedbar}
             </Box>
             <Button variant="outlined" size="small" color="secondary" style={{marginLeft: "-11.5vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Change Password</Button>
-            <Button variant="outlined" size="small" color="secondary" style={{marginLeft: "-4vw", marginRight: "50vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Delete Profile</Button>
+            <Button onClick={handleClickOpen} variant="outlined" size="small" color="secondary" style={{marginLeft: "-4vw", marginRight: "50vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Delete Profile</Button>
             </div>    
             <React.Fragment>
             <Toolbar id="toolbar">
