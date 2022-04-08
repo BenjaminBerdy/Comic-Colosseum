@@ -94,7 +94,7 @@ export default function UserProfile(props){
       createbutton= <Link to='/createcomic/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Comic</Button></Link>
       unpublishedbar = <div><h2>Unpublished Comics</h2>
       <FixedSizeList
-        height={330}
+        height={300}
         width={250}
         itemSize={46}
         itemCount={200}
@@ -107,7 +107,7 @@ export default function UserProfile(props){
       createbutton= <Link to='/createstory/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Story</Button></Link>
       unpublishedbar = <div><h2>Unpublished Stories</h2>
       <FixedSizeList
-        height={330}
+        height={300}
         width={250}
         itemSize={46}
         itemCount={200}
@@ -131,7 +131,7 @@ export default function UserProfile(props){
               <br/>
               {unpublishedbar}
             </Box>
-            <Button variant="outlined" size="small" color="secondary" style={{marginLeft: "-11.5vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Reset Password</Button>
+            <Button variant="outlined" size="small" color="secondary" style={{marginLeft: "-11.5vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Change Password</Button>
             <Button variant="outlined" size="small" color="secondary" style={{marginLeft: "-4vw", marginRight: "50vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Delete Profile</Button>
             </div>    
             <React.Fragment>
