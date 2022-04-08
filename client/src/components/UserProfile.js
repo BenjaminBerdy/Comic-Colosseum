@@ -94,7 +94,7 @@ export default function UserProfile(props){
       createbutton= <Link to='/createcomic/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Comic</Button></Link>
       unpublishedbar = <div><h2>Unpublished Comics</h2>
       <FixedSizeList
-        height={350}
+        height={330}
         width={250}
         itemSize={46}
         itemCount={200}
@@ -107,7 +107,7 @@ export default function UserProfile(props){
       createbutton= <Link to='/createstory/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Story</Button></Link>
       unpublishedbar = <div><h2>Unpublished Stories</h2>
       <FixedSizeList
-        height={350}
+        height={330}
         width={250}
         itemSize={46}
         itemCount={200}
