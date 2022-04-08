@@ -61,6 +61,16 @@ export default function RegisterScreen() {
       changeMsg('Please enter the same password twice!');
       handleClickOpen();
     }
+    else if (data.get('username') === 'username'){
+      console.log("Username already taken");
+      changeMsg('Username already taken');
+      handleClickOpen();
+    }
+    else if (data.get('email') === 'email@email.com'){
+      console.log("Email already in use'");
+      changeMsg('Email already in use');
+      handleClickOpen();
+    }
     else navigate('/');
 
   };
