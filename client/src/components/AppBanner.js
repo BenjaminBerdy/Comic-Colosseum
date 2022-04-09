@@ -11,9 +11,20 @@ import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import { useContext } from "react";
-import { authContext } from "../App";
 import { useLocation } from 'react-router-dom';
+import { AuthContext} from '../context/auth';
+import gql from 'graphql-tag'
+import {useMutation} from '@apollo/react-hooks'
 
+const LOGIN_USER = gql`
+  mutation login($username:String!,$password:String!){
+    login(username: $username,password: $password){
+      id
+      email
+      username
+      token
+    }
+}`;
 
 
 
@@ -21,10 +32,20 @@ export default function MenuAppBar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const {auth,setAuth} = useContext(authContext);
+  const{user,login,logout}= useContext(AuthContext);
 
-  const handleChange = (event) => {
-    setAuth(!auth);
+  const [loginUser] = useMutation(LOGIN_USER,{
+    update(_,{data:{login:userData}}){
+      login(userData);
+    },
+    variables: {
+      username: "testuser", 
+      password: "testpassword"
+    }
+  })
+
+  const handleTestLogin = (event) => {
+    loginUser();
   };
 
   const handleMenu = (event) => {
@@ -37,7 +58,7 @@ export default function MenuAppBar() {
 
   const handleLogout = (event) => {
     setAnchorEl(null);
-    setAuth(!auth);
+    logout();
     if(location.pathname.includes("create") || location.pathname.includes("userprofile")){
       if(location.pathname.includes("comic")){
         navigate('/comic/homepage/')
@@ -70,7 +91,7 @@ export default function MenuAppBar() {
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
           {header}
           </Typography>
-          {auth && (
+          {user && (
             <div>
               <IconButton
                 size="large"
@@ -102,9 +123,9 @@ export default function MenuAppBar() {
               </Menu>
             </div>
           )}
-          {!auth && (
+          {!user && (
             <div>
-              <Button onClick={handleChange} color="inherit" style={{ fontFamily: 'system-ui' }}>Login(Test)</Button>
+              <Button onClick={handleTestLogin} color="inherit" style={{ fontFamily: 'system-ui' }}>Login(Test)</Button>
               <Button href='/login/' color="inherit" style={{ fontFamily: 'system-ui' }}>Login</Button>
               |
               <Button href='/register/'color="inherit" style={{ fontFamily: 'system-ui' }}>Register</Button>

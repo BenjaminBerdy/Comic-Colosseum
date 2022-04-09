@@ -17,15 +17,11 @@ import {
     ViewUserScreen,
     UserProfile
 } from './components';
-
-export const authContext = React.createContext();
-
+import { AuthProvider } from './context/auth';
 
 function App() {
-  const [auth, setAuth] = React.useState(false);
-
   return (
-    <authContext.Provider value = {{auth,setAuth}}>
+    <AuthProvider>
     <BrowserRouter>
       <Container>
         <Routes>
@@ -44,7 +40,7 @@ function App() {
         </Routes>
       </Container>
     </BrowserRouter>
-    </authContext.Provider>
+    </AuthProvider>
   );
 }
 

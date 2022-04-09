@@ -9,7 +9,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { useContext } from "react";
-import { authContext } from "../App";
+import { AuthContext } from '../context/auth';
 import { Typography } from "@mui/material";
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -30,7 +30,7 @@ function renderRow(props) {
 
   export default function ViewContentScreen(){
     const { id } = useParams();
-    const {auth} = useContext(authContext);
+    const {user} = useContext(AuthContext);
     const location = useLocation();
 
     let authorlink;
@@ -52,7 +52,7 @@ function renderRow(props) {
         <h3>Published: 1/1/1 </h3>  
         <div id = "Comments">
         <h2 style={{textAlign: "left"}}>Community Interaction</h2>
-        {auth && (<div><TextField
+        {user && (<div><TextField
           label="Comment"
           defaultValue="Add a comment..."
           variant="standard"
@@ -82,7 +82,7 @@ function renderRow(props) {
       <Stage width={1050} height={600}/>
     </div>
     <div id="buttonDiv" style={{backgroundColor: "#4B284F", width: 1050.6, height: 50, position: "absolute", right: 76, bottom: 45}}>
-        {auth && (
+        {user && (
         <div id = "likefollow" className="rowC">
             <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Like</Button>
             <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{color: "white", height: "2.5vw"}}>Follow Creator</Button>

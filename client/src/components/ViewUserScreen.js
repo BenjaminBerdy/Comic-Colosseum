@@ -11,12 +11,12 @@ import { useParams } from "react-router-dom";
 import Button from '@mui/material/Button'
 import { useLocation } from 'react-router-dom';
 import { useContext } from "react";
-import { authContext } from "../App";
+import { AuthContext } from '../context/auth';
 
 
 
 export default function ViewUsercreen(){
-  const {auth} = useContext(authContext);
+  const {user} = useContext(AuthContext);
 
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
@@ -75,7 +75,7 @@ export default function ViewUsercreen(){
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
             <h2 styles={{fontFamily: "fantasy"}}>Creator {id}</h2>
             <h3>Followers: 10</h3> <h3>Likes: 10</h3>
-            {auth && (<Button variant="outlined" size="small" color="secondary" style={{color: "white", height: "3.6vw", width: "8vw"}}>Follow</Button>)}
+            {user && (<Button variant="outlined" size="small" color="secondary" style={{color: "white", height: "3.6vw", width: "8vw"}}>Follow</Button>)}
             </div>
             <React.Fragment>
             <Toolbar id="toolbar">

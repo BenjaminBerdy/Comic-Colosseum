@@ -168,4 +168,68 @@ function AuthContextProvider(props) {
 }
 
 export default AuthContext;
-export { AuthContextProvider };*/
+export { AuthContextProvider };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if (!data.get('username') || !data.get('email') || !data.get('password') || !data.get('confirmPassword')){
+      console.log("Please enter all required fields!");
+      changeMsg('Please enter all required fields!');
+      handleClickOpen();
+    }
+    else if (data.get('password').length < 8){
+      console.log("Password must be at least 8 characters long");
+      changeMsg('Password must be at least 8 characters long');
+      handleClickOpen();
+    }
+    else if (data.get('password') !== data.get('confirmPassword')){
+      console.log("Please enter the same password twice!");
+      changeMsg('Please enter the same password twice!');
+      handleClickOpen();
+    }
+    else if (data.get('username') === 'username'){
+      console.log("Username already taken");
+      changeMsg('Username already taken');
+      handleClickOpen();
+    }
+    else if (data.get('email') === 'email@email.com'){
+      console.log("Email already in use'");
+      changeMsg('Email already in use');
+      handleClickOpen();
+    }
+    else navigate('/');
+
+<Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Invalid Input"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {msg}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            Dismiss
+          </Button>
+        </DialogActions>
+      </Dialog>
+*/

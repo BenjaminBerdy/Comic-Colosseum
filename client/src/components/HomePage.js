@@ -9,7 +9,7 @@ import ComicEnhancedTable from "./ComicEnhancedTable";
 import StoryEnhancedTable from "./StoryEnhancedTable";
 import FollowedCreatorsBar from "./followedCreatorsBar";
 import { useContext } from "react";
-import { authContext } from "../App";
+import { AuthContext } from '../context/auth';
 import { Button } from "@mui/material";
 import { useLocation } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ import { useLocation } from 'react-router-dom';
 
 
 export default function HomePage(){
-  const {auth} = useContext(authContext);
+  const {user} = useContext(AuthContext);
   const location = useLocation();
     
     const Search = styled('div')(({ theme }) => ({
@@ -83,11 +83,11 @@ export default function HomePage(){
     return(
         <div>
             <AppBanner/>               
-            {auth && <FollowedCreatorsBar/>}
+            {user && <FollowedCreatorsBar/>}
             <React.Fragment>
             <Toolbar id="toolbar">
                 <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                    {auth && (filterbuttons)}
+                    {user && (filterbuttons)}
                     <Search>
                         <SearchIconWrapper>
                         <SearchIcon />

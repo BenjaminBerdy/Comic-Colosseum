@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,95 +9,70 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import { useNavigate } from 'react-router-dom';
+import React, { useContext,useState } from 'react';
+import gql from 'graphql-tag'
+import {useMutation} from '@apollo/react-hooks'
+import {AuthContext} from '../context/auth'
 
 const theme = createTheme();
 
-export default function RegisterScreen() {
-  const [open, setOpen] = React.useState(false);
-  const [msg, setMsg] = React.useState('Enter Valid Info');
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const changeMsg = (newMsg) => {
-    setMsg(newMsg);
+const REGISTER_USER = gql`
+  mutation register(
+    $username:String!
+    $email:String!
+    $password:String!
+    $confirmPassword:String!
+){
+  register(
+    registerInput:{
+      username: $username
+      email: $email
+      password: $password
+      confirmPassword: $confirmPassword
+    }
+  ){
+    id
+    email
+    username
+    token
   }
+}`
 
+export default function RegisterScreen() {
+  const context = useContext(AuthContext); 
   const navigate = useNavigate();
+  const [values, setValues] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
+  const [errors,setErrors] = useState({})
+
+  const [addUser] = useMutation(REGISTER_USER,{
+    update(_,{data:{register: userData}}){
+      context.login(userData);
+      navigate('/');
+    },
+    onError(err){
+      console.log(err.graphQLErrors[0].extensions.errors)
+      setErrors(err.graphQLErrors[0].extensions.errors);
+    },
+    variables: values
+  })
+  
+  const onChange = (event) =>{
+    setValues({...values, [event.target.name]: event.target.value})
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      email: data.get('email'),
-      password: data.get('password'),
-      confirmPassword: data.get('confirmpassword')
-    });
-    if (!data.get('username') || !data.get('email') || !data.get('password') || !data.get('confirmpassword')){
-      console.log("Please enter all required fields!");
-      changeMsg('Please enter all required fields!');
-      handleClickOpen();
-    }
-    else if (data.get('password').length < 8){
-      console.log("Password must be at least 8 characters long");
-      changeMsg('Password must be at least 8 characters long');
-      handleClickOpen();
-    }
-    else if (data.get('password') !== data.get('confirmpassword')){
-      console.log("Please enter the same password twice!");
-      changeMsg('Please enter the same password twice!');
-      handleClickOpen();
-    }
-    else if (data.get('username') === 'username'){
-      console.log("Username already taken");
-      changeMsg('Username already taken');
-      handleClickOpen();
-    }
-    else if (data.get('email') === 'email@email.com'){
-      console.log("Email already in use'");
-      changeMsg('Email already in use');
-      handleClickOpen();
-    }
-    else navigate('/');
-
+    addUser();
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Invalid Input"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {msg}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus>
-            Dismiss
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -127,6 +101,9 @@ export default function RegisterScreen() {
                   fullWidth
                   id="username"
                   label="Username"
+                  value={values.username}
+                  error={errors.username ? true : false}
+                  onChange={onChange}
                   autoFocus
                 />
               </Grid>
@@ -138,6 +115,9 @@ export default function RegisterScreen() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={values.email}
+                  error={errors.email ? true : false}
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -149,17 +129,23 @@ export default function RegisterScreen() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={values.password}
+                  error={errors.password ? true : false}
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="confirmpassword"
+                  name="confirmPassword"
                   label="Confirm Password"
                   type="password"
                   id="confirmpassword"
-                  autoComplete="confirmpassword"
+                  autoComplete="new-confirmpassword"
+                  value={values.confirmPassword}
+                  error={errors.confirmPassword ? true : false}
+                  onChange={onChange}
                 />
               </Grid>
             </Grid>
@@ -171,6 +157,16 @@ export default function RegisterScreen() {
             >
               Sign Up
             </Button>
+            {Object.keys(errors).length > 0 &&(
+              <div>
+              <ul className="list">
+                {Object.values(errors).map(value => (
+                  <li key={value}>{value}</li>
+                  ))}
+              </ul>
+            </div>
+            )}
+
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">

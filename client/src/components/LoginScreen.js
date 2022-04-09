@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,75 +9,56 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import { useNavigate } from 'react-router-dom';
+import React, { useContext,useState } from 'react';
+import gql from 'graphql-tag'
+import {useMutation} from '@apollo/react-hooks'
+import { AuthContext } from '../context/auth';
 
 const theme = createTheme();
 
+const LOGIN_USER = gql`
+  mutation login($username:String!,$password:String!){
+    login(username: $username,password: $password){
+      id
+      email
+      username
+      token
+    }
+}`;
+
 export default function LoginScreen() {
-  const [open, setOpen] = React.useState(false);
-  const [msg, setMsg] = React.useState('Enter Valid Info');
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const changeMsg = (newMsg) => {
-    setMsg(newMsg);
-  }
-
   const navigate = useNavigate();
+  const context = useContext(AuthContext); 
+  const [values, setValues] = useState({
+    username: '',
+    password: '',
+  })
+  const [errors,setErrors] = useState({})
+
+  const [loginUser] = useMutation(LOGIN_USER,{
+    update(_,{data:{login:userData}}){
+      context.login(userData);
+      navigate('/');
+    },
+    onError(err){
+      console.log(err.graphQLErrors[0].extensions.errors)
+      setErrors(err.graphQLErrors[0].extensions.errors);
+    },
+    variables: values
+  })
+
+  const onChange = (event) =>{
+    setValues({...values, [event.target.name]: event.target.value})
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
-    if (data.get('username') === 'username' && data.get('password') === 'password'){
-      console.log("Login successful");
-      navigate('/');
-    }
-    else
-      console.log("Username or Password is invalid");
-      changeMsg('Username or Password is invalid');
-      handleClickOpen();
+    loginUser();
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Invalid Input"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {msg}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus>
-            Dismiss
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-
-
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -121,6 +101,9 @@ export default function LoginScreen() {
                 name="username"
                 autoComplete="username"
                 autoFocus
+                value={values.username}
+                error={errors.username ? true : false}
+                onChange={onChange}
               />
               <TextField
                 margin="normal"
@@ -131,6 +114,9 @@ export default function LoginScreen() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={values.password}
+                  error={errors.password ? true : false}
+                  onChange={onChange}
               />
               <Button
                 type="submit"
@@ -140,6 +126,15 @@ export default function LoginScreen() {
               >
                 Sign In
               </Button>
+              {Object.keys(errors).length > 0 &&(
+              <div>
+              <ul className="list">
+                {Object.values(errors).map(value => (
+                  <li key={value}>{value}</li>
+                  ))}
+              </ul>
+            </div>
+            )}
               <Grid container>
                 <Grid item xs>
                   <Link href="/forgotpassword" variant="body2">

@@ -20,6 +20,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { AuthContext } from '../context/auth';
+import { useContext } from "react";
+
 
 
 
@@ -51,6 +54,7 @@ function renderStoryRow(props) {
 
 
 export default function UserProfile(props){
+  const{user}= useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
   const [msg] = React.useState('Deletion is permanent and cannot be undone. Continue?');
 
@@ -161,7 +165,7 @@ export default function UserProfile(props){
           
             <AppBanner/>  
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
-            <h1>Username</h1>
+            <h1>{user.username}</h1>
             <h3>Followers: 10</h3> <h3>Likes: 10</h3>
             {createbutton}
             <Box
