@@ -81,6 +81,7 @@ import { Icon } from '@iconify/react';
           style={{ marginBottom: '2vw' }}
           sx={{ input: { color: 'white' } }}
           color="secondary"
+          focused
         />
         <div className='rowC'>
         <FormControl >
@@ -151,6 +152,7 @@ import { Icon } from '@iconify/react';
           style={{ marginBottom: '2vw' }}
           sx={{ input: { color: 'white' } }}
           color="secondary"
+          focused
         />
         <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "1vw", height: "3vw", color: "white"}}>Add Text</Button>
         </div>
