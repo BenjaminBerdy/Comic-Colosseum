@@ -121,9 +121,11 @@ module.exports = {
             newpassword = await bcrypt.hash(newpassword,12);
 
             user = await User.findByIdAndUpdate(id,{password: newpassword});
+            const token = generateToken(user)
             return{
                 ...user._doc,
                 id: user._id,
+                token
             };
 
         },

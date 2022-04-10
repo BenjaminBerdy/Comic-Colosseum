@@ -18,7 +18,7 @@ import { AuthContext } from '../context/auth';
 const theme = createTheme();
 
 const CHANGE_PASSWORD = gql`
-  mutation changePassword($id:String!, $username:String!, $password:String!, $newpassword:String!){
+  mutation changePassword($id:ID!, $username:String!, $password:String!, $newpassword:String!){
     changePassword(id: $id, username: $username,password: $password, newpassword:$newpassword){
       id
       email
@@ -44,8 +44,7 @@ export default function ChangePassword() {
       navigate('/');
     },
     onError(err){ 
-      console.log(err)
-      console.log(err.graphQLErrors[0].extensions.errors)
+      console.log(err.graphQLErrors[0].extensions.errors);
       setErrors(err.graphQLErrors[0].extensions.errors);
     },
     variables: values
@@ -104,7 +103,7 @@ export default function ChangePassword() {
                     name="password"
                     autoComplete="Current Password"
                     value={values.password}
-                    error={errors.username ? true : false}
+                    error={errors.password ? true : false}
                     onChange={onChange}
                   />
                 </Grid>
@@ -117,7 +116,7 @@ export default function ChangePassword() {
                     name="newpassword"
                     autoComplete="New Password"
                     value={values.newpassword}
-                    error={errors.username ? true : false}
+                    error={errors.newpassword ? true : false}
                     onChange={onChange}
                   />
                 </Grid>
