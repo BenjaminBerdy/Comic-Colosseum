@@ -40,7 +40,6 @@ export default function ChangePassword() {
 
   const [changeUserPassword] = useMutation(CHANGE_PASSWORD,{
     update(_,{data:{login:userData}}){
-      context.login(userData);
       navigate('/');
     },
     onError(err){ 
@@ -101,6 +100,7 @@ export default function ChangePassword() {
                     id="password"
                     label="Current password"
                     name="password"
+                    type="password"
                     autoComplete="Current Password"
                     value={values.password}
                     error={errors.password ? true : false}
@@ -114,6 +114,7 @@ export default function ChangePassword() {
                     id="newpassword"
                     label="New Password"
                     name="newpassword"
+                    type="password"
                     autoComplete="New Password"
                     value={values.newpassword}
                     error={errors.newpassword ? true : false}

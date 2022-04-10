@@ -126,15 +126,15 @@ export default function LoginScreen() {
               >
                 Sign In
               </Button>
-              {Object.keys(errors).length > 0 &&(
-              <div>
-              <ul className="list">
-                {Object.values(errors).map(value => (
-                  <li key={value}>{value}</li>
-                  ))}
-              </ul>
-            </div>
-            )}
+                {Object.keys(errors).length > 0 &&(
+                <div>
+                <ul className="list">
+                  {Object.values(errors).map(value => (
+                    <li key={value}>{value}</li>
+                    ))}
+                </ul>
+              </div>
+              )}
               <Grid container>
                 <Grid item xs>
                   <Link href="/forgotpassword" variant="body2">

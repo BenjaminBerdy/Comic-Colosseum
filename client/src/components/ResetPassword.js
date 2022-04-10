@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,17 +8,52 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React, {useState } from 'react';
+import gql from 'graphql-tag'
+import {useMutation} from '@apollo/react-hooks'
+import { useParams } from "react-router-dom";
+
 
 const theme = createTheme();
+const RESET_PASSWORD = gql`
+  mutation resetPassword($token:String!,$id:ID!,$newpassword:String!,$confirmpassword:String!){
+    resetPassword(token:$token,id:$id,newpassword:$newpassword,confirmpassword:$confirmpassword){
+      id
+      email
+      username
+    }
+}`;
+
 
 export default function ResetPassword() {
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      console.log({
-        email: data.get('email'),
-      });
-    };
+  const { id, token } = useParams();
+  const [values, setValues] = useState({
+    token: token,
+    id: id,
+    newpassword: '',
+    confirmpassword: '',
+  })
+  const [errors,setErrors] = useState({})
+
+  const [resetUserPassword] = useMutation(RESET_PASSWORD,{
+    update(_,{data:{login:userData}}){
+      setErrors(["Password Reset"]);
+    },
+    onError(err){
+      console.log(err.graphQLErrors[0].extensions.errors)
+      setErrors(err.graphQLErrors[0].extensions.errors);
+    },
+    variables: values
+  })
+
+  const onChange = (event) =>{
+    setValues({...values, [event.target.name]: event.target.value})
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    resetUserPassword();
+  };
   
     return (
       <ThemeProvider theme={theme}>
@@ -47,10 +81,13 @@ export default function ResetPassword() {
                 <TextField
                     required
                     fullWidth
-                    id="password"
+                    id="newpassword"
                     label="New password"
-                    name="password"
+                    name="newpassword"
                     autoComplete="New Password"
+                    value={values.newpassword}
+                    error={errors.newpassword ? true : false}
+                    onChange={onChange}
                   />
                 </Grid>
                 <Grid item xs={12} >
@@ -61,6 +98,9 @@ export default function ResetPassword() {
                     label="Confirm New Password"
                     name="confirmpassword"
                     autoComplete="Confirm New Password"
+                    value={values.confirmpassword}
+                    error={errors.confirmpassword ? true : false}
+                    onChange={onChange}
                   />
                 </Grid>
               </Grid>
@@ -70,10 +110,18 @@ export default function ResetPassword() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                href='/'
               >
                 Reset Password
               </Button>
+              {Object.keys(errors).length > 0 &&(
+              <div>
+              <ul className="list">
+                {Object.values(errors).map(value => (
+                  <li key={value}>{value}</li>
+                  ))}
+              </ul>
+            </div>
+            )}
             </Box>
           </Box>
         </Container>

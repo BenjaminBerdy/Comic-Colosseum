@@ -78,10 +78,10 @@ export default function MenuAppBar() {
   let header;
   let profilebutton;
   if (location.pathname.includes("comic")) {
-    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Comic Colloseum</Link>
+    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Comic Coloseum</Link>
     profilebutton = <MenuItem component={Link} to='/comic/userprofile/'>Profile</MenuItem>
   }else if(location.pathname.includes("story")){
-    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Story Colloseum</Link>
+    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Story Coloseum</Link>
     profilebutton = <MenuItem component={Link} to='/story/userprofile/'>Profile</MenuItem>
   }
   return (
