@@ -18,9 +18,9 @@ const theme = createTheme();
 const RESET_PASSWORD = gql`
   mutation resetPassword($token:String!,$id:ID!,$newpassword:String!,$confirmpassword:String!){
     resetPassword(token:$token,id:$id,newpassword:$newpassword,confirmpassword:$confirmpassword){
-      id
-      email
-      username
+     id
+     username
+     email
     }
 }`;
 
@@ -40,6 +40,7 @@ export default function ResetPassword() {
       setErrors(["Password Reset"]);
     },
     onError(err){
+      console.log(err)
       console.log(err.graphQLErrors[0].extensions.errors)
       setErrors(err.graphQLErrors[0].extensions.errors);
     },
