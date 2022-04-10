@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,17 +8,57 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import React, { useContext,useState } from 'react';
+import gql from 'graphql-tag'
+import {useMutation} from '@apollo/react-hooks'
+import { AuthContext } from '../context/auth';
+
 
 const theme = createTheme();
 
-export default function changePassword() {
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      console.log({
-        email: data.get('email'),
-      });
-    };
+const CHANGE_PASSWORD = gql`
+  mutation changePassword($id:String!, $username:String!, $password:String!, $newpassword:String!){
+    changePassword(id: $id, username: $username,password: $password, newpassword:$newpassword){
+      id
+      email
+      username
+      token
+    }
+}`;
+
+export default function ChangePassword() {
+  const navigate = useNavigate();
+  const context = useContext(AuthContext); 
+  const [values, setValues] = useState({
+    id: context.user.id,
+    username: '',
+    password: '',
+    newpassword: ''
+  })
+  const [errors,setErrors] = useState({})
+
+  const [changeUserPassword] = useMutation(CHANGE_PASSWORD,{
+    update(_,{data:{login:userData}}){
+      context.login(userData);
+      navigate('/');
+    },
+    onError(err){ 
+      console.log(err)
+      console.log(err.graphQLErrors[0].extensions.errors)
+      setErrors(err.graphQLErrors[0].extensions.errors);
+    },
+    variables: values
+  })
+
+  const onChange = (event) =>{
+    setValues({...values, [event.target.name]: event.target.value})
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    changeUserPassword();
+  };
   
     return (
       <ThemeProvider theme={theme}>
@@ -51,6 +90,9 @@ export default function changePassword() {
                     label="Username"
                     name="username"
                     autoComplete="Username"
+                    value={values.username}
+                    error={errors.username ? true : false}
+                    onChange={onChange}
                   />
                 </Grid>
                 <Grid item xs={12} >
@@ -58,19 +100,25 @@ export default function changePassword() {
                     required
                     fullWidth
                     id="password"
-                    label="New password"
+                    label="Current password"
                     name="password"
-                    autoComplete="New Password"
+                    autoComplete="Current Password"
+                    value={values.password}
+                    error={errors.username ? true : false}
+                    onChange={onChange}
                   />
                 </Grid>
                 <Grid item xs={12} >
                 <TextField
                     required
                     fullWidth
-                    id="confirmpassword"
-                    label="Confirm New Password"
-                    name="confirmpassword"
-                    autoComplete="Confirm New Password"
+                    id="newpassword"
+                    label="New Password"
+                    name="newpassword"
+                    autoComplete="New Password"
+                    value={values.newpassword}
+                    error={errors.username ? true : false}
+                    onChange={onChange}
                   />
                 </Grid>
               </Grid>
@@ -80,10 +128,18 @@ export default function changePassword() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                href='/'
               >
                 Change Password
               </Button>
+              {Object.keys(errors).length > 0 &&(
+              <div>
+              <ul className="list">
+                {Object.values(errors).map(value => (
+                  <li key={value}>{value}</li>
+                  ))}
+              </ul>
+            </div>
+            )}
             </Box>
           </Box>
         </Container>
