@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -40,9 +41,13 @@ export default function ResetPassword() {
       setErrors(["Password Reset"]);
     },
     onError(err){
-      console.log(err)
+      console.log(err.name)
+      if(err.message.includes("JsonWebTokenError")){
+        setErrors(["Invalid Token"]);
+      }else{
       console.log(err.graphQLErrors[0].extensions.errors)
       setErrors(err.graphQLErrors[0].extensions.errors);
+      }
     },
     variables: values
   })
@@ -123,6 +128,13 @@ export default function ResetPassword() {
               </ul>
             </div>
             )}
+            <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link href="/login" variant="body2">
+                    Sign in
+                  </Link>
+                </Grid>
+              </Grid>
             </Box>
           </Box>
         </Container>

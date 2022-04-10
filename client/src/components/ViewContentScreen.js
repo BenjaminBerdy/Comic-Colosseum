@@ -36,10 +36,10 @@ function renderRow(props) {
     let authorlink;
     let title;
     if (location.pathname.includes("comic")) {
-        authorlink = <h3>By:<Link to='/comic/viewuser/1' style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>
+        authorlink = <h3>By:<Link to='/comic/viewuser/6252f1926f3fc25327a13160' style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>
         title = <h3>Comic {id}</h3>
     }else if(location.pathname.includes("story")){
-        authorlink = <h3>By:<Link to='/story/viewuser/1' style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>
+        authorlink = <h3>By:<Link to='/story/viewuser/6252f1926f3fc25327a13160' style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>
         title = <h3>Story {id}</h3>
     }
 

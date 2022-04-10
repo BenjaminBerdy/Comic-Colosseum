@@ -12,13 +12,27 @@ import Button from '@mui/material/Button'
 import { useLocation } from 'react-router-dom';
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
+import gql from 'graphql-tag'
+import {useQuery} from '@apollo/react-hooks'
 
+
+const GET_USER = gql`
+  query($id:ID!){
+    getUser(id:$id){
+     username
+     email
+    }
+}`;
 
 
 export default function ViewUsercreen(){
   const {user} = useContext(AuthContext);
-
-    const Search = styled('div')(({ theme }) => ({
+  const {id} = useParams();
+  const location = useLocation();
+  const {loading, error, data} = useQuery(GET_USER, {variables: {id}});
+  console.log(data)
+  
+  const Search = styled('div')(({ theme }) => ({
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
         backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -58,8 +72,6 @@ export default function ViewUsercreen(){
         },
       }));
 
-    const { id } = useParams();
-    const location = useLocation();
 
 
   let table;
@@ -69,11 +81,14 @@ export default function ViewUsercreen(){
     table = <StoryEnhancedTable/>
   }
 
+  if(loading === true){
+    return(<h1 style={{color:"white"}}>Loading...</h1>)
+  }else{
     return(
         <div>
             <AppBanner/>               
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
-            <h2 styles={{fontFamily: "fantasy"}}>Creator {id}</h2>
+            <h2 styles={{fontFamily: "fantasy"}}>{data.getUser.username}</h2>
             <h3>Followers: 10</h3> <h3>Likes: 10</h3>
             {user && (<Button variant="outlined" size="small" color="secondary" style={{color: "white", height: "3.6vw", width: "8vw"}}>Follow</Button>)}
             </div>
@@ -98,5 +113,5 @@ export default function ViewUsercreen(){
             
         </div>
     );
-
+  }
 }

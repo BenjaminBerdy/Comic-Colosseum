@@ -15,7 +15,7 @@ function renderComicRow(props) {
 
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/comic/viewuser/' + (index+1)} style={{ color: 'white', textDecoration: 'none'}}>
+      <ListItemButton component={Link} to={'/comic/viewuser/6252f1926f3fc25327a13160'} style={{ color: 'white', textDecoration: 'none'}}>
         <ListItemText primary={`Creator ${index + 1}`} />
       </ListItemButton>
     </ListItem>
@@ -27,7 +27,7 @@ function renderStoryRow(props) {
 
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/story/viewuser/' + (index+1)} style={{ color: 'white', textDecoration: 'none'}}>
+      <ListItemButton component={Link} to={'/story/viewuser/6252f1926f3fc25327a13160'} style={{ color: 'white', textDecoration: 'none'}}>
         <ListItemText primary={`Creator ${index + 1}`} />
       </ListItemButton>
     </ListItem>
