@@ -147,7 +147,10 @@ module.exports = {
 
         },
         async resetPassword(_,{token,id,newpassword,confirmpassword}){
-            const errors = {}
+            const {errors,valid} = validatePasswordInput(newpassword,confirmpassword);
+            if(!valid){
+                throw new UserInputError('Errors',{errors});
+            }
             var user = await User.findById(id);
             if(!user){
                 errors.general = 'Invalid ID'
