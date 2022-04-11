@@ -19,6 +19,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 
 function createData(title, author, date, likes,id ) {
   return {
@@ -30,7 +32,26 @@ function createData(title, author, date, likes,id ) {
   };
 }
 
-const rows = [
+let rows;
+let comicstory;
+
+const comicrows = [
+  createData('Comic1', 'author1', '1-1-2', 67, "1"),
+  createData('Comic2', 'author2', '1-1-3', 51, "2"),
+  createData('Comic3', 'author3', '1-1-4', 24, "3"),
+  createData('Comic4', 'author4','1-1-5', 24, "4"),
+  createData('Comic5', 'author5','1-1-6', 49, "5"),
+  createData('Comic6', 'author6', '1-1-7', 87, "6"),
+  createData('Comic7', 'author7', '1-1-8', 37, "7"),
+  createData('Comic8', 'author8', '1-1-9', 94, "8"),
+  createData('Comic9', 'author9','1-2-1', 65, "9"),
+  createData('Comic10', 'author10', '1-2-2', 98, "10"),
+  createData('Comic11', 'author11','1-2-3', 81, "11"),
+  createData('Comic12', 'author12', '1-2-4', 9, "12"),
+  createData('Comic13', 'author13', '1-2-5', 63, "13"),
+];
+
+const storyrows = [
   createData('Story1', 'author1', '1-1-2', 67, "1"),
   createData('Story2', 'author2', '1-1-3', 51, "2"),
   createData('Story3', 'author3', '1-1-4', 24, "3"),
@@ -103,7 +124,7 @@ const headCells = [
   },
 ];
 
-function StoryEnhancedTableHead(props) {
+function EnhancedTableHead(props) {
   const {order, orderBy, onRequestSort } =
     props;
   const createSortHandler = (property) => (event) => {
@@ -132,11 +153,11 @@ function StoryEnhancedTableHead(props) {
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden} >
+                <Box component="span" sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
               ) : null}
-            </TableSortLabel>
+            </TableSortLabel >
           </TableCell>
         ))}
       </TableRow>
@@ -144,13 +165,12 @@ function StoryEnhancedTableHead(props) {
   );
 }
 
-StoryEnhancedTableHead.propTypes = {
+EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
-  
 };
 
 const EnhancedTableToolbar = (props) => {
@@ -183,7 +203,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Stories
+          Comics
         </Typography>
       )}
 
@@ -195,7 +215,7 @@ const EnhancedTableToolbar = (props) => {
         </Tooltip>
       ) : (
         <Tooltip title="Filter list">
-          <IconButton>
+          <IconButton >
             <FilterListIcon style={{ color: 'white'}}/>
           </IconButton>
         </Tooltip>
@@ -208,7 +228,18 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function StoryEnhancedTable() {
+export default function ComicEnhancedTable() {
+  const location = useLocation();
+
+  if (location.pathname.includes("comic")) {
+    comicstory = "comic"
+    rows = comicrows;
+  }else if(location.pathname.includes("story")){
+    comicstory = "story";
+    rows = storyrows;
+  }
+
+
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('title');
   const [selected] = React.useState([]);
@@ -244,11 +275,11 @@ export default function StoryEnhancedTable() {
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
-            sx={{ minWidth: 750 }}
+            sx={{ minWidth: 40}}
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
           >
-            <StoryEnhancedTableHead
+            <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -267,7 +298,7 @@ export default function StoryEnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      component={Link} to={'/story/viewcontent/' + row.id} style={{ color: 'white', textDecoration: 'none' }}
+                      component={Link} to={'/'+ comicstory +'/viewcontent/' + row.id} style={{ color: 'white', textDecoration: 'none' }}
                       /*onClick={(event) => handleClick(event, row.title)}*/
                       role="checkbox"
                       aria-checked={isItemSelected}
@@ -287,8 +318,8 @@ export default function StoryEnhancedTable() {
                         {row.title}
                       </TableCell>
                       <TableCell style={{ color: 'white'}} align="right">{row.author}</TableCell>
-                      <TableCell style={{ color: 'white'}} align="right">{row.date}</TableCell>
-                      <TableCell style={{ color: 'white'}} align="right">{row.likes}</TableCell>
+                      <TableCell style={{ color: 'white'}}align="right">{row.date}</TableCell>
+                      <TableCell style={{ color: 'white'}}align="right">{row.likes}</TableCell>
                     </TableRow>
                   );
                 })}

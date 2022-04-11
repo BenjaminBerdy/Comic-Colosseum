@@ -5,11 +5,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import ComicEnhancedTable from "./ComicEnhancedTable";
-import StoryEnhancedTable from "./StoryEnhancedTable";
+import EnhancedTable from "./EnhancedTable";
 import { useParams } from "react-router-dom";
 import Button from '@mui/material/Button'
-import { useLocation } from 'react-router-dom';
+//import { useLocation } from 'react-router-dom';
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
 import gql from 'graphql-tag'
@@ -28,9 +27,8 @@ const GET_USER = gql`
 export default function ViewUsercreen(){
   const {user} = useContext(AuthContext);
   const {id} = useParams();
-  const location = useLocation();
+  //const location = useLocation();
   const {loading, data} = useQuery(GET_USER, {variables: {id}});
-  console.log(data)
   
   const Search = styled('div')(({ theme }) => ({
         position: 'relative',
@@ -72,15 +70,6 @@ export default function ViewUsercreen(){
         },
       }));
 
-
-
-  let table;
-  if (location.pathname.includes("comic")) {
-    table = <ComicEnhancedTable/>
-  }else if(location.pathname.includes("story")){
-    table = <StoryEnhancedTable/>
-  }
-
   if(loading === true){
     return(<h1 style={{color:"white"}}>Loading...</h1>)
   }else{
@@ -108,7 +97,7 @@ export default function ViewUsercreen(){
             </Toolbar>
             </React.Fragment>
             <div id="enhancedtable">
-            {table}
+            <EnhancedTable/>
             </div>
             
         </div>

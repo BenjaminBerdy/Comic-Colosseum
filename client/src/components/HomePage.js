@@ -5,8 +5,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import ComicEnhancedTable from "./ComicEnhancedTable";
-import StoryEnhancedTable from "./StoryEnhancedTable";
+import EnhancedTable from "./EnhancedTable";
+//import StoryEnhancedTable from "./StoryEnhancedTable";
 import FollowedCreatorsBar from "./followedCreatorsBar";
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
@@ -63,16 +63,13 @@ export default function HomePage(){
       }));
 
       let filterbuttons;
-      let table;
       if (location.pathname.includes("comic")) {
-        table = <ComicEnhancedTable/>;
         filterbuttons = <div>
         <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>New Comics</Button>
         <Button id="whitebuttontext" variant="outlined"size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Followers Comics</Button>
         <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Liked Comics</Button>
         </div>;
       }else if(location.pathname.includes("story")){
-        table = <StoryEnhancedTable/>;
         filterbuttons = <div>
         <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>New Stories</Button>
         <Button id="whitebuttontext" variant="outlined"size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Followers Stories</Button>
@@ -101,7 +98,7 @@ export default function HomePage(){
             </Toolbar>
             </React.Fragment>
             <div id="enhancedtable">
-            {table} 
+            <EnhancedTable/>
             </div>
             
         </div>

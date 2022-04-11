@@ -5,8 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import StoryEnhancedTable from "./StoryEnhancedTable";
-import ComicEnhancedTable from "./ComicEnhancedTable";
+import EnhancedTable from "./EnhancedTable";
 import Button from '@mui/material/Button'
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -106,11 +105,9 @@ export default function UserProfile(props){
       }));
 
     const location = useLocation();
-    let table;
     let createbutton;
     let unpublishedbar;
     if (location.pathname.includes("comic")) {
-      table = <ComicEnhancedTable/>
       createbutton= <Link to='/createcomic/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Comic</Button></Link>
       unpublishedbar = <div><h2>Unpublished Comics</h2>
       <FixedSizeList
@@ -123,7 +120,6 @@ export default function UserProfile(props){
         {renderComicRow}
       </FixedSizeList></div>
     }else if(location.pathname.includes("story")){
-      table = <StoryEnhancedTable/>
       createbutton= <Link to='/createstory/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Story</Button></Link>
       unpublishedbar = <div><h2>Unpublished Stories</h2>
       <FixedSizeList
@@ -193,7 +189,7 @@ export default function UserProfile(props){
                 </Toolbar>
             </React.Fragment>
             <div id="enhancedtable">
-            {table}
+            <EnhancedTable/>
             </div>
             
         </div>
