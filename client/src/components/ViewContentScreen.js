@@ -58,6 +58,7 @@ function renderRow(props) {
           variant="standard"
           sx={{ input: { color: 'white' } }}
           color="secondary"
+          focused
         />
         <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginTop: "1vw", marginLeft: "4vw", color: "white", height: "2.5vw"}}>Comment</Button></div>)}
         <Box
