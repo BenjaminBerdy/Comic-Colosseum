@@ -91,8 +91,9 @@ export default function MenuAppBar() {
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
           {header}
           </Typography>
-          {user && (
+         {user && (
             <div>
+               <div style={{position: "absolute", right: "6vw", bottom: "0.2vw"}}>{user.username}</div>
               <IconButton
                 size="large"
                 aria-label="account of current user"
