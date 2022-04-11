@@ -93,7 +93,6 @@ export default function MenuAppBar() {
           </Typography>
          {user && (
             <div>
-               <div style={{position: "absolute", right: "6vw", bottom: "0.2vw"}}>{user.username}</div>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -102,6 +101,7 @@ export default function MenuAppBar() {
                 onClick={handleMenu}
                 color="inherit"
               >
+                <Typography variant="h6" component="div" sx={{flexGrow: 1 }}>{user.username}</Typography><br/> 
                 <AccountCircle />
               </IconButton>
               <Menu

@@ -29,7 +29,7 @@ export default function ViewUsercreen(){
   const {user} = useContext(AuthContext);
   const {id} = useParams();
   const location = useLocation();
-  const {loading, error, data} = useQuery(GET_USER, {variables: {id}});
+  const {loading, data} = useQuery(GET_USER, {variables: {id}});
   console.log(data)
   
   const Search = styled('div')(({ theme }) => ({
