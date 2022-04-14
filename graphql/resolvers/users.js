@@ -64,7 +64,9 @@ module.exports = {
             const newUser = new User({
                 email,
                 username,
-                password
+                password,
+                totallikes: 0,
+                totalfollowers: 0
             });
             const res = await newUser.save();
             const token = generateToken(res);
