@@ -16,17 +16,35 @@ import Slider from '@mui/material/Slider';
 import AppBanner from "./AppBanner";
 import { Icon } from '@iconify/react';
 
+let history = [[]];
+let historyStep = 0;
 
 
   export default function CreateComicScreen(){
     //const { id } = useParams();
-    const [tool] = React.useState('pen');
-    const [lines, setLines] = React.useState([]);
+    const [lines, setLines] = React.useState(history[0]);
     const isDrawing = React.useRef(false);
     const [currentpage, setCurrentPage] = React.useState('Page 1');
     const [fontsize, setFontSize] = React.useState(30);
     const [strokewidth, setStrokeSize] = React.useState(30);
 
+  const handleUndo = () => {
+      if (historyStep === 0) {
+        return;
+      }
+      historyStep -= 1;
+      const previous = history[historyStep];
+      setLines(previous);
+    };
+
+  const handleRedo = () => {
+      if (historyStep === history.length - 1) {
+        return;
+      }
+      historyStep += 1;
+      const next = history[historyStep];
+      setLines(next);
+    };
 
   const handlePageChange = (event) => {
     setCurrentPage(event.target.value);
@@ -36,7 +54,7 @@ import { Icon } from '@iconify/react';
    const handleMouseDown = (e) => {
     isDrawing.current = true;
     const pos = e.target.getStage().getPointerPosition();
-    setLines([...lines, { tool, points: [pos.x, pos.y] }]);
+    setLines([...lines, { points: [pos.x, pos.y] }]);
   };
 
   const handleMouseMove = (e) => {
@@ -57,6 +75,9 @@ import { Icon } from '@iconify/react';
 
   const handleMouseUp = () => {
     isDrawing.current = false;
+    history.push(lines);
+    historyStep += 1;
+    console.log(history);
   };
 
   const handleFontSliderChange = (event, newFontSize) => {
@@ -160,8 +181,8 @@ import { Icon } from '@iconify/react';
         Current Color: <input id="backgroundColor" type="color"/>
         </div>
         <div className="rowC">
-        <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Undo</Button>
-        <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Redo</Button>
+        <Button onClick={handleUndo} id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Undo</Button>
+        <Button onClick={handleRedo} id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Redo</Button>
         </div>
         <br/>
         </div>
@@ -183,9 +204,6 @@ import { Icon } from '@iconify/react';
               strokeWidth={5}
               tension={0.5}
               lineCap="round"
-              globalCompositeOperation={
-                line.tool === 'eraser' ? 'destination-out' : 'source-over'
-              }
             />
           ))}
         </Layer>

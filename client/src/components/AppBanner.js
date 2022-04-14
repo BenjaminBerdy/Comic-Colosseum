@@ -78,10 +78,10 @@ export default function MenuAppBar() {
   let header;
   let comicstory;
   if (location.pathname.includes("comic")) {
-    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Comic Coloseum</Link>
+    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Comic Colosseum</Link>
     comicstory = 'comic'
   }else if(location.pathname.includes("story")){
-    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Story Coloseum</Link>
+    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Story Colosseum</Link>
     comicstory = 'story'
   }
   return (
