@@ -8,6 +8,8 @@ const userSchema = new Schema({
     followedCreators: [String],
     likedComics: [String],
     likedStories: [String],
+    totallikes: Number,
+    totalfollowers: Number,
 })
 
 module.exports = model('User', userSchema)

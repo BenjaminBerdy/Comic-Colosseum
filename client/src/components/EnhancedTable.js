@@ -20,9 +20,32 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import gql from 'graphql-tag';
+import {useQuery } from '@apollo/react-hooks';
 
+const GET_COMICS = gql`
+  query{
+    getComics{
+      id
+      title
+      author
+      publishDate
+      likes
+    }
+}`;
 
-function createData(title, author, date, likes,id ) {
+const GET_STORIES = gql`
+  query{
+    getStories{
+      id
+      title
+      author
+      publishDate
+      likes
+    }
+}`;
+
+function createData(title, author, date, likes, id ) {
   return {
     title,
     author,
@@ -32,40 +55,9 @@ function createData(title, author, date, likes,id ) {
   };
 }
 
-let rows;
+let rows = [];
 let comicstory;
-
-const comicrows = [
-  createData('Comic1', 'author1', '1-1-2', 67, "1"),
-  createData('Comic2', 'author2', '1-1-3', 51, "2"),
-  createData('Comic3', 'author3', '1-1-4', 24, "3"),
-  createData('Comic4', 'author4','1-1-5', 24, "4"),
-  createData('Comic5', 'author5','1-1-6', 49, "5"),
-  createData('Comic6', 'author6', '1-1-7', 87, "6"),
-  createData('Comic7', 'author7', '1-1-8', 37, "7"),
-  createData('Comic8', 'author8', '1-1-9', 94, "8"),
-  createData('Comic9', 'author9','1-2-1', 65, "9"),
-  createData('Comic10', 'author10', '1-2-2', 98, "10"),
-  createData('Comic11', 'author11','1-2-3', 81, "11"),
-  createData('Comic12', 'author12', '1-2-4', 9, "12"),
-  createData('Comic13', 'author13', '1-2-5', 63, "13"),
-];
-
-const storyrows = [
-  createData('Story1', 'author1', '1-1-2', 67, "1"),
-  createData('Story2', 'author2', '1-1-3', 51, "2"),
-  createData('Story3', 'author3', '1-1-4', 24, "3"),
-  createData('Story4', 'author4','1-1-5', 24, "4"),
-  createData('Story5', 'author5','1-1-6', 49, "5"),
-  createData('Story6', 'author6', '1-1-7', 87, "6"),
-  createData('Story7', 'author7', '1-1-8', 37, "7"),
-  createData('Story8', 'author8', '1-1-9', 94, "8"),
-  createData('Story9', 'author9','1-2-1', 65, "9"),
-  createData('Story10', 'author10', '1-2-2', 98, "10"),
-  createData('Story11', 'author11','1-2-3', 81, "11"),
-  createData('Story12', 'author12', '1-2-4', 9, "12"),
-  createData('Story13', 'author13', '1-2-5', 63, "13"),
-];
+let contentData;
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -228,16 +220,20 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function ComicEnhancedTable() {
+export default function EnhancedTable() {
+  rows= []
   const location = useLocation();
-
+  let query;
   if (location.pathname.includes("comic")) {
     comicstory = "comic"
-    rows = comicrows;
+    query = GET_COMICS;
   }else if(location.pathname.includes("story")){
     comicstory = "story";
-    rows = storyrows;
-  }
+    query = GET_STORIES;
+  }  
+  const {loading, data} = useQuery(query);
+  console.log(data);
+
 
 
   const [order, setOrder] = React.useState('asc');
@@ -268,6 +264,21 @@ export default function ComicEnhancedTable() {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+ 
+  if(loading === true){
+    return(<h1 style={{color:"white"}}>Loading...</h1>)
+}else{
+  if(comicstory === 'comic'){
+    contentData = data.getComics
+  }else if(comicstory === 'story'){
+    contentData = data.getStories
+  }
+
+  for(let i = 0; i < contentData.length; i++){
+    if(contentData[i].publishDate !== ""){
+      rows.push(createData(contentData[i].title, contentData[i].author, contentData[i].publishDate, contentData[i].likes, contentData[i].id))
+    }
+  }
 
   return (
     <Box sx={{ width: '100%'}}>
@@ -348,4 +359,5 @@ export default function ComicEnhancedTable() {
       </Paper>
     </Box>
   );
+  }
 }

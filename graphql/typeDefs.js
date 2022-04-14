@@ -23,6 +23,8 @@ module.exports = gql`
         followedCreators: [String]!
         likedComics: [String]!
         likedStories: [String]!
+        totallikes: Int!
+        totalfollowers: Int!
     }
     type Comic{
         id: ID!
