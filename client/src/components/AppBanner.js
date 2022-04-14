@@ -76,13 +76,13 @@ export default function MenuAppBar() {
   });
 
   let header;
-  let profilebutton;
+  let comicstory;
   if (location.pathname.includes("comic")) {
     header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Comic Coloseum</Link>
-    profilebutton = <MenuItem component={Link} to='/comic/userprofile/'>Profile</MenuItem>
+    comicstory = 'comic'
   }else if(location.pathname.includes("story")){
     header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Story Coloseum</Link>
-    profilebutton = <MenuItem component={Link} to='/story/userprofile/'>Profile</MenuItem>
+    comicstory = 'story'
   }
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -119,7 +119,7 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                {profilebutton}
+                <MenuItem component={Link} to={'/'+ comicstory +'/userprofile/' + user.id}>Profile</MenuItem>
                 <MenuItem onClick={handleLogout}>LogOut</MenuItem>
               </Menu>
             </div>

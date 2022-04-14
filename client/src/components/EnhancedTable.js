@@ -22,6 +22,8 @@ import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import gql from 'graphql-tag';
 import {useQuery } from '@apollo/react-hooks';
+import { useParams } from "react-router-dom";
+
 
 const GET_COMICS = gql`
   query{
@@ -29,6 +31,7 @@ const GET_COMICS = gql`
       id
       title
       author
+      authorId
       publishDate
       likes
     }
@@ -40,6 +43,7 @@ const GET_STORIES = gql`
       id
       title
       author
+      authorId
       publishDate
       likes
     }
@@ -222,6 +226,7 @@ EnhancedTableToolbar.propTypes = {
 
 export default function EnhancedTable() {
   rows= []
+  const { id } = useParams();
   const location = useLocation();
   let query;
   if (location.pathname.includes("comic")) {
@@ -268,15 +273,21 @@ export default function EnhancedTable() {
   if(loading === true){
     return(<h1 style={{color:"white"}}>Loading...</h1>)
 }else{
-  if(comicstory === 'comic'){
+  if(location.pathname.includes("comic")){
     contentData = data.getComics
-  }else if(comicstory === 'story'){
+  }else if(location.pathname.includes("story")){
     contentData = data.getStories
   }
 
   for(let i = 0; i < contentData.length; i++){
     if(contentData[i].publishDate !== ""){
-      rows.push(createData(contentData[i].title, contentData[i].author, contentData[i].publishDate, contentData[i].likes, contentData[i].id))
+      if(location.pathname.includes("user")){
+        if(id === contentData[i].authorId){
+          rows.push(createData(contentData[i].title, contentData[i].author, contentData[i].publishDate, contentData[i].likes, contentData[i].id))
+        }
+      }else{
+        rows.push(createData(contentData[i].title, contentData[i].author, contentData[i].publishDate, contentData[i].likes, contentData[i].id))
+      }
     }
   }
 

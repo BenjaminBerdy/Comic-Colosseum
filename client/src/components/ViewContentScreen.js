@@ -13,7 +13,30 @@ import { AuthContext } from '../context/auth';
 import { Typography } from "@mui/material";
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import gql from 'graphql-tag';
+import {useQuery } from '@apollo/react-hooks';
 
+const GET_COMIC = gql`
+  query($id:ID!){
+    getComic(id:$id){
+    title
+      author
+      authorId
+      publishDate
+      likes
+    }
+}`;
+
+const GET_STORY = gql`
+  query($id:ID!){
+    getStory(id:$id){
+      title
+      author
+      authorId
+      publishDate
+      likes
+    }
+}`;
 
 
 
@@ -32,24 +55,35 @@ function renderRow(props) {
     const { id } = useParams();
     const {user} = useContext(AuthContext);
     const location = useLocation();
-
-    let authorlink;
-    let title;
+    let query;
+    let comicstory;
+    let contentData;
     if (location.pathname.includes("comic")) {
-        authorlink = <h3>By:<Link to='/comic/viewuser/6252f1926f3fc25327a13160' style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>
-        title = <h3>Comic {id}</h3>
+        comicstory = 'comic'
+        query = GET_COMIC
     }else if(location.pathname.includes("story")){
-        authorlink = <h3>By:<Link to='/story/viewuser/6252f1926f3fc25327a13160' style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>
-        title = <h3>Story {id}</h3>
+        comicstory = 'story'
+        query = GET_STORY
     }
 
+    const {loading, data} = useQuery(query, {variables: {id}});
+
+    if(loading === true){
+        return(<h1 style={{color:"white"}}>Loading...</h1>)
+    }else{
+        if(location.pathname.includes("comic")){
+            contentData = data.getComic
+          }else if(location.pathname.includes("story")){
+            contentData = data.getStory
+          }
     return(
     <div>
       <AppBanner/>
     <div id="editbar">
-        {title} 
-        {authorlink}  
-        <h3>Published: 1/1/1 </h3>  
+        <h3>{contentData.title}</h3>
+        <h3>By:<Link to={'/' + comicstory + '/viewuser/' + contentData.authorId} style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>
+        <h3>Published: {contentData.publishDate}</h3>  
+        <h3>Likes: {contentData.likes}</h3>  
         <div id = "Comments">
         <h2 style={{textAlign: "left"}}>Community Interaction</h2>
         {user && (<div><TextField
@@ -96,5 +130,5 @@ function renderRow(props) {
     </div>
     </div>
     );
-
+    }
 }

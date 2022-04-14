@@ -29,7 +29,7 @@ function App() {
           <Route path="/register/" element={<RegisterScreen/>} />
           <Route path="/login/"  element={<LoginScreen/>} /> 
           <Route path="/:comicstory/homepage/"  element={<HomePage/>} />
-          <Route path= ":comicstory/userprofile/" element = {<UserProfile/>}/>
+          <Route path= ":comicstory/userprofile/:id" element = {<UserProfile/>}/>
           <Route path= "/forgotpassword/" element={<ForgotPassword/>}/>
           <Route path="/resetpassword/:id/:token/" element={<ResetPassword/>}/>
           <Route path="/changepassword/:id" element={<ChangePassword/>}/>

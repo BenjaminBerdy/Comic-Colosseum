@@ -32,7 +32,6 @@ const GET_USER = gql`
     }
 }`;
 
-
 function renderComicRow(props) {
   const { index, style } = props;
 
