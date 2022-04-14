@@ -144,7 +144,7 @@ module.exports = {
                 email: user.email,
             },secret,{expiresIn: '15m'});
 
-            const link = `testurl/resetpassword/${user.id}/${token}`;
+            const link = `https://cute-pavlova-b06b1e.netlify.app/resetpassword/${user.id}/${token}`;
             return link;
 
         },

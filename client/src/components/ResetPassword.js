@@ -91,6 +91,7 @@ export default function ResetPassword() {
                     label="New password"
                     name="newpassword"
                     autoComplete="New Password"
+                    type="password"
                     value={values.newpassword}
                     error={errors.newpassword ? true : false}
                     onChange={onChange}
@@ -103,6 +104,7 @@ export default function ResetPassword() {
                     id="confirmpassword"
                     label="Confirm New Password"
                     name="confirmpassword"
+                    type="password"
                     autoComplete="Confirm New Password"
                     value={values.confirmpassword}
                     error={errors.confirmpassword ? true : false}

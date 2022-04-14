@@ -13,7 +13,6 @@ import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -21,8 +20,17 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { AuthContext } from '../context/auth';
 import { useContext } from "react";
+import gql from 'graphql-tag'
+import {useQuery} from '@apollo/react-hooks'
 
-
+const GET_USER = gql`
+  query($id:ID!){
+    getUser(id:$id){
+     username
+     totallikes
+     totalfollowers
+    }
+}`;
 
 
 function renderComicRow(props) {
@@ -42,18 +50,18 @@ function renderStoryRow(props) {
 
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/createcomic/' + (index+1)} style={{ color: 'white', textDecoration: 'none'}}>
+      <ListItemButton component={Link} to={'/createstory/' + (index+1)} style={{ color: 'white', textDecoration: 'none'}}>
         <ListItemText primary={`Story ${index + 1}`} />
       </ListItemButton>
     </ListItem>
   );
 }
 
-
-
-
 export default function UserProfile(props){
   const{user}= useContext(AuthContext);
+  const id = user.id;
+  const {loading, data} = useQuery(GET_USER, {variables: {id}});
+
   const [open, setOpen] = React.useState(false);
   const [msg] = React.useState('Deletion is permanent and cannot be undone. Continue?');
 
@@ -133,6 +141,10 @@ export default function UserProfile(props){
       </FixedSizeList></div>
     }
 
+
+    if(loading === true){
+      return(<h1 style={{color:"white"}}>Loading...</h1>)
+    }else{
     return(
 
         <div>
@@ -162,7 +174,7 @@ export default function UserProfile(props){
             <AppBanner/>  
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
             <h1>{user.username}</h1>
-            <h3>Followers: {user.totalfollowers}</h3> <h3>Likes: {user.totallikes}</h3>
+            <h3>Followers: {data.getUser.totalfollowers}</h3> <h3>Likes: {data.getUser.totalfollowers}</h3>
             {createbutton}
             <Box
                 sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: '#4B284F' }}
@@ -194,5 +206,5 @@ export default function UserProfile(props){
             
         </div>
     );
-
+  }
 }
