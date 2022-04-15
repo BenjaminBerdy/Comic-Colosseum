@@ -79,7 +79,7 @@ module.exports = gql`
         follow(id: ID!, followedCreators: [String]!): User!
         likedComicsListUpdate(id: ID!, likedComics: [String]!): User!
         likedStoriesListUpdate(id: ID!, likedStories: [String]!): User!
-        deleteUser(username: String!, password: String!): String!
+        deleteUser(id: ID!): String!
 
         createComic(author: String!, authorId: String!): Comic!
         updateComic(id: ID!, title: String!, backgroundColor: String!,

@@ -30,7 +30,6 @@ export default function ForgotPassword() {
 
   const [userForgotPassword] = useMutation(FORGOT_PASSWORD,{
     update(_,{data:{forgotPassword:link}}){
-      console.log(link)
       setErrors(["Password reset link has been sent to your email."]);
       emailjs.send("service_oq4uyro","template_q7i3i7v",{
         message: link,

@@ -11,8 +11,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList } from 'react-window';
-import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -21,7 +20,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { AuthContext } from '../context/auth';
 import { useContext } from "react";
 import gql from 'graphql-tag'
-import {useQuery} from '@apollo/react-hooks'
+import {useQuery, useMutation} from '@apollo/react-hooks'
 
 const GET_USER = gql`
   query($id:ID!){
@@ -30,6 +29,11 @@ const GET_USER = gql`
      totallikes
      totalfollowers
     }
+}`;
+
+const DELETE_USER = gql`
+  mutation deleteUser($id:ID!){
+    deleteUser(ID: $id)
 }`;
 
 function renderComicRow(props) {
@@ -57,12 +61,35 @@ function renderStoryRow(props) {
 }
 
 export default function UserProfile(props){
-  const{user}= useContext(AuthContext);
+  const navigate = useNavigate();
+  const{user, logout}= useContext(AuthContext);
   const id = user.id;
   const {loading, data} = useQuery(GET_USER, {variables: {id}});
 
   const [open, setOpen] = React.useState(false);
   const [msg] = React.useState('Deletion is permanent and cannot be undone. Continue?');
+
+
+  const [deletedUser] = useMutation(DELETE_USER,{
+    update(_,{data}){
+      logout()
+      if(location.pathname.includes("comic")){
+        navigate('/comic/homepage/')
+      }else if(location.pathname.includes("story")){
+        navigate('/story/homepage/')
+      }
+    },
+    onError(err){
+      console.log(err.graphQLErrors[0].extensions.errors)
+    },
+    variables: id
+  })
+
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    deletedUser();
+  };    
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -162,13 +189,12 @@ export default function UserProfile(props){
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-        <Button onClick={handleClose}>Confirm</Button>
+        <Button onClick={handleSubmit}>Confirm</Button>
           <Button onClick={handleClose} autoFocus>
             Dismiss
           </Button>
         </DialogActions>
       </Dialog>
-
           
             <AppBanner/>  
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>

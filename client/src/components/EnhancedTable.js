@@ -237,7 +237,6 @@ export default function EnhancedTable() {
     query = GET_STORIES;
   }  
   const {loading, data} = useQuery(query);
-  console.log(data);
 
 
 

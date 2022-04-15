@@ -200,24 +200,16 @@ module.exports = {
                 throw new Error(err);
             }
         },
-        async deleteUser(_,{username,password}){
-            const {errors,valid} = validateLoginInput(username,password);
-            if(!valid){
-                throw new UserInputError('Errors',{errors});
-            }
+        async deleteUser(_,{id}){
+            let {errors} = ""
 
-            var user = await User.findOne({username});
+            var user = await User.findById({id});
             if(!user){
                 errors.general = 'User not found'
                 throw new UserInputError('User not found',{errors});
             }
-            const match = await bcrypt.compare(password,user.password);
-            if(!match){ 
-                errors.general = 'Incorrect username or password'
-                throw new UserInputError('Incorrect username or password',{errors});
-            }
             await User.findByIdAndDelete(user.id);
-            return 'Comment Deleted Successfully';
+            return 'User Deleted Successfully';
         }
     }
 }
