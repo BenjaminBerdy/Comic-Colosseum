@@ -33,7 +33,7 @@ const GET_USER = gql`
 
 const DELETE_USER = gql`
   mutation deleteUser($id:ID!){
-    deleteUser(ID: $id)
+    deleteUser(id: $id)
 }`;
 
 function renderComicRow(props) {
@@ -72,17 +72,18 @@ export default function UserProfile(props){
 
   const [deletedUser] = useMutation(DELETE_USER,{
     update(_,{data}){
-      logout()
       if(location.pathname.includes("comic")){
         navigate('/comic/homepage/')
       }else if(location.pathname.includes("story")){
         navigate('/story/homepage/')
       }
+      logout()
     },
     onError(err){
+      console.log(err)
       console.log(err.graphQLErrors[0].extensions.errors)
     },
-    variables: id
+    variables: {id}
   })
 
 
