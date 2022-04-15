@@ -203,7 +203,7 @@ module.exports = {
         async deleteUser(_,{id}){
             let {errors} = ""
 
-            var user = await User.findById({id});
+            var user = await User.findById(id);
             if(!user){
                 errors.general = 'User not found'
                 throw new UserInputError('User not found',{errors});
