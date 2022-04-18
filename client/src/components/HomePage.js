@@ -6,16 +6,11 @@ import Toolbar from '@mui/material/Toolbar';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import EnhancedTable from "./EnhancedTable";
-//import StoryEnhancedTable from "./StoryEnhancedTable";
 import FollowedCreatorsBar from "./followedCreatorsBar";
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
 import { Button } from "@mui/material";
 import { useLocation } from 'react-router-dom';
-
-
-
-
 
 
 export default function HomePage(){

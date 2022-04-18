@@ -32,7 +32,7 @@ function renderRow(props) {
   );
 }
 
-export default function VirtualizedList() {
+export default function FollowedCreatorsBar() {
   const location = useLocation();
   const {loading, data} = useQuery(GET_USERS);
  

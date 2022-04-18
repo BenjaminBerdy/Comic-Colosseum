@@ -1,5 +1,6 @@
 import React from "react";
 import AppBanner from "./AppBanner";
+import UnpublishedList from "./UnpublishedList";
 import Box from '@mui/material/Box';
 import SearchIcon from '@mui/icons-material/Search';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,10 +8,6 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import EnhancedTable from "./EnhancedTable";
 import Button from '@mui/material/Button'
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import { FixedSizeList } from 'react-window';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -36,40 +33,36 @@ const DELETE_USER = gql`
     deleteUser(id: $id)
 }`;
 
-function renderComicRow(props) {
-  const { index, style } = props;
-
-  return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/createcomic/' + (index+1)} style={{ color: 'white', textDecoration: 'none'}}>
-        <ListItemText primary={`Comic ${index + 1}`} />
-      </ListItemButton>
-    </ListItem>
-  );
-}
-
-function renderStoryRow(props) {
-  const { index, style } = props;
-
-  return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/createstory/' + (index+1)} style={{ color: 'white', textDecoration: 'none'}}>
-        <ListItemText primary={`Story ${index + 1}`} />
-      </ListItemButton>
-    </ListItem>
-  );
-}
+const CREATE_COMIC = gql`
+  mutation createComic($author: String!, $authorId: String!){
+    createComic(author:$author, authorId:$authorId){
+      id
+    }
+  }`;
 
 export default function UserProfile(props){
   const navigate = useNavigate();
   const{user, logout}= useContext(AuthContext);
   const id = user.id;
+  const username = user.username;
   const {loading, data} = useQuery(GET_USER, {variables: {id}});
 
   const [open, setOpen] = React.useState(false);
   const [msg] = React.useState('Deletion is permanent and cannot be undone. Continue?');
 
-
+  const [createNewComic] = useMutation(CREATE_COMIC,{
+    update(_,{data}){
+      navigate("/createcomic/" + data.createComic.id + "/")
+    },
+    onError(err){
+      console.log(err)
+      console.log(err.graphQLErrors[0].extensions.errors)
+    },
+    variables: {
+      author: username, 
+      authorId: id
+    }
+  })
   const [deletedUser] = useMutation(DELETE_USER,{
     update(_,{data}){
       if(location.pathname.includes("comic")){
@@ -86,6 +79,10 @@ export default function UserProfile(props){
     variables: {id}
   })
 
+  const handleCreateComic = (event) =>{
+    event.preventDefault();
+    createNewComic();
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -141,31 +138,10 @@ export default function UserProfile(props){
 
     const location = useLocation();
     let createbutton;
-    let unpublishedbar;
     if (location.pathname.includes("comic")) {
-      createbutton= <Link to='/createcomic/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Comic</Button></Link>
-      unpublishedbar = <div><h2>Unpublished Comics</h2>
-      <FixedSizeList
-        height={300}
-        width={250}
-        itemSize={46}
-        itemCount={200}
-        overscanCount={5}
-      >
-        {renderComicRow}
-      </FixedSizeList></div>
+      createbutton= <Button onClick={handleCreateComic}id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Comic</Button>
     }else if(location.pathname.includes("story")){
       createbutton= <Link to='/createstory/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Story</Button></Link>
-      unpublishedbar = <div><h2>Unpublished Stories</h2>
-      <FixedSizeList
-        height={300}
-        width={250}
-        itemSize={46}
-        itemCount={200}
-        overscanCount={5}
-      >
-        {renderStoryRow}
-      </FixedSizeList></div>
     }
 
 
@@ -206,7 +182,7 @@ export default function UserProfile(props){
                 sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: '#4B284F' }}
               >
               <br/>
-              {unpublishedbar}
+              <UnpublishedList/>
             </Box>
             <Link to={'/changepassword/'+user.id}><Button variant="outlined" size="small" color="secondary" style={{marginLeft: "-11.5vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Change Password</Button></Link>
             <Button onClick={handleClickOpen} variant="outlined" size="small" color="secondary" style={{marginLeft: "-4vw", marginRight: "50vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Delete Profile</Button>
