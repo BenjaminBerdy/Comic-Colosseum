@@ -3,12 +3,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList } from 'react-window';
-import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import gql from 'graphql-tag';
 import {useQuery} from '@apollo/react-hooks';
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
+import Link from '@mui/material/Link';
+
 
 const GET_COMICS = gql`
   query{
@@ -43,7 +44,7 @@ function renderRow(props) {
   const { index, style } = props;
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton component={Link} to={'/create'+ comicstory +'/' + rows[index].id} style={{ color: 'white', textDecoration: 'none'}}>
+      <ListItemButton component={Link} href={'/create'+ comicstory +'/' + rows[index].id} style={{ color: 'white', textDecoration: 'none'}}>
         <ListItemText primary={rows[index].title} />
       </ListItemButton>
     </ListItem>

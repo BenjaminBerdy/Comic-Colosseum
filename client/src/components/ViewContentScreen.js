@@ -1,6 +1,5 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Stage} from 'react-konva';
 import AppBanner from "./AppBanner";
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField';
@@ -14,16 +13,28 @@ import { Typography } from "@mui/material";
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import gql from 'graphql-tag';
+import { Stage, Layer, Line,Rect , Text } from 'react-konva';
 import {useQuery } from '@apollo/react-hooks';
 
 const GET_COMIC = gql`
   query($id:ID!){
     getComic(id:$id){
-    title
+      id
+      title
       author
       authorId
       publishDate
       likes
+      backgroundColor
+      points
+      strokeWidth
+      stroke
+      fontFamily
+      fontSize
+      text
+      textx
+      texty
+      textcolor
     }
 }`;
 
@@ -55,6 +66,9 @@ function renderRow(props) {
     const { id } = useParams();
     const {user} = useContext(AuthContext);
     const location = useLocation();
+    const [lines, setLines] = React.useState([]);
+    const [text,setText] = React.useState([])
+    const [backgroundColor,setBackgroundColor] = React.useState('#FFFFFF');  
     let query;
     let comicstory;
     let contentData;
@@ -67,6 +81,20 @@ function renderRow(props) {
     }
 
     const {loading, data} = useQuery(query, {variables: {id}});
+
+    React.useEffect(() => {
+      if(loading === false){
+        console.log(data)
+        for(let i = 0; i < data.getComic.points.length; i++){
+          setLines((oldValue) => [...oldValue, {points: data.getComic.points[i], stroke:data.getComic.stroke[i], strokewidth:data.getComic.strokeWidth[i] }]);
+        }
+        for(let i = 0; i < data.getComic.text.length; i++){
+          setText((oldValue) => [...oldValue, {x: data.getComic.textx[i], y:data.getComic.texty[i], text:data.getComic.text[i], 
+            fontFamily:data.getComic.fontFamily[i], fontSize:data.getComic.fontSize[i], fill:data.getComic.textcolor[i]}]);
+        }
+        setBackgroundColor(data.getComic.backgroundColor)
+      } 
+  }, [data]) // eslint-disable-line react-hooks/exhaustive-deps
 
     if(loading === true){
         return(<h1 style={{color:"white"}}>Loading...</h1>)
@@ -81,7 +109,7 @@ function renderRow(props) {
       <AppBanner/>
     <div id="editbar">
         <h3>{contentData.title}</h3>
-        <h3>By:<Link to={'/' + comicstory + '/viewuser/' + contentData.authorId} style={{ color: '#B23CFD', textDecoration: 'none'}}> Author </Link></h3>
+        <h3>By: <Link to={'/' + comicstory + '/viewuser/' + contentData.authorId} style={{ color: '#B23CFD', textDecoration: 'none'}}>{contentData.author}</Link></h3>
         <h3>Published: {contentData.publishDate}</h3>  
         <h3>Likes: {contentData.likes}</h3>  
         <div id = "Comments">
@@ -114,7 +142,43 @@ function renderRow(props) {
     </div>
 
     <div id="canvas">
-      <Stage width={1050} height={600}/>
+    <Stage
+        width={1050}
+        height={600}
+      >
+        <Layer>
+        <Rect
+          x={0}
+          y={0}
+          width={1050}
+          height={600}
+          fill={backgroundColor}
+          shadowBlur={10}
+        />
+        {text.map((txt, i) => (
+            <Text
+              x = {txt.x}
+              y = {txt.y}
+              key={i}
+              fontFamily= {txt.fontFamily}
+              fontSize={txt.fontSize}
+              text = {txt.text}
+              fill ={txt.fill}      
+              
+            />
+          ))}
+          {lines.map((line, i) => (
+            <Line
+              key={i}
+              points={line.points}
+              stroke={line.stroke}
+              strokeWidth={line.strokewidth}
+              tension={0.5}
+              lineCap="round"
+            />
+          ))}
+        </Layer>
+      </Stage>
     </div>
     <div id="buttonDiv" style={{backgroundColor: "#4B284F", width: 1050.6, height: 50, position: "absolute", right: 76, bottom: 45}}>
         {user && (

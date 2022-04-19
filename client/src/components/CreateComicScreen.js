@@ -1,5 +1,4 @@
 import React from "react";
-//import { useParams } from "react-router-dom";
 import { Stage, Layer, Line,Rect , Text } from 'react-konva';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -9,15 +8,17 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button'
 import CreateIcon from '@mui/icons-material/Create';
-import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import MouseIcon from '@mui/icons-material/Mouse';
 import { Typography } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
 import AppBanner from "./AppBanner";
 import { Icon } from '@iconify/react';
 import gql from 'graphql-tag'
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {useQuery, useMutation} from '@apollo/react-hooks'
+import { useContext } from "react";
+import { AuthContext } from '../context/auth';
 
 const GET_COMIC = gql`
   query($id:ID!){
@@ -37,74 +38,179 @@ const GET_COMIC = gql`
       text
       textx
       texty
+      textcolor
     }
 }`;
 
 const UPDATE_COMIC = gql`
-  mutation updateComic($id: ID!, $title: String!, $backgroundColor: String!, $points: [[Int]]!, $strokeWidth: [Int]!, $stroke: [String]!, 
-            $fontFamily: [String]!, $fontSize: [Int]!, $text: [String]!, $textx: [Int]!, $texty: [Int]!){
+  mutation updateComic($id: ID!, $title: String!, $backgroundColor: String!, $points: [[Float]]!, $strokeWidth: [Int]!, $stroke: [String]!, 
+            $fontFamily: [String]!, $fontSize: [Int]!, $text: [String]!, $textcolor: [String]!, $textx: [Int]!, $texty: [Int]!){
     updateComic(id:$id, title:$title, backgroundColor:$backgroundColor, points:$points, strokeWidth:$strokeWidth, stroke:$stroke, 
-            fontFamily:$fontFamily, fontSize:$fontSize, text:$text, textx:$textx, texty:$texty)
+            fontFamily:$fontFamily, fontSize:$fontSize, text:$text, textcolor:$textcolor, textx:$textx, texty:$texty)
     {
       id
+      backgroundColor
       points
     }
   }`;
 
+const PUBLISH_COMIC = gql`
+mutation publishComic($id: ID!){
+  publishComic(id:$id)
+  {
+    id
+    publishDate
+  }
+}`;
+
+const DELETE_COMIC = gql`
+mutation deleteComic($id: ID!, $authorId: ID!){
+  deleteComic(id:$id, authorId:$authorId)
+}`;
+
 
 let history = [[]];
 let historyStep = 0;
+let saved = false;
+let loadhistory = false;
+let edithistory = false;
 
-
-  export default function CreateComicScreen(){
+  export default function CreateComicScreen() {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const{user}= useContext(AuthContext);
+    const userid = user.id;
     const {loading, data} = useQuery(GET_COMIC, {variables: {id}});
     const [tool, setTool] = React.useState(['draw',false]);
-    const [lines, setLines] = React.useState(history[0]);
+    const [lines, setLines] = React.useState([]);
     const [valuetext, setvaluetext] = React.useState("Text")
     const [text,setText] = React.useState([])
     const isDrawing = React.useRef(false);
     const [currentpage, setCurrentPage] = React.useState('Page 1');
     const [fontSize, setFontSize] = React.useState(30);
     const [strokewidth, setStrokeWidth] = React.useState(5);
-    const [color,setColor] = React.useState('#000000'); 
-    const [backgroundColor, setBackgroundColor] = React.useState('#ffffff')
-    const [title, setTitle] = React.useState('Untitled Comic')
+    const [stroke,setStroke] = React.useState('#000000');
+    const [title,setTitle] = React.useState('Untitled Comic'); 
+    const [backgroundColor,setBackgroundColor] = React.useState('#FFFFFF');  
+    const [values, setValues] = React.useState({
+        id: id,
+        title: 'Untitled Comic',
+        backgroundColor: '#FFFFFF',
+        points: [],
+        strokeWidth: [],
+        stroke: [],
+        fontFamily: [],
+        fontSize: [],
+        text: [],
+        textx: [],
+        texty: [],
+        textcolor: []
+    })
+
+    React.useEffect(()=>{
+      if(loadhistory === true){
+        loadhistory = false;
+        history = [[lines,text]]
+        console.log(history);
+      }
+    }, [title]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(()=>{
+      if(edithistory === true){
+        console.log("history changed");
+        edithistory = false;
+        history.push([lines,text]);
+        historyStep += 1;
+        console.log(history);
+      }
+    }, [text]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(()=>{
+      if(edithistory === true){
+        console.log("history changed");
+        edithistory = false;
+        history.push([lines,text]);
+        historyStep += 1;
+        console.log(history);
+      }
+    }, [lines]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    
+   
+    React.useEffect(() => {
+      if(loading === false){
+        loadhistory = true;
+        for(let i = 0; i < data.getComic.points.length; i++){
+          setLines((oldValue) => [...oldValue, {points: data.getComic.points[i], stroke:data.getComic.stroke[i], strokewidth:data.getComic.strokeWidth[i] }]);
+        }
+        for(let i = 0; i < data.getComic.text.length; i++){
+          setText((oldValue) => [...oldValue, {x: data.getComic.textx[i], y:data.getComic.texty[i], text:data.getComic.text[i], 
+            fontFamily:data.getComic.fontFamily[i], fontSize:data.getComic.fontSize[i], fill:data.getComic.textcolor[i]}]);
+        }
+        setBackgroundColor(data.getComic.backgroundColor)
+        setTitle(data.getComic.title);
+      } 
+  }, [data]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  React.useEffect(() => {
+    if(saved === true){
+      saved = false;
+      console.log(values);
+      saveComic(); 
+      navigate("/comic/userProfile/"+ userid);
+    }
+}, [values]) // eslint-disable-line react-hooks/exhaustive-deps
+
+ 
+
     const [saveComic] = useMutation(UPDATE_COMIC,{
-      update(_,{data}){
-        console.log(data)
+      update(_,{updatedata}){
+        console.log(updatedata)
+        navigate("/comic/userProfile/"+ data.getComic.authorId);
       },
       onError(err){
         console.log(err)
         console.log(err.graphQLErrors[0].extensions.errors)
       },
-      variables: {
-        id: id,
-        title: title,
-        backgroundColor: backgroundColor,
-        points: lines,
-        strokeWidth: lines.strokewidth,
-        stroke: lines.stroke,
-        fontFamily: text.fontFamily,
-        fontSize: text.fontsize,
-        text: text.text,
-        textx: text.x,
-        texty: text.y
-      }
+      variables: values
     })
 
+    const [publishcomic] = useMutation(PUBLISH_COMIC,{
+      update(_,{data}){
+        console.log(data);
+        navigate("/comic/userProfile/"+ userid);
+      },
+      onError(err){
+        console.log(err)
+        console.log(err.graphQLErrors[0].extensions.errors)
+      },
+      variables: {id}
+    })
+
+    const [deletecomic] = useMutation(DELETE_COMIC,{
+      update(_,{data}){
+        console.log(data);
+        navigate("/comic/userProfile/"+ userid);
+      },
+      onError(err){
+        console.log(err)
+        console.log(err.graphQLErrors[0].extensions.errors)
+      },
+      variables: {id: id, authorId: userid}
+    })
+    
   if(loading){
     return(<h1 style={{color:"white"}}>Loading...</h1>)
   }else{
-  console.log(data.getComic)
-
+  
   const handleUndo = () => {
       if (historyStep === 0) {
         return;
       }
       historyStep -= 1;
       const previous = history[historyStep];
-      setLines(previous);
+      setLines(previous[0]);
+      setText(previous[1]);
     };
 
   const handleRedo = () => {
@@ -113,7 +219,8 @@ let historyStep = 0;
       }
       historyStep += 1;
       const next = history[historyStep];
-      setLines(next);
+      setLines(next[0]);
+      setText(next[1]);
     };
 
   const handlePageChange = (event) => {
@@ -125,7 +232,7 @@ let historyStep = 0;
     if(tool[0] === 'draw'){
       isDrawing.current = true;
       const pos = e.target.getStage().getPointerPosition();
-      setLines([...lines, {points: [pos.x, pos.y], stroke:color, strokewidth:strokewidth }]);
+      setLines([...lines, {points: [pos.x, pos.y], stroke:stroke, strokewidth:strokewidth }]);
       }else if(tool[0] === 'erase'){
         
     }
@@ -150,21 +257,71 @@ let historyStep = 0;
   const handleMouseUp = () => {
     if(tool[0] === 'draw'){
       isDrawing.current = false;
-      history.push(lines);
+      history.push([lines,text]);
       historyStep += 1;
-      console.log(history);
-      console.log(lines.strokeWidth)  
+      console.log(lines);
     }
-    //console.log(lines)
+    
   };
 
   const handleUpdateComic = (event) =>{
     event.preventDefault();
-    saveComic();
+
+    let temppoints = [];
+    let tempstrokewidth = [];
+    let tempstroke = [];
+    let tempfontFamily = [];
+    let tempfontSize = [];
+    let temptext = [];
+    let temptextx = [];
+    let temptexty = [];
+    let temptextcolor = [];
+
+    for(let i = 0; i < lines.length; i++){
+      temppoints.push(lines[i].points);
+      tempstrokewidth.push(lines[i].strokewidth);
+      tempstroke.push(lines[i].stroke);
+    }
+
+    for(let i = 0; i < text.length; i++){
+      tempfontFamily.push(text[i].fontFamily);
+      tempfontSize.push(text[i].fontSize);
+      temptext.push(text[i].text);
+      temptextx.push(text[i].x);
+      temptexty.push(text[i].y);
+      temptextcolor.push(text[i].fill);
+    }
+
+    saved = true;
+
+    setValues({
+        id: id,
+        title: title,
+        backgroundColor: backgroundColor,
+        points: temppoints,
+        strokeWidth: tempstrokewidth,
+        stroke: tempstroke,
+        fontFamily: tempfontFamily,
+        fontSize: tempfontSize,
+        text: temptext,
+        textx:  temptextx,
+        texty: temptexty,
+        textcolor: temptextcolor
+    });  
+  }
+
+  const handlePublishComic = (event) =>{
+    event.preventDefault();
+    publishcomic();
+  }
+
+  const handleDeleteComic = (event) =>{
+    event.preventDefault();
+    deletecomic();
   }
 
   const handleChangeTitle = (e) => {
-    setTitle(e.target.value)
+    setTitle(e.target.value);
   }
 
   const handleChangeValueText = (e) =>{
@@ -172,11 +329,11 @@ let historyStep = 0;
   }
 
   const handleColorChange = (e) =>{
-    setColor(e.target.value);
+    setStroke(e.target.value);
   }
 
   const handleBackgroundColorChange = (e) =>{
-    setBackgroundColor(e.target.value);
+      setBackgroundColor(e.target.value);
   }
 
   const handleFontSliderChange = (e) => {
@@ -188,7 +345,8 @@ let historyStep = 0;
   }
 
   const handleAddText = (e) =>{
-    setText([...text, {x: 20, y:20, text:valuetext,fontFamily:"Arial", fontSize:fontSize, fill:color}]);
+    edithistory = true;
+    setText([...text, {x: 20, y:20, text:valuetext,fontFamily:"Arial", fontSize:fontSize, fill:stroke}]);
   }
 
 
@@ -200,6 +358,7 @@ let historyStep = 0;
         <TextField
           id="standard-helperText"
           label="Title"
+          name = "title"
           value = {title}
           onChange = {handleChangeTitle}
           variant="standard"
@@ -234,7 +393,7 @@ let historyStep = 0;
         <div className="rowC">
         <Button onClick={() => {setTool(['draw',false]);}} variant="text" style={{marginLeft: "3vw", marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
         <Button onClick={() => {setTool(['erase',false])}} variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
-        <Button onClick={() => {setTool(['select',true])}} variant="text" style={{marginTop: "1vw", color: "white"}}><FormatColorFillIcon/></Button>
+        <Button onClick={() => {setTool(['select',true])}} variant="text" style={{marginTop: "1vw", color: "white"}}><MouseIcon/></Button>
         </div>
         <br/>
             <Box sx={{ width: 250 }}>
@@ -285,9 +444,9 @@ let historyStep = 0;
         <Button onClick={handleAddText}id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "1vw", height: "3vw", color: "white"}}>Add Text</Button>
         </div>
         <div>
-        Current Color: <input id="color" type="color" value ={color} onChange={handleColorChange}/>
+        Current Color: <input id="color" type="color" value ={stroke} onChange={handleColorChange}/>
         <br/><br/>
-        Background Color: <input id="color" type="color" value ={backgroundColor} onChange={handleBackgroundColorChange}/>
+        Background Color: <input id="backgroundcolor" type="color" value ={backgroundColor} onChange={handleBackgroundColorChange}/>
         </div>
         <div className="rowC">
         <Button onClick={handleUndo} id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Undo</Button>
@@ -325,9 +484,15 @@ let historyStep = 0;
               fill ={txt.fill}
               onClick={(e) =>{
                 if(tool[0] === 'erase'){
-                  text.splice(i,1);
-                  e.target.destroy()
+                  edithistory = true;
+                  setText(text.filter((_, j) => j !== i))
                 }
+              }}
+              onDragEnd={(e) => {
+                let temptext = text
+                temptext[i].x = e.target.x()
+                temptext[i].y = e.target.y()
+                setText(temptext);
               }}
               
             />
@@ -343,13 +508,12 @@ let historyStep = 0;
               draggable = {tool[1]}
               onClick={(e) =>{
                 if(tool[0] === 'erase'){
-                  lines.splice(i,1);
-                  e.target.destroy()
-                  history.push(lines);
-                  historyStep += 1;
-                  console.log(history);
-
+                  edithistory = true;
+                  setLines(lines.filter((_, j) => j !== i))
                 }
+              }}
+              onDragEnd={(e) => {
+
               }}
             />
           ))}
@@ -358,9 +522,9 @@ let historyStep = 0;
     </div>
     <div id="buttonDiv" style={{backgroundColor: "#4B284F", width: 1050.6, height: 50, position: "absolute", right: 84.5, bottom: 45}}>
         <div id = "save-publish-delete" className="rowC">
-            <Button onClick={handleUpdateComic}id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Save</Button>
-            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Publish</Button>
-            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Delete</Button>
+            <Button onClick={handleUpdateComic} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Save</Button>
+            <Button onClick={handlePublishComic} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Publish</Button>
+            <Button onClick={handleDeleteComic} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Delete</Button>
         </div>
     </div>
     </div>

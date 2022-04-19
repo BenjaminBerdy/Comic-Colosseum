@@ -34,12 +34,13 @@ module.exports = gql`
         publishDate: String!
         likes: Int!
         backgroundColor: String!
-        points: [[Int]]!
+        points: [[Float]]!
         strokeWidth: [Int]!
         stroke: [String]!
         fontFamily: [String]!
         fontSize: [Int]!
         text: [String]!
+        textcolor: [String]!
         textx: [Int]!
         texty: [Int]!
     }
@@ -83,8 +84,8 @@ module.exports = gql`
 
         createComic(author: String!, authorId: String!): Comic!
         updateComic(id: ID!, title: String!, backgroundColor: String!,
-            points: [[Int]]!, strokeWidth: [Int]!, stroke: [String]!, fontFamily: [String]!,
-            fontSize: [Int]!, text: [String]!, textx: [Int]!, texty: [Int]!): Comic!
+            points: [[Float]]!, strokeWidth: [Int]!, stroke: [String]!, fontFamily: [String]!,
+            fontSize: [Int]!, text: [String]!, textcolor: [String]!, textx: [Int]!, texty: [Int]!): Comic!
         publishComic(id: ID!): Comic!
         likeComic(id: ID!, likes: Int!): Comic!
         deleteComic(id: ID!, authorId: ID!): String!

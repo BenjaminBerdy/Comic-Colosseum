@@ -13,6 +13,7 @@ const comicSchema = new Schema({
     fontFamily: [String],
     fontSize: [Number],
     text: [String],
+    textcolor: [String],
     textx: [Number],
     texty: [Number],
 })
