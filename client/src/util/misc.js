@@ -232,4 +232,27 @@ if (!data.get('username') || !data.get('email') || !data.get('password') || !dat
           </Button>
         </DialogActions>
       </Dialog>
+
+
+      <div className='rowC'>
+        <FormControl >
+            <InputLabel id="demo-simple-select-label" sx={{ input: { color: 'white' } }}
+          color="secondary" focused>Current Page</InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={currentpage}
+                label="Current Page"
+                onChange={handlePageChange}
+                color="secondary"
+                style={{width: "8vw", marginRight: "2vw", color: "white"}}
+            >
+                <MenuItem value={"Page 1"}>Page 1</MenuItem>
+                <MenuItem value={"Page 2"}>Page 2</MenuItem>
+                <MenuItem value={"Page 3"}>Page 3</MenuItem>
+            </Select>
+        </FormControl>
+        <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "2vw", color: "white", height: "3.6vw", width: "8vw"}}>Add Page</Button>
+        <Button variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "3.6vw"}}>Remove Page</Button>
+        </div>
 */

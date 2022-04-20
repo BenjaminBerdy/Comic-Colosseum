@@ -2,10 +2,6 @@ import React from "react";
 import { Stage, Layer, Line,Rect , Text } from 'react-konva';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import Button from '@mui/material/Button'
 import CreateIcon from '@mui/icons-material/Create';
 import MouseIcon from '@mui/icons-material/Mouse';
@@ -19,6 +15,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import {useQuery, useMutation} from '@apollo/react-hooks'
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
+import FontPicker from "font-picker-react";
+
 
 const GET_COMIC = gql`
   query($id:ID!){
@@ -30,6 +28,8 @@ const GET_COMIC = gql`
       publishDate
       likes
       backgroundColor
+      linex
+      liney
       points
       strokeWidth
       stroke
@@ -43,10 +43,10 @@ const GET_COMIC = gql`
 }`;
 
 const UPDATE_COMIC = gql`
-  mutation updateComic($id: ID!, $title: String!, $backgroundColor: String!, $points: [[Float]]!, $strokeWidth: [Int]!, $stroke: [String]!, 
-            $fontFamily: [String]!, $fontSize: [Int]!, $text: [String]!, $textcolor: [String]!, $textx: [Int]!, $texty: [Int]!){
-    updateComic(id:$id, title:$title, backgroundColor:$backgroundColor, points:$points, strokeWidth:$strokeWidth, stroke:$stroke, 
-            fontFamily:$fontFamily, fontSize:$fontSize, text:$text, textcolor:$textcolor, textx:$textx, texty:$texty)
+  mutation updateComic($id: ID!, $title: String!, $backgroundColor: String!, $linex: [Int]!, $liney: [Int]!, $points: [[Float]]!, $strokeWidth: [Int]!, 
+        $stroke: [String]!, $fontFamily: [String]!, $fontSize: [Int]!, $text: [String]!, $textcolor: [String]!, $textx: [Int]!, $texty: [Int]!){
+    updateComic(id:$id, title:$title, backgroundColor:$backgroundColor, linex:$linex, liney:$liney, points:$points, strokeWidth:$strokeWidth, 
+        stroke:$stroke, fontFamily:$fontFamily, fontSize:$fontSize, text:$text, textcolor:$textcolor, textx:$textx, texty:$texty)
     {
       id
       backgroundColor
@@ -75,6 +75,7 @@ let saved = false;
 let loadhistory = false;
 let edithistory = false;
 
+
   export default function CreateComicScreen() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -86,8 +87,9 @@ let edithistory = false;
     const [valuetext, setvaluetext] = React.useState("Text")
     const [text,setText] = React.useState([])
     const isDrawing = React.useRef(false);
-    const [currentpage, setCurrentPage] = React.useState('Page 1');
+    //const [currentpage, setCurrentPage] = React.useState('Page 1');
     const [fontSize, setFontSize] = React.useState(30);
+    const [fontFamily, setFontFamily]= React.useState("Open Sans");
     const [strokewidth, setStrokeWidth] = React.useState(5);
     const [stroke,setStroke] = React.useState('#000000');
     const [title,setTitle] = React.useState('Untitled Comic'); 
@@ -96,6 +98,8 @@ let edithistory = false;
         id: id,
         title: 'Untitled Comic',
         backgroundColor: '#FFFFFF',
+        linex: [],
+        liney: [],
         points: [],
         strokeWidth: [],
         stroke: [],
@@ -141,7 +145,8 @@ let edithistory = false;
       if(loading === false){
         loadhistory = true;
         for(let i = 0; i < data.getComic.points.length; i++){
-          setLines((oldValue) => [...oldValue, {points: data.getComic.points[i], stroke:data.getComic.stroke[i], strokewidth:data.getComic.strokeWidth[i] }]);
+          setLines((oldValue) => [...oldValue, {x:data.getComic.linex[i], y:data.getComic.liney[i], points: data.getComic.points[i], 
+            stroke:data.getComic.stroke[i], strokewidth:data.getComic.strokeWidth[i] }]);
         }
         for(let i = 0; i < data.getComic.text.length; i++){
           setText((oldValue) => [...oldValue, {x: data.getComic.textx[i], y:data.getComic.texty[i], text:data.getComic.text[i], 
@@ -223,16 +228,11 @@ let edithistory = false;
       setText(next[1]);
     };
 
-  const handlePageChange = (event) => {
-    setCurrentPage(event.target.value);
-  };
-
- 
    const handleMouseDown = (e) => {
     if(tool[0] === 'draw'){
       isDrawing.current = true;
       const pos = e.target.getStage().getPointerPosition();
-      setLines([...lines, {points: [pos.x, pos.y], stroke:stroke, strokewidth:strokewidth }]);
+      setLines([...lines, {x:0, y:0, points: [pos.x, pos.y], stroke:stroke, strokewidth:strokewidth }]);
       }else if(tool[0] === 'erase'){
         
     }
@@ -259,7 +259,7 @@ let edithistory = false;
       isDrawing.current = false;
       history.push([lines,text]);
       historyStep += 1;
-      console.log(lines);
+      console.log(history);
     }
     
   };
@@ -267,6 +267,8 @@ let edithistory = false;
   const handleUpdateComic = (event) =>{
     event.preventDefault();
 
+    let templinex = []
+    let templiney = []
     let temppoints = [];
     let tempstrokewidth = [];
     let tempstroke = [];
@@ -278,6 +280,8 @@ let edithistory = false;
     let temptextcolor = [];
 
     for(let i = 0; i < lines.length; i++){
+      templinex.push(lines[i].x);
+      templiney.push(lines[i].y);
       temppoints.push(lines[i].points);
       tempstrokewidth.push(lines[i].strokewidth);
       tempstroke.push(lines[i].stroke);
@@ -298,6 +302,8 @@ let edithistory = false;
         id: id,
         title: title,
         backgroundColor: backgroundColor,
+        linex: templinex,
+        liney: templiney,
         points: temppoints,
         strokeWidth: tempstrokewidth,
         stroke: tempstroke,
@@ -346,7 +352,7 @@ let edithistory = false;
 
   const handleAddText = (e) =>{
     edithistory = true;
-    setText([...text, {x: 20, y:20, text:valuetext,fontFamily:"Arial", fontSize:fontSize, fill:stroke}]);
+    setText([...text, {x: 20, y:20, text:valuetext,fontFamily:fontFamily, fontSize:fontSize, fill:stroke}]);
   }
 
 
@@ -366,28 +372,7 @@ let edithistory = false;
           sx={{ input: { color: 'white' } }}
           color="secondary"
           focused
-        />
-        <div className='rowC'>
-        <FormControl >
-            <InputLabel id="demo-simple-select-label" sx={{ input: { color: 'white' } }}
-          color="secondary" focused>Current Page</InputLabel>
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={currentpage}
-                label="Current Page"
-                onChange={handlePageChange}
-                color="secondary"
-                style={{width: "8vw", marginRight: "2vw", color: "white"}}
-            >
-                <MenuItem value={"Page 1"}>Page 1</MenuItem>
-                <MenuItem value={"Page 2"}>Page 2</MenuItem>
-                <MenuItem value={"Page 3"}>Page 3</MenuItem>
-            </Select>
-        </FormControl>
-        <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "2vw", color: "white", height: "3.6vw", width: "8vw"}}>Add Page</Button>
-        <Button variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "3.6vw"}}>Remove Page</Button>
-        </div>
+        />  
         <br/>
         <Typography id="input-slider" gutterBottom>Current tool: {tool[0]}</Typography>
         <div className="rowC">
@@ -429,6 +414,15 @@ let edithistory = false;
             </Grid>
             </Box>
         <br/>
+        Font: 
+        <FontPicker
+                    apiKey="AIzaSyCl9rtO8QEnRV8DpLBQWdCr03gYY9n4vVc"
+                    activeFontFamily={fontFamily}
+                    onChange={(nextFont) =>
+                      setFontFamily(nextFont.family)
+                  }
+                />
+        <br/><br/>
         <div className="rowC">           
         <TextField
           id="standard-helperText"
@@ -489,9 +483,10 @@ let edithistory = false;
                 }
               }}
               onDragEnd={(e) => {
-                let temptext = text
-                temptext[i].x = e.target.x()
-                temptext[i].y = e.target.y()
+                let temptext = Array.from(text)
+                temptext[i].x = e.target.x();
+                temptext[i].y = e.target.y();
+                edithistory = true;
                 setText(temptext);
               }}
               
@@ -500,6 +495,8 @@ let edithistory = false;
           {lines.map((line, i) => (
             <Line
               key={i}
+              x={line.x}
+              y={line.y}
               points={line.points}
               stroke={line.stroke}
               strokeWidth={line.strokewidth}
@@ -513,7 +510,11 @@ let edithistory = false;
                 }
               }}
               onDragEnd={(e) => {
-
+                let templines = Array.from(lines)
+                templines[i].x = e.target.x();
+                templines[i].y = e.target.y();
+                edithistory = true;
+                setLines(templines);
               }}
             />
           ))}
