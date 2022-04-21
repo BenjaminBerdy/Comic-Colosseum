@@ -372,19 +372,17 @@ let edithistory = false;
           value = {title}
           onChange = {handleChangeTitle}
           variant="standard"
-          style={{ marginBottom: '2vw' }}
+          style={{ marginBottom: '1vw' }}
           sx={{ input: { color: 'white' } }}
           color="secondary"
           focused
         />  
-        <br/>
         <Typography id="input-slider" gutterBottom>Current tool: {tool[0]}</Typography>
         <div className="rowC">
         <Button onClick={() => {setTool(['select',true])}} variant="text" style={{marginLeft: "3vw", marginTop: "1vw", color: "white"}}><MouseIcon/></Button>
         <Button onClick={() => {setTool(['draw',false]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
         <Button onClick={() => {setTool(['erase',false])}} variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
         </div>
-        <br/>
             <Box sx={{ width: 250 }}>
             <Typography id="input-slider" gutterBottom>Stroke Width</Typography>
             <Grid container spacing={2} alignItems="center">
@@ -418,7 +416,7 @@ let edithistory = false;
             </Grid>
             </Box>
         <br/>
-        <Box sx={{minWidth: 120 }}>
+        <Box sx={{minWidth: 120 }} style={{marginBottom: "1vw"}}>
       <FormControl fullWidth> 
         <InputLabel sx={{color: 'white'}} id="demo-simple-select-label">Font</InputLabel>
         <Select
@@ -447,11 +445,9 @@ let edithistory = false;
           <MenuItem value={"Trebuchet MS"}>Trebuchet MS</MenuItem>
           <MenuItem value={"Verdana"}>Verdana</MenuItem>
           <MenuItem value={"Wingdings"}>Wingdings</MenuItem>
-          
         </Select>
       </FormControl>
     </Box>
-        <br/><br/>
         <div className="rowC">           
         <TextField
           id="standard-helperText"
@@ -467,16 +463,15 @@ let edithistory = false;
         <Button onClick={handleAddText}id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "1vw", height: "3vw", color: "white"}}>Add Text</Button>
         </div>
         <div>
-        Current Color: <input id="color" type="color" value ={stroke} onChange={handleColorChange}/>
-        <br/><br/>
+        Current Color: <input style={{marginBottom: "1vw"}} id="color" type="color" value ={stroke} onChange={handleColorChange}/>
+        <br/>
         Background Color: <input id="backgroundcolor" type="color" value ={backgroundColor} onChange={handleBackgroundColorChange}/>
         </div>
         <div className="rowC">
         <Button onClick={handleUndo} id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Undo</Button>
         <Button onClick={handleRedo} id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Redo</Button>
         </div>
-        <br/>
-        </div>
+          </div>
 
         <div id="canvas">
       <Stage
