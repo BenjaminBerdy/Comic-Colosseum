@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import AppBanner from "./AppBanner";
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField';
@@ -14,7 +14,12 @@ import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Stage, Layer, Line,Rect , Text } from 'react-konva';
-import {useQuery } from '@apollo/react-hooks';
+import {useQuery, useMutation} from '@apollo/react-hooks';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const GET_COMIC = gql`
   query($id:ID!){
@@ -51,7 +56,10 @@ const GET_STORY = gql`
     }
 }`;
 
-
+const DELETE_COMIC = gql`
+mutation deleteComic($id: ID!, $authorId: ID!){
+  deleteComic(id:$id, authorId:$authorId)
+}`;
 
 function renderRow(props) {
     const { index, style } = props;
@@ -66,14 +74,20 @@ function renderRow(props) {
 
   export default function ViewContentScreen(){
     const { id } = useParams();
+    const navigate = useNavigate();
     const {user} = useContext(AuthContext);
+    let userid;
+    if(user){userid = user.id}
     const location = useLocation();
     const [lines, setLines] = React.useState([]);
     const [text,setText] = React.useState([])
     const [backgroundColor,setBackgroundColor] = React.useState('#FFFFFF');  
+    const [open, setOpen] = React.useState(false);
+    const [msg] = React.useState('Are sure you want delete a published content? Deletion is permanent and cannot be undone. Continue?');
     let query;
     let comicstory;
     let contentData;
+    let deleteButton;
     if (location.pathname.includes("comic")) {
         comicstory = 'comic'
         query = GET_COMIC
@@ -81,8 +95,32 @@ function renderRow(props) {
         comicstory = 'story'
         query = GET_STORY
     }
-
+    const [deletecomic] = useMutation(DELETE_COMIC,{
+      update(_,{data}){
+        console.log(data);
+        navigate("/comic/homepage/");
+      },
+      onError(err){
+        console.log(err)
+        console.log(err.graphQLErrors[0].extensions.errors)
+      },
+      variables: {id: id, authorId: userid}
+    });
     const {loading, data} = useQuery(query, {variables: {id}});
+
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      deletecomic();
+    };    
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+    
 
     React.useEffect(() => {
       if(loading === false){
@@ -107,11 +145,39 @@ function renderRow(props) {
           }else if(location.pathname.includes("story")){
             contentData = data.getStory
           }
+    if(user && user.id === contentData.authorId){
+      deleteButton = <Button onClick={handleClickOpen} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: "1vw", marginTop: "1vw",color: "white", height: "2.5vw"}}>Delete</Button>
+    }
+    
     return(
     <div>
       <AppBanner/>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Delete Published Content?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {msg}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={handleSubmit}>Confirm</Button>
+          <Button onClick={handleClose} autoFocus>
+            Dismiss
+          </Button>
+        </DialogActions>
+      </Dialog>
     <div id="editbar">
-        <h3>{contentData.title}</h3>
+    <div className="rowC">
+      <h2>{contentData.title}</h2>
+      {deleteButton}
+    </div>
         <h3>By: <Link to={'/' + comicstory + '/viewuser/' + contentData.authorId} style={{ color: '#B23CFD', textDecoration: 'none'}}>{contentData.author}</Link></h3>
         <h3>Published: {contentData.publishDate}</h3>
         <div className="rowC">
