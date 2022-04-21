@@ -545,7 +545,7 @@ let edithistory = false;
         </Layer>
       </Stage>
     </div>
-    <div id="buttonDiv" style={{backgroundColor: "#4B284F", width: 1050.6, height: 50, position: "absolute", right: 84.5, bottom: 45}}>
+    <div id="buttonDiv" style={{backgroundColor: "#4B284F", width: 1050.6, height: 50, position: "absolute", right: 76, bottom: 10}}>
         <div id = "save-publish-delete" className="rowC">
             <Button onClick={handleUpdateComic} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Save</Button>
             <Button onClick={handlePublishComic} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Publish</Button>
