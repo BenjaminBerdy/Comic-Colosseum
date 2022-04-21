@@ -26,6 +26,8 @@ const GET_COMIC = gql`
       publishDate
       likes
       backgroundColor
+      linex
+      liney
       points
       strokeWidth
       stroke
@@ -86,7 +88,8 @@ function renderRow(props) {
       if(loading === false){
         console.log(data)
         for(let i = 0; i < data.getComic.points.length; i++){
-          setLines((oldValue) => [...oldValue, {points: data.getComic.points[i], stroke:data.getComic.stroke[i], strokewidth:data.getComic.strokeWidth[i] }]);
+          setLines((oldValue) => [...oldValue, {x:data.getComic.linex[i], y:data.getComic.liney[i], points: data.getComic.points[i], 
+            stroke:data.getComic.stroke[i], strokewidth:data.getComic.strokeWidth[i] }]);
         }
         for(let i = 0; i < data.getComic.text.length; i++){
           setText((oldValue) => [...oldValue, {x: data.getComic.textx[i], y:data.getComic.texty[i], text:data.getComic.text[i], 
@@ -110,8 +113,12 @@ function renderRow(props) {
     <div id="editbar">
         <h3>{contentData.title}</h3>
         <h3>By: <Link to={'/' + comicstory + '/viewuser/' + contentData.authorId} style={{ color: '#B23CFD', textDecoration: 'none'}}>{contentData.author}</Link></h3>
-        <h3>Published: {contentData.publishDate}</h3>  
-        <h3>Likes: {contentData.likes}</h3>  
+        <h3>Published: {contentData.publishDate}</h3>
+        <div className="rowC">
+          <h3>Likes: {contentData.likes}</h3>  
+          <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: "2vw", color: "white", height: "2.5vw"}}>Like</Button>
+        </div>  
+       
         <div id = "Comments">
         <h2 style={{textAlign: "left"}}>Community Interaction</h2>
         {user && (<div><TextField
@@ -180,18 +187,7 @@ function renderRow(props) {
         </Layer>
       </Stage>
     </div>
-    <div id="buttonDiv" style={{backgroundColor: "#4B284F", width: 1050.6, height: 50, position: "absolute", right: 76, bottom: 45}}>
-        {user && (
-        <div id = "likefollow" className="rowC">
-            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Like</Button>
-            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{color: "white", height: "2.5vw"}}>Follow Creator</Button>
-        </div>
-        )}
-        <div id = "pageselection" className="rowC">
-            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginRight: "1vw", color: "white", height: "2.5vw"}}>Previous Page</Button>
-            <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{color: "white", height: "2.5vw"}}>Next Page</Button>
-        </div>
-    </div>
+    
     </div>
     );
     }

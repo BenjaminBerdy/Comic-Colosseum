@@ -82,7 +82,7 @@ let edithistory = false;
     const{user}= useContext(AuthContext);
     const userid = user.id;
     const {loading, data} = useQuery(GET_COMIC, {variables: {id}});
-    const [tool, setTool] = React.useState(['draw',false]);
+    const [tool, setTool] = React.useState(['select',true]);
     const [lines, setLines] = React.useState([]);
     const [valuetext, setvaluetext] = React.useState("Text")
     const [text,setText] = React.useState([])
@@ -162,16 +162,13 @@ let edithistory = false;
       saved = false;
       console.log(values);
       saveComic(); 
-      navigate("/comic/userProfile/"+ userid);
     }
 }, [values]) // eslint-disable-line react-hooks/exhaustive-deps
-
- 
 
     const [saveComic] = useMutation(UPDATE_COMIC,{
       update(_,{updatedata}){
         console.log(updatedata)
-        navigate("/comic/userProfile/"+ data.getComic.authorId);
+        navigate("/comic/userProfile/"+ userid);
       },
       onError(err){
         console.log(err)
@@ -317,7 +314,7 @@ let edithistory = false;
   }
 
   const handlePublishComic = (event) =>{
-    event.preventDefault();
+    handleUpdateComic(event);
     publishcomic();
   }
 
@@ -376,9 +373,9 @@ let edithistory = false;
         <br/>
         <Typography id="input-slider" gutterBottom>Current tool: {tool[0]}</Typography>
         <div className="rowC">
-        <Button onClick={() => {setTool(['draw',false]);}} variant="text" style={{marginLeft: "3vw", marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
+        <Button onClick={() => {setTool(['select',true])}} variant="text" style={{marginLeft: "3vw", marginTop: "1vw", color: "white"}}><MouseIcon/></Button>
+        <Button onClick={() => {setTool(['draw',false]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
         <Button onClick={() => {setTool(['erase',false])}} variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
-        <Button onClick={() => {setTool(['select',true])}} variant="text" style={{marginTop: "1vw", color: "white"}}><MouseIcon/></Button>
         </div>
         <br/>
             <Box sx={{ width: 250 }}>
