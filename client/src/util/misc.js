@@ -255,4 +255,13 @@ if (!data.get('username') || !data.get('email') || !data.get('password') || !dat
         <Button id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "2vw", color: "white", height: "3.6vw", width: "8vw"}}>Add Page</Button>
         <Button variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "3.6vw"}}>Remove Page</Button>
         </div>
+
+
+        <FontPicker
+                    apiKey="AIzaSyCl9rtO8QEnRV8DpLBQWdCr03gYY9n4vVc"
+                    activeFontFamily={fontFamily}
+                    onChange={(nextFont) =>
+                      setFontFamily(nextFont.family)
+                  }
+                />
 */

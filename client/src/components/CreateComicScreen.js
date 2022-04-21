@@ -15,7 +15,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {useQuery, useMutation} from '@apollo/react-hooks'
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
-import FontPicker from "font-picker-react";
+//import FontPicker from "font-picker-react";
 
 
 const GET_COMIC = gql`
@@ -412,13 +412,6 @@ let edithistory = false;
             </Box>
         <br/>
         Font: 
-        <FontPicker
-                    apiKey="AIzaSyCl9rtO8QEnRV8DpLBQWdCr03gYY9n4vVc"
-                    activeFontFamily={fontFamily}
-                    onChange={(nextFont) =>
-                      setFontFamily(nextFont.family)
-                  }
-                />
         <br/><br/>
         <div className="rowC">           
         <TextField
