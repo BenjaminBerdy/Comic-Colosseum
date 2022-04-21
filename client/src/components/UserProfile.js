@@ -51,7 +51,7 @@ export default function UserProfile(props){
   const [msg] = React.useState('Deletion is permanent and cannot be undone. Continue?');
 
   const [createNewComic] = useMutation(CREATE_COMIC,{
-    update(_,{data}){
+    onCompleted(data){
       navigate("/createcomic/" + data.createComic.id + "/")
     },
     onError(err){

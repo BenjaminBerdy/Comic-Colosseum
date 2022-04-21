@@ -64,8 +64,8 @@ export default function UnpublishedList() {
     comicstory = "story";
     query = GET_STORIES;
   }  
-  const {loading, data} = useQuery(query);
- 
+  const {loading, data} = useQuery(query,{fetchPolicy: "network-only"});
+  console.log(data)
   if(loading === true){
     return(<h1 style={{color:"white"}}>Loading...</h1>)
   }else{

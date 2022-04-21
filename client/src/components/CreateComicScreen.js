@@ -119,7 +119,9 @@ let currentselectionbar;
     React.useEffect(()=>{
       if(loadhistory === true){
         loadhistory = false;
-        history = [[lines,text]]
+        let newlines = JSON.parse(JSON.stringify(lines));
+        let newtext = JSON.parse(JSON.stringify(text));
+        history = [[newlines,newtext]]
         console.log(history);
       }
     }, [title]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -128,7 +130,9 @@ let currentselectionbar;
       if(edithistory === true){
         console.log("history changed");
         edithistory = false;
-        history.push([lines,text]);
+        let newlines = JSON.parse(JSON.stringify(lines));
+        let newtext = JSON.parse(JSON.stringify(text));
+        history.push([newlines,newtext]);
         historyStep += 1;
         console.log(history);
       }
@@ -138,7 +142,9 @@ let currentselectionbar;
       if(edithistory === true){
         console.log("history changed");
         edithistory = false;
-        history.push([lines,text]);
+        let newlines = JSON.parse(JSON.stringify(lines));
+        let newtext = JSON.parse(JSON.stringify(text));
+        history.push([newlines,newtext]);
         historyStep += 1;
         console.log(history);
       }
@@ -223,7 +229,7 @@ React.useEffect(() => {
 }, [strokeWidth]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const [saveComic] = useMutation(UPDATE_COMIC,{
-      update(_,{updatedata}){
+      onCompleted(updatedata){
         console.log(updatedata)
         navigate("/comic/userProfile/"+ userid);
       },
@@ -235,7 +241,7 @@ React.useEffect(() => {
     })
 
     const [publishcomic] = useMutation(PUBLISH_COMIC,{
-      update(_,{data}){
+      onCompleted(data){
         console.log(data);
         navigate("/comic/userProfile/"+ userid);
       },
@@ -311,7 +317,9 @@ React.useEffect(() => {
   const handleMouseUp = () => {
     if(tool[0] === 'draw'){
       isDrawing.current = false;
-      history.push([lines,text]);
+      let newlines = JSON.parse(JSON.stringify(lines));
+      let newtext = JSON.parse(JSON.stringify(text));
+      history.push([newlines,newtext]);
       historyStep += 1;
       console.log(history);
     }
