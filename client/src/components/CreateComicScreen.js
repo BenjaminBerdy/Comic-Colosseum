@@ -11,11 +11,14 @@ import Slider from '@mui/material/Slider';
 import AppBanner from "./AppBanner";
 import { Icon } from '@iconify/react';
 import gql from 'graphql-tag'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import { useNavigate, useParams } from "react-router-dom";
 import {useQuery, useMutation} from '@apollo/react-hooks'
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
-import FontPicker from "font-picker-react";
 
 
 const GET_COMIC = gql`
@@ -89,7 +92,7 @@ let edithistory = false;
     const isDrawing = React.useRef(false);
     //const [currentpage, setCurrentPage] = React.useState('Page 1');
     const [fontSize, setFontSize] = React.useState(30);
-    const [fontFamily, setFontFamily]= React.useState("Open Sans");
+    const [fontFamily, setFontFamily]= React.useState("Arial");
     const [strokewidth, setStrokeWidth] = React.useState(5);
     const [stroke,setStroke] = React.useState('#000000');
     const [title,setTitle] = React.useState('Untitled Comic'); 
@@ -343,6 +346,10 @@ let edithistory = false;
     setFontSize(e.target.value);
   };
 
+  const handleChangeFontFamily = (e) => {
+    setFontFamily(e.target.value);
+  }
+
   const handleStrokeWidthChange = (e) =>{
     setStrokeWidth(e.target.value);
   }
@@ -411,14 +418,39 @@ let edithistory = false;
             </Grid>
             </Box>
         <br/>
-        Font: 
-        <FontPicker
-                    apiKey="AIzaSyCl9rtO8QEnRV8DpLBQWdCr03gYY9n4vVc"
-                    activeFontFamily={fontFamily}
-                    onChange={(nextFont) =>
-                      setFontFamily(nextFont.family)
-                  }
-                />
+        <Box sx={{minWidth: 120 }}>
+      <FormControl fullWidth> 
+        <InputLabel sx={{color: 'white'}} id="demo-simple-select-label">Font</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={fontFamily}
+          label="Age"
+          onChange={handleChangeFontFamily}
+          sx={{color: 'white'}}
+        >
+          <MenuItem value={"Arial"}>Arial</MenuItem>
+          <MenuItem value={"Bahnschrift"}>Bahnschrift</MenuItem>
+          <MenuItem value={"Cambria"}>Cambria</MenuItem>
+          <MenuItem value={"Calibri"}>Calibri</MenuItem>
+          <MenuItem value={"Candara"}>Candara</MenuItem>
+          <MenuItem value={"Comic Sans MS"}>Comic Sans MS</MenuItem>
+          <MenuItem value={"Consolas"}>Consolas</MenuItem>
+          <MenuItem value={"Constantia"}>Constantia</MenuItem>
+          <MenuItem value={"Corbel"}>Corbel</MenuItem>
+          <MenuItem value={"Courier New"}>Courier New</MenuItem>
+          <MenuItem value={"Ebrima"}>Ebrima</MenuItem>
+          <MenuItem value={"Georgia"}>Georgia</MenuItem>
+          <MenuItem value={"Impact"}>Impact</MenuItem>
+          <MenuItem value={"Tahoma"}>Tahoma</MenuItem>
+          <MenuItem value={"Times New Roman"}>Times New Roman</MenuItem>
+          <MenuItem value={"Trebuchet MS"}>Trebuchet MS</MenuItem>
+          <MenuItem value={"Verdana"}>Verdana</MenuItem>
+          <MenuItem value={"Wingdings"}>Wingdings</MenuItem>
+          
+        </Select>
+      </FormControl>
+    </Box>
         <br/><br/>
         <div className="rowC">           
         <TextField
