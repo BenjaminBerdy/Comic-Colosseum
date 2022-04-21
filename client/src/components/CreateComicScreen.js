@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button'
 import CreateIcon from '@mui/icons-material/Create';
 import MouseIcon from '@mui/icons-material/Mouse';
+import PanToolIcon from '@mui/icons-material/PanTool';
 import { Typography } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
@@ -77,7 +78,7 @@ let historyStep = 0;
 let saved = false;
 let loadhistory = false;
 let edithistory = false;
-
+let currentselectionbar;
 
   export default function CreateComicScreen() {
     const { id } = useParams();
@@ -85,7 +86,7 @@ let edithistory = false;
     const{user}= useContext(AuthContext);
     const userid = user.id;
     const {loading, data} = useQuery(GET_COMIC, {variables: {id}});
-    const [tool, setTool] = React.useState(['select',true]);
+    const [tool, setTool] = React.useState(['select',false]);
     const [lines, setLines] = React.useState([]);
     const [valuetext, setvaluetext] = React.useState("Text")
     const [text,setText] = React.useState([])
@@ -93,10 +94,11 @@ let edithistory = false;
     //const [currentpage, setCurrentPage] = React.useState('Page 1');
     const [fontSize, setFontSize] = React.useState(30);
     const [fontFamily, setFontFamily]= React.useState("Arial");
-    const [strokewidth, setStrokeWidth] = React.useState(5);
+    const [strokeWidth, setStrokeWidth] = React.useState(5);
     const [stroke,setStroke] = React.useState('#000000');
     const [title,setTitle] = React.useState('Untitled Comic'); 
     const [backgroundColor,setBackgroundColor] = React.useState('#FFFFFF');  
+    const [currentselection, setCurrentSelection] = React.useState("");
     const [values, setValues] = React.useState({
         id: id,
         title: 'Untitled Comic',
@@ -149,7 +151,7 @@ let edithistory = false;
         loadhistory = true;
         for(let i = 0; i < data.getComic.points.length; i++){
           setLines((oldValue) => [...oldValue, {x:data.getComic.linex[i], y:data.getComic.liney[i], points: data.getComic.points[i], 
-            stroke:data.getComic.stroke[i], strokewidth:data.getComic.strokeWidth[i] }]);
+            stroke:data.getComic.stroke[i], strokeWidth:data.getComic.strokeWidth[i] }]);
         }
         for(let i = 0; i < data.getComic.text.length; i++){
           setText((oldValue) => [...oldValue, {x: data.getComic.textx[i], y:data.getComic.texty[i], text:data.getComic.text[i], 
@@ -167,6 +169,58 @@ let edithistory = false;
       saveComic(); 
     }
 }, [values]) // eslint-disable-line react-hooks/exhaustive-deps
+
+React.useEffect(() => {
+  if(currentselection !== ""){
+    if(currentselection.attrs.text){
+      let temptext = Array.from(text)
+      temptext[currentselection.attrs.index].fill = stroke;
+      edithistory = true;
+      setText(temptext);
+    }else{
+      let templines = Array.from(lines)
+      templines[currentselection.attrs.index].stroke = stroke;
+      edithistory = true;
+      setLines(templines);
+    }
+  }
+}, [stroke]) // eslint-disable-line react-hooks/exhaustive-deps
+
+React.useEffect(() => {
+  if(currentselection !== ""){
+    let temptext = Array.from(text)
+    temptext[currentselection.attrs.index].fontFamily = fontFamily;
+    edithistory = true;
+    setText(temptext);
+  }
+}, [fontFamily]) // eslint-disable-line react-hooks/exhaustive-deps
+
+React.useEffect(() => {
+  if(currentselection !== ""){
+    let temptext = Array.from(text)
+    temptext[currentselection.attrs.index].fontSize = fontSize;
+    edithistory = true;
+    setText(temptext);
+  }
+}, [fontSize]) // eslint-disable-line react-hooks/exhaustive-deps
+
+React.useEffect(() => {
+  if(currentselection !== ""){
+    let temptext = Array.from(text)
+    temptext[currentselection.attrs.index].fontSize = fontSize;
+    edithistory = true;
+    setText(temptext);
+  }
+}, [fontSize]) // eslint-disable-line react-hooks/exhaustive-deps
+
+React.useEffect(() => {
+  if(currentselection !== ""){
+    let templines = Array.from(lines)
+    templines[currentselection.attrs.index].strokeWidth = strokeWidth;
+    edithistory = true;
+    setLines(templines);
+  }
+}, [strokeWidth]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const [saveComic] = useMutation(UPDATE_COMIC,{
       update(_,{updatedata}){
@@ -232,10 +286,10 @@ let edithistory = false;
     if(tool[0] === 'draw'){
       isDrawing.current = true;
       const pos = e.target.getStage().getPointerPosition();
-      setLines([...lines, {x:0, y:0, points: [pos.x, pos.y], stroke:stroke, strokewidth:strokewidth }]);
-      }else if(tool[0] === 'erase'){
-        
-    }
+      setLines([...lines, {x:0, y:0, points: [pos.x, pos.y], stroke:stroke, strokeWidth:strokeWidth }]);
+      }else if(tool[0] === 'select'){
+        setCurrentSelection("");
+      }
   };
 
   const handleMouseMove = (e) => {
@@ -270,7 +324,7 @@ let edithistory = false;
     let templinex = []
     let templiney = []
     let temppoints = [];
-    let tempstrokewidth = [];
+    let tempstrokeWidth = [];
     let tempstroke = [];
     let tempfontFamily = [];
     let tempfontSize = [];
@@ -283,7 +337,7 @@ let edithistory = false;
       templinex.push(lines[i].x);
       templiney.push(lines[i].y);
       temppoints.push(lines[i].points);
-      tempstrokewidth.push(lines[i].strokewidth);
+      tempstrokeWidth.push(lines[i].strokeWidth);
       tempstroke.push(lines[i].stroke);
     }
 
@@ -305,7 +359,7 @@ let edithistory = false;
         linex: templinex,
         liney: templiney,
         points: temppoints,
-        strokeWidth: tempstrokewidth,
+        strokeWidth: tempstrokeWidth,
         stroke: tempstroke,
         fontFamily: tempfontFamily,
         fontSize: tempfontSize,
@@ -355,40 +409,52 @@ let edithistory = false;
   }
 
   const handleAddText = (e) =>{
+    if(valuetext.trim() !== ""){
     edithistory = true;
     setText([...text, {x: 20, y:20, text:valuetext,fontFamily:fontFamily, fontSize:fontSize, fill:stroke}]);
+    }
   }
 
+
+
+  if(currentselection === ""){
+    currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: None</Typography>
+  }else if(currentselection.attrs.text){
+    currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: {currentselection.attrs.text}</Typography>
+  }else{
+    currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: Line {currentselection.attrs.index}</Typography>
+  }
 
     return(
         <div>
           <AppBanner/>
         <div id="editbar" style={{ fontFamily: 'system-ui' }}>
-          <h3 style={{ textAlign: 'center' }}>Comic Creation Tools:</h3>
-        <TextField
+          <TextField
           id="standard-helperText"
           label="Title"
           name = "title"
           value = {title}
           onChange = {handleChangeTitle}
           variant="standard"
-          style={{ marginBottom: '1vw' }}
+          style={{ marginTop: '1.5vw', marginBottom: '1vw' }}
           sx={{ input: { color: 'white' } }}
           color="secondary"
           focused
         />  
         <Typography id="input-slider" gutterBottom>Current tool: {tool[0]}</Typography>
         <div className="rowC">
-        <Button onClick={() => {setTool(['select',true])}} variant="text" style={{marginLeft: "3vw", marginTop: "1vw", color: "white"}}><MouseIcon/></Button>
+        <Button onClick={() => {setTool(['select',false])}} variant="text" style={{marginTop: "1vw", color: "white"}}><MouseIcon/></Button>
         <Button onClick={() => {setTool(['draw',false]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
         <Button onClick={() => {setTool(['erase',false])}} variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
+        <Button onClick={() => {setTool(['drag',true]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><PanToolIcon/></Button>
         </div>
+        {currentselectionbar}
             <Box sx={{ width: 250 }}>
             <Typography id="input-slider" gutterBottom>Stroke Width</Typography>
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs>
                 <Slider
-                    value={strokewidth}
+                    value={strokeWidth}
                     onChange={handleStrokeWidthChange}
                     aria-labelledby="input-slider"
                     color="secondary"
@@ -468,8 +534,8 @@ let edithistory = false;
         Background Color: <input id="backgroundcolor" type="color" value ={backgroundColor} onChange={handleBackgroundColorChange}/>
         </div>
         <div className="rowC">
-        <Button onClick={handleUndo} id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Undo</Button>
-        <Button onClick={handleRedo} id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "2vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Redo</Button>
+        <Button onClick={handleUndo} id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "1vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Undo</Button>
+        <Button onClick={handleRedo} id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginTop: "1vw", marginLeft: "3vw", height: "3vw", color: "white"}}>Redo</Button>
         </div>
           </div>
 
@@ -495,6 +561,7 @@ let edithistory = false;
               x = {txt.x}
               y = {txt.y}
               key={i}
+              index = {i}
               fontFamily= {txt.fontFamily}
               fontSize={txt.fontSize}
               draggable = {tool[1]}
@@ -504,6 +571,11 @@ let edithistory = false;
                 if(tool[0] === 'erase'){
                   edithistory = true;
                   setText(text.filter((_, j) => j !== i))
+                }else if(tool[0] === 'select'){
+                  setCurrentSelection(e.target)
+                  setFontFamily(e.target.attrs.fontFamily)
+                  setFontSize(e.target.attrs.fontSize)
+                  setStroke(e.target.attrs.fill)
                 }
               }}
               onDragEnd={(e) => {
@@ -521,9 +593,10 @@ let edithistory = false;
               key={i}
               x={line.x}
               y={line.y}
+              index = {i}
               points={line.points}
               stroke={line.stroke}
-              strokeWidth={line.strokewidth}
+              strokeWidth={line.strokeWidth}
               tension={0.5}
               lineCap="round"
               draggable = {tool[1]}
@@ -531,6 +604,10 @@ let edithistory = false;
                 if(tool[0] === 'erase'){
                   edithistory = true;
                   setLines(lines.filter((_, j) => j !== i))
+                }else if(tool[0] === 'select'){
+                  setCurrentSelection(e.target);
+                  setStrokeWidth(e.target.attrs.strokeWidth);
+                  setStroke(e.target.attrs.stroke);
                 }
               }}
               onDragEnd={(e) => {
