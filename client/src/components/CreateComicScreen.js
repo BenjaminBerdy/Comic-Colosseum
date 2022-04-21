@@ -15,7 +15,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {useQuery, useMutation} from '@apollo/react-hooks'
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
-//import FontPicker from "font-picker-react";
+import FontPicker from "font-picker-react";
 
 
 const GET_COMIC = gql`
@@ -89,7 +89,7 @@ let edithistory = false;
     const isDrawing = React.useRef(false);
     //const [currentpage, setCurrentPage] = React.useState('Page 1');
     const [fontSize, setFontSize] = React.useState(30);
-    const [fontFamily]= React.useState("Open Sans");
+    const [fontFamily, setFontFamily]= React.useState("Open Sans");
     const [strokewidth, setStrokeWidth] = React.useState(5);
     const [stroke,setStroke] = React.useState('#000000');
     const [title,setTitle] = React.useState('Untitled Comic'); 
@@ -412,6 +412,13 @@ let edithistory = false;
             </Box>
         <br/>
         Font: 
+        <FontPicker
+                    apiKey="AIzaSyCl9rtO8QEnRV8DpLBQWdCr03gYY9n4vVc"
+                    activeFontFamily={fontFamily}
+                    onChange={(nextFont) =>
+                      setFontFamily(nextFont.family)
+                  }
+                />
         <br/><br/>
         <div className="rowC">           
         <TextField
