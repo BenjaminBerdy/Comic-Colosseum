@@ -514,8 +514,8 @@ React.useEffect(() => {
           id="demo-simple-select"
           value={fontFamily}
           onChange={handleChangeFontFamily}
-          sx={{ input: { color: 'white' } }}
           color="secondary"
+          style={{color:"white"}}
           focused
         >
           <MenuItem value={"Arial"}>Arial</MenuItem>
