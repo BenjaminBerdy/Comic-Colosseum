@@ -88,7 +88,7 @@ let currentselectionbar;
     const {loading, data} = useQuery(GET_COMIC, {variables: {id}});
     const [tool, setTool] = React.useState(['select',false]);
     const [lines, setLines] = React.useState([]);
-    const [valuetext, setvaluetext] = React.useState("Text")
+    const [valuetext, setValueText] = React.useState("Text")
     const [text,setText] = React.useState([])
     const isDrawing = React.useRef(false);
     //const [currentpage, setCurrentPage] = React.useState('Page 1');
@@ -179,19 +179,30 @@ let currentselectionbar;
 
 React.useEffect(() => {
   if(currentselection !== ""){
-    if(currentselection.attrs.text){
-      let temptext = Array.from(text)
-      temptext[currentselection.attrs.index].fill = textcolor;
-      edithistory = true;
-      setText(temptext);
-    }else{
       let templines = Array.from(lines)
       templines[currentselection.attrs.index].stroke = stroke;
       edithistory = true;
       setLines(templines);
-    }
   }
 }, [stroke]) // eslint-disable-line react-hooks/exhaustive-deps
+
+React.useEffect(() => {
+  if(currentselection !== ""){
+      let temptext = Array.from(text)
+      temptext[currentselection.attrs.index].fill = textcolor;
+      edithistory = true;
+      setText(temptext);
+  }
+}, [textcolor]) // eslint-disable-line react-hooks/exhaustive-deps
+
+React.useEffect(() => {
+  if(currentselection !== ""){
+      let temptext = Array.from(text)
+      temptext[currentselection.attrs.index].text = valuetext;
+      edithistory = true;
+      setText(temptext);
+  }
+}, [valuetext]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
   if(currentselection !== ""){
@@ -394,7 +405,7 @@ React.useEffect(() => {
   }
 
   const handleChangeValueText = (e) =>{
-    setvaluetext(e.target.value)
+    setValueText(e.target.value)
   }
 
   const handleColorChange = (e) =>{
@@ -495,7 +506,7 @@ React.useEffect(() => {
             </Grid>
             </Box>
         <br/>
-        <Box sx={{minWidth: 120 }} style={{marginBottom: "1vw"}}>
+        <Box sx={{minWidth: 120 }} style={{marginBottom: ".5vw"}}>
       <FormControl fullWidth> 
         <InputLabel sx={{color: 'white'}} id="demo-simple-select-label">Font</InputLabel>
         <Select
@@ -533,7 +544,7 @@ React.useEffect(() => {
           label="Text"
           value={valuetext}
           variant="standard"
-          style={{ marginBottom: '2vw' }}
+          style={{ marginBottom: '1vw' }}
           sx={{ input: { color: 'white' } }}
           color="secondary"
           focused
@@ -542,9 +553,9 @@ React.useEffect(() => {
         <Button onClick={handleAddText}id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "1vw", height: "3vw", color: "white"}}>Add Text</Button>
         </div>
         <div>
-        Text Color: <input style={{marginBottom: "1vw"}} id="color" type="color" value ={textcolor} onChange={handleTextColorChange}/>
+        Text Color: <input style={{marginBottom: ".5vw"}} id="color" type="color" value ={textcolor} onChange={handleTextColorChange}/>
         <br/>
-        Draw Color: <input style={{marginBottom: "1vw"}} id="color" type="color" value ={stroke} onChange={handleColorChange}/>
+        Draw Color: <input style={{marginBottom: ".5vw"}} id="color" type="color" value ={stroke} onChange={handleColorChange}/>
         <br/>
         Background Color: <input id="backgroundcolor" type="color" value ={backgroundColor} onChange={handleBackgroundColorChange}/>
         </div>
@@ -591,6 +602,7 @@ React.useEffect(() => {
                   setFontFamily(e.target.attrs.fontFamily)
                   setFontSize(e.target.attrs.fontSize)
                   setTextColor(e.target.attrs.fill)
+                  setValueText(e.target.attrs.text)
                 }
               }}
               onDragEnd={(e) => {
