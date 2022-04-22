@@ -506,16 +506,17 @@ React.useEffect(() => {
             </Grid>
             </Box>
         <br/>
-        <Box sx={{minWidth: 120 }} style={{marginBottom: ".5vw"}}>
-      <FormControl fullWidth> 
-        <InputLabel sx={{color: 'white'}} id="demo-simple-select-label">Font</InputLabel>
+        <Box sx={{minWidth: 80 }} style={{marginBottom: ".5vw"}}>
+      <FormControl focused> 
+        <InputLabel id="demo-simple-select-label" variant="filled" color="secondary" focused>Font</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={fontFamily}
-          label="Age"
           onChange={handleChangeFontFamily}
-          sx={{color: 'white'}}
+          sx={{ input: { color: 'white' } }}
+          color="secondary"
+          focused
         >
           <MenuItem value={"Arial"}>Arial</MenuItem>
           <MenuItem value={"Bahnschrift"}>Bahnschrift</MenuItem>
