@@ -96,6 +96,7 @@ let currentselectionbar;
     const [fontFamily, setFontFamily]= React.useState("Arial");
     const [strokeWidth, setStrokeWidth] = React.useState(5);
     const [stroke,setStroke] = React.useState('#000000');
+    const [textcolor,setTextColor] = React.useState('#000000');
     const [title,setTitle] = React.useState('Untitled Comic'); 
     const [backgroundColor,setBackgroundColor] = React.useState('#FFFFFF');  
     const [currentselection, setCurrentSelection] = React.useState("");
@@ -180,7 +181,7 @@ React.useEffect(() => {
   if(currentselection !== ""){
     if(currentselection.attrs.text){
       let temptext = Array.from(text)
-      temptext[currentselection.attrs.index].fill = stroke;
+      temptext[currentselection.attrs.index].fill = textcolor;
       edithistory = true;
       setText(temptext);
     }else{
@@ -400,6 +401,10 @@ React.useEffect(() => {
     setStroke(e.target.value);
   }
 
+  const handleTextColorChange = (e) =>{
+    setTextColor(e.target.value);
+  }
+
   const handleBackgroundColorChange = (e) =>{
       setBackgroundColor(e.target.value);
   }
@@ -419,7 +424,7 @@ React.useEffect(() => {
   const handleAddText = (e) =>{
     if(valuetext.trim() !== ""){
     edithistory = true;
-    setText([...text, {x: 20, y:20, text:valuetext,fontFamily:fontFamily, fontSize:fontSize, fill:stroke}]);
+    setText([...text, {x: 20, y:20, text:valuetext,fontFamily:fontFamily, fontSize:fontSize, fill:textcolor}]);
     }
   }
 
@@ -537,7 +542,9 @@ React.useEffect(() => {
         <Button onClick={handleAddText}id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "1vw", height: "3vw", color: "white"}}>Add Text</Button>
         </div>
         <div>
-        Current Color: <input style={{marginBottom: "1vw"}} id="color" type="color" value ={stroke} onChange={handleColorChange}/>
+        Text Color: <input style={{marginBottom: "1vw"}} id="color" type="color" value ={textcolor} onChange={handleTextColorChange}/>
+        <br/>
+        Draw Color: <input style={{marginBottom: "1vw"}} id="color" type="color" value ={stroke} onChange={handleColorChange}/>
         <br/>
         Background Color: <input id="backgroundcolor" type="color" value ={backgroundColor} onChange={handleBackgroundColorChange}/>
         </div>
@@ -583,7 +590,7 @@ React.useEffect(() => {
                   setCurrentSelection(e.target)
                   setFontFamily(e.target.attrs.fontFamily)
                   setFontSize(e.target.attrs.fontSize)
-                  setStroke(e.target.attrs.fill)
+                  setTextColor(e.target.attrs.fill)
                 }
               }}
               onDragEnd={(e) => {
