@@ -173,28 +173,31 @@ module.exports = {
             }
 
         },
-        async follow(_, { id, followedCreators }) {
-
+        async follow(_, { id, followeduserid, follow}) {
             try {
-                const user = await User.findByIdAndUpdate(id, {followedCreators: followedCreators});
+                var user = await User.findById(id);
+                var otheruser = await User.findById(followeduserid);
+                user = await User.findByIdAndUpdate(id, {followedCreators: [...user.followedCreators, followeduserid]});
+                otheruser = await User.findByIdAndUpdate(followeduserid, {totalfollowers: otheruser.totalfollowers + follow})
                 return user;
             } catch (err) {
                 throw new Error(err);
             }
         },
-        async likedComicsListUpdate(_, { id, likedComics }) {
-
+        async likedComicsListUpdate(_, { id, likedComicId }) {
             try {
-                const user = await User.findByIdAndUpdate(id, {likedComics: likedComics});
+                var user = await User.findById(id);
+                user = await User.findByIdAndUpdate(id, {likedComics: user.likedComics.push(likedComicId)});
                 return user;
             } catch (err) {
                 throw new Error(err);
             }
         },
-        async likedStoriesListUpdate(_, { id, likedStories }) {
+        async likedStoriesListUpdate(_, { id, likedStoryId }) {
 
             try {
-                const user = await User.findByIdAndUpdate(id, {likedStories: likedStories});
+                var user = await User.findById(id);
+                user = await User.findByIdAndUpdate(id, {likedStories: user.likedStories.push(likedStoryId)});
                 return user;
             } catch (err) {
                 throw new Error(err);

@@ -40,6 +40,13 @@ const CREATE_COMIC = gql`
     }
   }`;
 
+const CREATE_STORY = gql`
+mutation createStory($author: String!, $authorId: String!){
+  createStory(author:$author, authorId:$authorId){
+    id
+  }
+}`;
+
 export default function UserProfile(props){
   const navigate = useNavigate();
   const{user, logout}= useContext(AuthContext);
@@ -63,6 +70,20 @@ export default function UserProfile(props){
       authorId: id
     }
   })
+  const [createNewStory] = useMutation(CREATE_STORY,{
+    onCompleted(data){
+      navigate("/createstory/" + data.createStory.id + "/")
+    },
+    onError(err){
+      console.log(err)
+      console.log(err.graphQLErrors[0].extensions.errors)
+    },
+    variables: {
+      author: username, 
+      authorId: id
+    }
+  })
+
   const [deletedUser] = useMutation(DELETE_USER,{
     update(_,{data}){
       if(location.pathname.includes("comic")){
@@ -82,6 +103,11 @@ export default function UserProfile(props){
   const handleCreateComic = (event) =>{
     event.preventDefault();
     createNewComic();
+  }
+
+  const handleCreateStory = (event) =>{
+    event.preventDefault();
+    createNewStory();
   }
 
   const handleSubmit = (event) => {
@@ -142,7 +168,7 @@ export default function UserProfile(props){
     if (location.pathname.includes("comic")) {
       createbutton= <Button onClick={handleCreateComic}id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Comic</Button>
     }else if(location.pathname.includes("story")){
-      createbutton= <Link to='/createstory/123'><Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Story</Button></Link>
+      createbutton= <Button onClick={handleCreateStory}id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Create Story</Button>
     }
 
 

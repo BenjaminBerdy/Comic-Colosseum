@@ -30,6 +30,7 @@ export default function ViewUsercreen(){
   const {id} = useParams();
   //const location = useLocation();
   const {loading, data} = useQuery(GET_USER, {variables: {id}});
+
   
   const Search = styled('div')(({ theme }) => ({
         position: 'relative',

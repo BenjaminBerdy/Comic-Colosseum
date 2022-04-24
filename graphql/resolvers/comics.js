@@ -116,11 +116,13 @@ module.exports = {
             throw new Error(err);
         }
     },
-    async likeComic(_, { id, likes }) {
+    async likeComic(_, { id, like, authorId }) {
 
         try {
             var comic = await Comic.findById(id);
-            comic = await Comic.findByIdAndUpdate(id, {likes: comic.likes+likes});
+            var author = await User.findById(authorId);
+            author = await User.findByIdAndUpdate(author, {totallikes: author.totallikes + like});
+            comic = await Comic.findByIdAndUpdate(id, {likes: comic.likes+like});
             return comic;
         } catch (err) {
             throw new Error(err);

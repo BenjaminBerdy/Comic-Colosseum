@@ -63,6 +63,9 @@ module.exports = {
         backgroundColor: "",
         fontFamily: [],
         fontSize: [],
+        fontStyle: [],
+        textDecoration: [],
+        textColor: [],
         text: [],
         textx: [],
         texty: [],
@@ -92,10 +95,11 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async updateStory(_, { id, title, backgroundColor, fontFamily, fontSize, text, textx, texty }) {
+    async updateStory(_, { id, title, backgroundColor, fontFamily, fontSize, fontStyle, textDecoration, textColor, text, textx, texty }) {
 
         try {
-            const story = await Story.findByIdAndUpdate(id, {title: title, backgroundColor: backgroundColor, fontFamily: fontFamily, fontSize: fontSize, text: text, textx: textx, texty:texty});
+            const story = await Story.findByIdAndUpdate(id, {title: title, backgroundColor: backgroundColor, fontFamily: fontFamily, 
+              fontStyle: fontStyle, textDecoration: textDecoration, textColor: textColor, fontSize: fontSize, text: text, textx: textx, texty:texty});
             return story;
         } catch (err) {
             throw new Error(err);
@@ -110,11 +114,12 @@ module.exports = {
             throw new Error(err);
         }
     },
-    async likeStory(_, { id, likes }) {
-
+    async likeStory(_, { id, like, authorId }) {
         try {
             var story = await Story.findById(id);
-            story = await Story.findByIdAndUpdate(id, {likes: story.likes+likes});
+            var author = await User.findById(authorId);
+            author = await User.findByIdAndUpdate(author, {totallikes: author.totallikes + like});
+            story = await Story.findByIdAndUpdate(id, {likes: story.likes+like});
             return story;
         } catch (err) {
             throw new Error(err);

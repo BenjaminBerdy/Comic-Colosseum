@@ -48,17 +48,32 @@ const GET_COMIC = gql`
 const GET_STORY = gql`
   query($id:ID!){
     getStory(id:$id){
+      id
       title
       author
       authorId
       publishDate
       likes
+      backgroundColor
+      fontFamily
+      fontSize
+      fontStyle
+      textDecoration
+      text
+      textx
+      texty
+      textColor
     }
 }`;
 
 const DELETE_COMIC = gql`
 mutation deleteComic($id: ID!, $authorId: ID!){
   deleteComic(id:$id, authorId:$authorId)
+}`;
+
+const DELETE_STORY = gql`
+mutation deleteStory($id: ID!, $authorId: ID!){
+  deleteStory(id:$id, authorId:$authorId)
 }`;
 
 function renderRow(props) {
@@ -88,6 +103,7 @@ function renderRow(props) {
     let comicstory;
     let contentData;
     let deleteButton;
+    let canvas;
     if (location.pathname.includes("comic")) {
         comicstory = 'comic'
         query = GET_COMIC
@@ -106,11 +122,26 @@ function renderRow(props) {
       },
       variables: {id: id, authorId: userid}
     });
+    const [deletestory] = useMutation(DELETE_STORY,{
+      update(_,{data}){
+        console.log(data);
+        navigate("/story/homepage/");
+      },
+      onError(err){
+        console.log(err)
+        console.log(err.graphQLErrors[0].extensions.errors)
+      },
+      variables: {id: id, authorId: userid}
+    });
     const {loading, data} = useQuery(query, {variables: {id}});
 
-    const handleSubmit = (event) => {
+    const handleDelete = (event) => {
       event.preventDefault();
-      deletecomic();
+      if(comicstory === "comic"){
+        deletecomic();
+      }else if(comicstory === "story"){
+        deletestory()
+      }
     };    
   
     const handleClickOpen = () => {
@@ -123,7 +154,7 @@ function renderRow(props) {
     
 
     React.useEffect(() => {
-      if(loading === false){
+      if(loading === false && comicstory === "comic"){
         console.log(data)
         for(let i = 0; i < data.getComic.points.length; i++){
           setLines((oldValue) => [...oldValue, {x:data.getComic.linex[i], y:data.getComic.liney[i], points: data.getComic.points[i], 
@@ -134,7 +165,16 @@ function renderRow(props) {
             fontFamily:data.getComic.fontFamily[i], fontSize:data.getComic.fontSize[i], fill:data.getComic.textcolor[i]}]);
         }
         setBackgroundColor(data.getComic.backgroundColor)
-      } 
+      }else if(loading === false && comicstory === "story"){
+        for(let i = 0; i < data.getStory.text.length; i++){
+          setText((oldValue) => [...oldValue, {x: data.getStory.textx[i], y:data.getStory.texty[i], text:data.getStory.text[i], 
+          fontFamily:data.getStory.fontFamily[i], fontSize:data.getStory.fontSize[i], fill:data.getStory.textColor[i], 
+          fontStyle: data.getStory.fontStyle[i], textDecoration: data.getStory.textDecoration[i], highlight: ""}]);
+        }
+        setBackgroundColor(data.getStory.backgroundColor)
+      }
+
+
   }, [data]) // eslint-disable-line react-hooks/exhaustive-deps
 
     if(loading === true){
@@ -142,8 +182,80 @@ function renderRow(props) {
     }else{
         if(location.pathname.includes("comic")){
             contentData = data.getComic
+            canvas = <div id="canvas">
+            <Stage
+                width={1050}
+                height={600}
+              >
+                <Layer>
+                <Rect
+                  x={0}
+                  y={0}
+                  width={1050}
+                  height={600}
+                  fill={backgroundColor}
+                  shadowBlur={10}
+                />
+                {text.map((txt, i) => (
+                    <Text
+                      x = {txt.x}
+                      y = {txt.y}
+                      key={i}
+                      fontFamily= {txt.fontFamily}
+                      fontSize={txt.fontSize}
+                      text = {txt.text}
+                      fill ={txt.fill}      
+                      
+                    />
+                  ))}
+                  {lines.map((line, i) => (
+                    <Line
+                      key={i}
+                      points={line.points}
+                      stroke={line.stroke}
+                      strokeWidth={line.strokewidth}
+                      tension={0.5}
+                      lineCap="round"
+                    />
+                  ))}
+                </Layer>
+              </Stage>
+            </div>
           }else if(location.pathname.includes("story")){
             contentData = data.getStory
+            canvas =  <div id="canvas">
+            <Stage
+              width={1050}
+              height={600}      
+            >
+              <Layer>
+              <Rect
+                x={0}
+                y={0}
+                width={1050}
+                height={600}
+                fill={backgroundColor}
+                shadowBlur={10}
+              />
+              {text.map((txt, i) => (
+                  <Text
+                    x = {txt.x}
+                    y = {txt.y}
+                    key={i}
+                    index = {i}
+                    stroke = {txt.highlight}
+                    strokeWidth= {"0.2"}
+                    fontFamily= {txt.fontFamily}
+                    fontSize={txt.fontSize}
+                    fontStyle = {txt.fontStyle}
+                    textDecoration = {txt.textDecoration}
+                    text = {txt.text}
+                    fill ={txt.fill}
+                  />
+                ))}
+              </Layer>
+            </Stage>
+          </div>
           }
     if(user && user.id === contentData.authorId){
       deleteButton = <Button onClick={handleClickOpen} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: "1vw", marginTop: "1vw",color: "white", height: "2.5vw"}}>Delete</Button>
@@ -167,7 +279,7 @@ function renderRow(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-        <Button onClick={handleSubmit}>Confirm</Button>
+        <Button onClick={handleDelete}>Confirm</Button>
           <Button onClick={handleClose} autoFocus>
             Dismiss
           </Button>
@@ -213,8 +325,14 @@ function renderRow(props) {
 
         </div>
     </div>
+    {canvas}
+    </div>
+    );
+    }
+}
 
-    <div id="canvas">
+/*
+<div id="canvas">
     <Stage
         width={1050}
         height={600}
@@ -253,8 +371,64 @@ function renderRow(props) {
         </Layer>
       </Stage>
     </div>
-    
+
+    <div id="canvas">
+      <Stage
+        width={1050}
+        height={600}
+        onMouseDown={handleMouseDown}
+
+      >
+        <Layer>
+        <Rect
+          x={0}
+          y={0}
+          width={1050}
+          height={600}
+          fill={backgroundColor}
+          shadowBlur={10}
+        />
+        {text.map((txt, i) => (
+            <Text
+              x = {txt.x}
+              y = {txt.y}
+              key={i}
+              index = {i}
+              stroke = {txt.highlight}
+              strokeWidth= {"0.2"}
+              fontFamily= {txt.fontFamily}
+              fontSize={txt.fontSize}
+              fontStyle = {txt.fontStyle}
+              textDecoration = {txt.textDecoration}
+              draggable = {tool[1]}
+              text = {txt.text}
+              fill ={txt.fill}
+              onClick={(e) =>{
+                if(tool[0] === 'erase'){
+                  edithistory = true;
+                  setText(text.filter((_, j) => j !== i))
+                }else if(tool[0] === 'select'){
+                  setCurrentSelection(e.target)
+                  setFontFamily(e.target.attrs.fontFamily)
+                  setFontSize(e.target.attrs.fontSize)
+                  setTextColor(e.target.attrs.fill)
+                  setValueText(e.target.attrs.text)
+                  setFontStyle(e.target.attrs.fontStyle)
+                  setTextDecoration(e.target.attrs.textDecoration)
+                  setHighlight("#00ffff")
+                }
+              }}
+              onDragEnd={(e) => {
+                let temptext = Array.from(text)
+                temptext[i].x = e.target.x();
+                temptext[i].y = e.target.y();
+                edithistory = true;
+                setText(temptext);
+              }}
+              
+            />
+          ))}
+        </Layer>
+      </Stage>
     </div>
-    );
-    }
-}
+*/
