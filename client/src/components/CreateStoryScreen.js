@@ -368,7 +368,7 @@ React.useEffect(() => {
   if(currentselection === ""){
     currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: None</Typography>
   }else{
-    currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: Text {currentselection.attrs.index}</Typography>
+    currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: Text {currentselection.attrs.index+1}</Typography>
   }
 
     return(
@@ -552,7 +552,7 @@ React.useEffect(() => {
                   setValueText(e.target.attrs.text)
                   setFontStyle(e.target.attrs.fontStyle)
                   setTextDecoration(e.target.attrs.textDecoration)
-                  setHighlight("#00ffff")
+                  setHighlight("#4B284F")
                 }
               }}
               onDragEnd={(e) => {
