@@ -17,7 +17,7 @@
     "apollo-server": "^3.6.5",
     "bcryptjs": "^2.4.3",
     "emailjs-com": "^3.2.0",
-    "graphql": "^16.4.0",
+    "graphql": "^16.3.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
     "konva": "^8.3.5",

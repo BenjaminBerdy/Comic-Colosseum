@@ -133,7 +133,7 @@ function renderRow(props) {
       },
       variables: {id: id, authorId: userid}
     });
-    const {loading, data} = useQuery(query, {variables: {id}, fetchPolicy: "network-only"});
+    const {loading, data} = useQuery(query, {variables: {id}});
 
     const handleDelete = (event) => {
       event.preventDefault();

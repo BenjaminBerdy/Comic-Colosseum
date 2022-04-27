@@ -75,7 +75,6 @@ let saved = false;
 let loadhistory = false;
 let edithistory = false;
 let currentselectionbar;
-let unselect = false;
 
   export default function CreateStoryScreen() {
     const { id } = useParams();
@@ -121,6 +120,7 @@ let unselect = false;
 
     React.useEffect(()=>{
       if(edithistory === true){
+        console.log("history changed");
         edithistory = false;
         let newtext = JSON.parse(JSON.stringify(text));
         history.push(newtext);
@@ -205,23 +205,12 @@ React.useEffect(() => {
 }, [textDecoration]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-    if(highlight !== ""){
-      let temptext = Array.from(text)
-      temptext[currentselection.attrs.index].highlight = highlight;
-      setText(temptext);
-    }else if(unselect === true && currentselection !== ""){
-      let temptext = Array.from(text)
-      temptext[currentselection.attrs.index].highlight = highlight;
-      setText(temptext);
-      setCurrentSelection("");
-    }
-}, [highlight]) // eslint-disable-line react-hooks/exhaustive-deps
-
-React.useEffect(() => {
   if(currentselection !== ""){
-    setHighlight("#ff00ff")
-  } 
-}, [currentselection]) // eslint-disable-line react-hooks/exhaustive-deps
+      let temptext = Array.from(text)
+      temptext[currentselection.attrs.index].highlight = highlight;
+      setText(temptext);
+  }
+}, [highlight]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [saveStory] = useMutation(UPDATE_STORY,{
       onCompleted(updatedata){
@@ -264,7 +253,6 @@ React.useEffect(() => {
   }else{
   
   const handleUndo = () => {
-      setCurrentSelection("");
       if (historyStep === 0) {
         return;
       }
@@ -274,7 +262,6 @@ React.useEffect(() => {
     };
 
   const handleRedo = () => {
-      setCurrentSelection("");
       if (historyStep === history.length - 1) {
         return;
       }
@@ -291,8 +278,8 @@ React.useEffect(() => {
           setText([...text, {x: Math.round(pos.x), y:Math.round(pos.y), text:valuetext,fontFamily:fontFamily, fontSize:fontSize, fill:textColor, fontStyle: fontStyle, textDecoration: textDecoration, highlight:""}]);
         }
       }else if(tool[0] === 'select'){
-        unselect = true;
         setHighlight("");
+        setCurrentSelection("");
       }
     };
 
@@ -312,7 +299,7 @@ React.useEffect(() => {
       tempfontFamily.push(text[i].fontFamily);
       tempfontSize.push(text[i].fontSize);
       tempfontStyle.push(text[i].fontStyle);
-      temptextDecoration.push(text[i].textDecoration);
+      temptextDecoration.push(text[i].temptextDecoration);
       temptext.push(text[i].text);
       temptextx.push(text[i].x);
       temptexty.push(text[i].y);
@@ -402,10 +389,10 @@ React.useEffect(() => {
         />  
         <Typography id="input-slider" gutterBottom>Current tool: {tool[0]}</Typography>
         <div className="rowC">
-        <Button onClick={() => {setTool(['select',false]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><MouseIcon/></Button>
-        <Button onClick={() => {unselect = true; setHighlight(""); setTool(['erase',false]);  }} variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
-        <Button onClick={() => {unselect = true; setHighlight(""); setTool(['drag',true]); }} variant="text" style={{marginTop: "1vw", color: "white"}}><PanToolIcon/></Button>
-        <Button onClick={() => {unselect = true; setHighlight(""); setTool(['text',false]); }} variant="text" style={{marginTop: "1vw", color: "white"}}><TextFormatIcon/></Button>
+        <Button onClick={() => {setTool(['select',false])}} variant="text" style={{marginTop: "1vw", color: "white"}}><MouseIcon/></Button>
+        <Button onClick={() => {setTool(['erase',false])}} variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
+        <Button onClick={() => {setTool(['drag',true]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><PanToolIcon/></Button>
+        <Button onClick={() => {setTool(['text',false]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><TextFormatIcon/></Button>
 
         </div>
         {currentselectionbar}
@@ -436,6 +423,7 @@ React.useEffect(() => {
           onChange={handleChangeFontFamily}
           color="secondary"
           style={{color:"white"}}
+          focused
         >
           <MenuItem value={"Arial"}>Arial</MenuItem>
           <MenuItem value={"Bahnschrift"}>Bahnschrift</MenuItem>
@@ -469,6 +457,7 @@ React.useEffect(() => {
           onChange={handleChangeFontStyle}
           color="secondary"
           style={{color:"white"}}
+          focused
         >
           <MenuItem value={"normal"}>Normal</MenuItem>
           <MenuItem value={"bold"}>Bold</MenuItem>
@@ -487,6 +476,7 @@ React.useEffect(() => {
           onChange={handleChangeTextDecoration}
           color="secondary"
           style={{color:"white"}}
+          focused
         >
           <MenuItem value={"normal"}>Normal</MenuItem>
           <MenuItem value={"underline"}>Underline</MenuItem>
@@ -541,8 +531,8 @@ React.useEffect(() => {
               y = {txt.y}
               key={i}
               index = {i}
-              stroke = {(currentselection !== "" && currentselection.attrs.index === i) ? txt.highlight : ""}
-              strokeWidth= {.5}
+              stroke = {txt.highlight}
+              strokeWidth= {"0.2"}
               fontFamily= {txt.fontFamily}
               fontSize={txt.fontSize}
               fontStyle = {txt.fontStyle}
@@ -562,6 +552,7 @@ React.useEffect(() => {
                   setValueText(e.target.attrs.text)
                   setFontStyle(e.target.attrs.fontStyle)
                   setTextDecoration(e.target.attrs.textDecoration)
+                  setHighlight("#4B284F")
                 }
               }}
               onDragEnd={(e) => {
