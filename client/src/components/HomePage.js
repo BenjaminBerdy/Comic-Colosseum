@@ -61,13 +61,11 @@ export default function HomePage(){
       if (location.pathname.includes("comic")) {
         filterbuttons = <div>
         <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>New Comics</Button>
-        <Button id="whitebuttontext" variant="outlined"size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Followers Comics</Button>
         <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Liked Comics</Button>
         </div>;
       }else if(location.pathname.includes("story")){
         filterbuttons = <div>
         <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>New Stories</Button>
-        <Button id="whitebuttontext" variant="outlined"size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Followers Stories</Button>
         <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: ".5vw", color: "white", height: "2.5vw"}}>Liked Stories</Button>
         </div>;
       }

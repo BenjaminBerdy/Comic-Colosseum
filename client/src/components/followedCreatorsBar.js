@@ -34,7 +34,7 @@ function renderRow(props) {
 
 export default function FollowedCreatorsBar() {
   const location = useLocation();
-  const {loading, data} = useQuery(GET_USERS);
+  const {loading, data} = useQuery(GET_USERS,{fetchPolicy: "network-only"});
  
   if(loading === true){
     return(<h1 style={{color:"white"}}>Loading...</h1>)

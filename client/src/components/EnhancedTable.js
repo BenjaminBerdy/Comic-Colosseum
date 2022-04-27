@@ -61,6 +61,7 @@ function createData(title, author, date, likes, id ) {
 
 let rows = [];
 let comicstory;
+let header;
 let contentData;
 
 function descendingComparator(a, b, orderBy) {
@@ -199,7 +200,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Comics
+          {header}
         </Typography>
       )}
 
@@ -231,12 +232,14 @@ export default function EnhancedTable() {
   let query;
   if (location.pathname.includes("comic")) {
     comicstory = "comic"
+    header = "Comics"
     query = GET_COMICS;
   }else if(location.pathname.includes("story")){
     comicstory = "story";
+    header = "Stories"
     query = GET_STORIES;
   }  
-  const {loading, data} = useQuery(query);
+  const {loading, data} = useQuery(query,{fetchPolicy: "network-only"});
 
 
 
