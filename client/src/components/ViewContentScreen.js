@@ -9,8 +9,9 @@ import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
-import { Typography } from "@mui/material";
-import { Link } from 'react-router-dom';
+import {Typography } from "@mui/material";
+import ClearIcon from '@mui/icons-material/Clear';
+import Link from '@mui/material/Link';
 import { useLocation } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Stage, Layer, Line,Rect , Text } from 'react-konva';
@@ -66,6 +67,17 @@ const GET_STORY = gql`
     }
 }`;
 
+const GET_COMMENT = gql`
+  query($comicOrStoryId: String!){
+    getComments(comicOrStoryId:$comicOrStoryId){
+      id
+      body
+      username
+      createdAt
+      comicOrStoryId
+    }
+}`;
+
 const DELETE_COMIC = gql`
 mutation deleteComic($id: ID!, $authorId: ID!){
   deleteComic(id:$id, authorId:$authorId)
@@ -76,34 +88,83 @@ mutation deleteStory($id: ID!, $authorId: ID!){
   deleteStory(id:$id, authorId:$authorId)
 }`;
 
-function renderRow(props) {
-    const { index, style } = props;
-    return (
-        <ListItem style={style} key={index} component="div" disablePadding alignItems="flex-start">
-            <ListItemText 
-            primary="Username commented on: 1/1/1"
-            secondary={<Typography style={{ color: '#999999' }}>Hey! I love your content!!</Typography>}/>
-        </ListItem>
-    );
+const LIKE_COMIC = gql`
+mutation likeComic($id: ID!, $likedComicId: ID!){
+  likeComic(id:$id, likedComicId:$likedComicId)
+  {
+    id
+    username
+    likedComics
   }
+}`;
 
+const LIKE_STORY = gql`
+mutation likeStory($id: ID!, $likedStoryId: ID!){
+  likeStory(id:$id, likedStoryId:$likedStoryId)
+  {
+    id
+    username
+    likedStories
+  }
+}`;
+
+const GET_USER = gql`
+  query($id:ID!){
+    getUser(id:$id){
+      id
+      username
+      likedComics
+      likedStories
+    }
+}`;
+
+const CREATE_COMMENT = gql`
+mutation createComment($body: String!, $username: String!, $comicOrStoryId: String!){
+  createComment(body: $body, username: $username, comicOrStoryId: $comicOrStoryId, )
+  {
+    id
+    body
+    username
+    createdAt
+    comicOrStoryId
+  }
+}`;
+
+const DELETE_COMMENT = gql`
+mutation deleteComment($id: ID!, $username: String!){
+  deleteComment(id: $id, username: $username)
+}`;
+
+  let liked = false;
   export default function ViewContentScreen(){
+    const [isLiked, setIsLiked] = React.useState(false)
+    const [change, setChange] = React.useState(0)
+    const [commentText, setCommentText] = React.useState("");
     const { id } = useParams();
     const navigate = useNavigate();
     const {user} = useContext(AuthContext);
     let userid;
-    if(user){userid = user.id}
+    let username;
+    if(user){userid = user.id; username = user.username}
     const location = useLocation();
     const [lines, setLines] = React.useState([]);
     const [text,setText] = React.useState([])
     const [backgroundColor,setBackgroundColor] = React.useState('#FFFFFF');  
     const [open, setOpen] = React.useState(false);
-    const [msg] = React.useState('Are sure you want delete a published content? Deletion is permanent and cannot be undone. Continue?');
+    const [commentId, setCommentId] = React.useState("");
+    const [dialogTitle,setDialogTitle] = React.useState("");
+    const [dialogMessage,setDialogMessage] = React.useState("");
+
     let query;
     let comicstory;
-    let contentData;
+    let contentData = "";
     let deleteButton;
     let canvas;
+    React.useEffect(() => {
+      if(commentId !== ""){
+        deletecomment()
+      } 
+    }, [commentId]) // eslint-disable-line react-hooks/exhaustive-deps
     if (location.pathname.includes("comic")) {
         comicstory = 'comic'
         query = GET_COMIC
@@ -133,7 +194,78 @@ function renderRow(props) {
       },
       variables: {id: id, authorId: userid}
     });
+    const [likecomic] = useMutation(LIKE_COMIC,{
+      onCompleted(data){
+        console.log(data);
+      },
+      onError(err){
+        console.log(err)
+        console.log(err.graphQLErrors[0].extensions.errors)
+      },
+      variables: {
+        id: userid, 
+        likedComicId: id,
+      }
+    })
+    const [likestory] = useMutation(LIKE_STORY,{
+      onCompleted(data){
+        console.log(data);
+      },
+      onError(err){
+        console.log(err)
+        console.log(err.graphQLErrors[0].extensions.errors)
+      },
+      variables: {
+        id: userid, 
+        likedStoryId: id,
+      }
+    });
+
+    const [createcomment] = useMutation(CREATE_COMMENT,{
+      onCompleted({data}){
+        console.log(data);
+        getComments.refetch()
+      },
+      onError(err){
+        console.log(err)
+        console.log(err.graphQLErrors[0].extensions.errors)
+      },
+      variables: {
+        body: commentText,
+        username: username,
+        comicOrStoryId: id
+      }
+    });
+
+    const [deletecomment] = useMutation(DELETE_COMMENT,{
+      onCompleted({data}){
+        console.log(data);
+        getComments.refetch()
+      },
+      onError(err){
+        console.log(err)
+        console.log(err.graphQLErrors[0].extensions.errors)
+      },
+      variables: {id: commentId, username: username}
+    });
+
+  const getUser = useQuery(GET_USER, {variables: {id: userid},fetchPolicy: "network-only"})
+
+  if(user && getUser.loading !== true){
+      var likedContent
+      if(comicstory === "comic"){
+        likedContent = getUser.data.getUser.likedComics
+      }else if(comicstory === "story"){
+        likedContent = getUser.data.getUser.likedStories
+      }
+      if(likedContent.includes(id) && liked === false){
+        liked = true;
+        setIsLiked(true)
+      }
+  }
+
     const {loading, data} = useQuery(query, {variables: {id}, fetchPolicy: "network-only"});
+
 
     const handleDelete = (event) => {
       event.preventDefault();
@@ -144,15 +276,43 @@ function renderRow(props) {
       }
     };    
   
-    const handleClickOpen = () => {
+    const handleClickOpen = (title,message) => {
+      setDialogTitle(title)
+      setDialogMessage(message)
       setOpen(true);
     };
   
     const handleClose = () => {
       setOpen(false);
     };
-    
 
+    const handleLike = () => {
+      if(!isLiked && !liked){
+        setChange(1);
+      }else if(isLiked && liked){
+        setChange(-1)
+      }else{
+        setChange(0);
+      }
+      setIsLiked(!isLiked)
+      if(comicstory === "comic"){
+        likecomic()
+      }else if(comicstory === "story"){
+        likestory()
+      }
+    }
+
+    const handleCommentText = (e) =>{
+      setCommentText(e.target.value)
+    }
+
+    const handleCreateComment = (event) => {
+      event.preventDefault();
+      if(commentText.trim() !== ""){
+        createcomment();
+      }
+    }
+    
     React.useEffect(() => {
       if(loading === false && comicstory === "comic"){
         console.log(data)
@@ -177,11 +337,61 @@ function renderRow(props) {
 
   }, [data]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    if(loading === true){
+
+  function renderRow(props) {
+    const { index, style } = props;
+    console.log(style)
+    let clearicon;
+    if(username === getComments.data.getComments[index].username){
+      clearicon = <Button onClick={()=>{handleClickOpen("Delete Comment?","Are you sure you want to delete your comment? This action cannot be undone.")}} variant="text" style={{color: "white"}}><ClearIcon/></Button>
+    }
+    return (
+        <ListItem style={style} key={index} component="div" disablePadding alignItems="flex-start">
+            <ListItemText 
+            primary= {getComments.data.getComments[index].username + ": " + getComments.data.getComments[index].createdAt}
+            secondary={<Typography style={{ color: '#999999' }}>{getComments.data.getComments[index].body}</Typography>}/>
+            {clearicon}
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {dialogTitle}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {dialogMessage}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+              <Button onClick={() => {handleClose(); setCommentId(getComments.data.getComments[index].id);}}>Confirm</Button>
+                <Button onClick={handleClose} autoFocus>
+                  Dismiss
+                </Button>
+              </DialogActions>
+            </Dialog>
+        </ListItem>
+    );
+}
+
+if(loading !== true){
+  if(location.pathname.includes("comic")){
+    contentData = data.getComic
+  }else if(location.pathname.includes("story")){
+    contentData = data.getStory
+  }
+
+}
+
+const getComments = useQuery(GET_COMMENT, {variables: {comicOrStoryId: id},fetchPolicy: "network-only"})
+
+
+    if(loading === true || getUser.loading === true || getComments.data === undefined){
         return(<h1 style={{color:"white"}}>Loading...</h1>)
     }else{
         if(location.pathname.includes("comic")){
-            contentData = data.getComic
             canvas = <div id="canvas">
             <Stage
                 width={1050}
@@ -222,7 +432,6 @@ function renderRow(props) {
               </Stage>
             </div>
           }else if(location.pathname.includes("story")){
-            contentData = data.getStory
             canvas =  <div id="canvas">
             <Stage
               width={1050}
@@ -244,7 +453,6 @@ function renderRow(props) {
                     key={i}
                     index = {i}
                     stroke = {txt.highlight}
-                    strokeWidth= {"0.2"}
                     fontFamily= {txt.fontFamily}
                     fontSize={txt.fontSize}
                     fontStyle = {txt.fontStyle}
@@ -257,10 +465,14 @@ function renderRow(props) {
             </Stage>
           </div>
           }
+    let page = '/viewuser/'
     if(user && user.id === contentData.authorId){
-      deleteButton = <Button onClick={handleClickOpen} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: "1vw", marginTop: "1vw",color: "white", height: "2.5vw"}}>Delete</Button>
+      deleteButton = <Button onClick={()=>{handleClickOpen("Delete Published Content?","Are you sure you want to delete published content? This action cannot be undone.")}} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: "1vw", marginTop: "1vw",color: "white", height: "2.5vw"}}>Delete</Button>
+      page = '/userprofile/'
     }
+
     
+
     return(
     <div>
       <AppBanner/>
@@ -271,11 +483,11 @@ function renderRow(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Delete Published Content?"}
+          {dialogTitle}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {msg}
+            {dialogMessage}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -290,33 +502,36 @@ function renderRow(props) {
       <h2>{contentData.title}</h2>
       {deleteButton}
     </div>
-        <h3>By: <Link to={'/' + comicstory + '/viewuser/' + contentData.authorId} style={{ color: '#B23CFD', textDecoration: 'none'}}>{contentData.author}</Link></h3>
+        <h3>By: <Link href={'/' + comicstory + page + contentData.authorId} style={{ color: '#B23CFD', textDecoration: 'none'}}>{contentData.author}</Link></h3>
+
         <h3>Published: {contentData.publishDate}</h3>
         <div className="rowC">
-          <h3>Likes: {contentData.likes}</h3>  
-          <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: "2vw", color: "white", height: "2.5vw"}}>Like</Button>
+          <h3>Likes: {contentData.likes + change}</h3>  
+          {user && !isLiked && (<Button onClick={handleLike} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: "2vw", color: "white", height: "2.5vw"}}>Like</Button>)}
+          {user && isLiked && (<Button onClick={handleLike} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: "2vw", color: "white", height: "2.5vw"}}>Remove Like</Button>)}
         </div>  
-       
         <div id = "Comments">
         <h2 style={{textAlign: "left"}}>Community Interaction</h2>
-        {user && (<div><TextField
+        {user && (<div className="rowC"><TextField
           label="Comment"
-          defaultValue="Add a comment..."
+          placeholder="Add a comment..."
           variant="standard"
-          sx={{ input: { color: 'white' } }}
+          sx={{ input: { color: 'white' }}}
           color="secondary"
           focused
+          value={commentText}
+          onChange={handleCommentText}
         />
-        <Button id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginTop: "1vw", marginLeft: "4vw", color: "white", height: "2.5vw"}}>Comment</Button></div>)}
+        <Button onClick={handleCreateComment} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginTop: "1vw", marginLeft: "1vw", color: "white", height: "2.5vw"}}>Comment</Button></div>)}
         <Box
             sx={{ width: '100%', height: '100%', color: "white", bgcolor: '#4B284F', marginTop:'1%', marginLeft:'1%'}}
             >
             <br/>
             <FixedSizeList
-                height={350}
+                height={290}
                 width={'100%'}
-                itemSize={46}
-                itemCount={20}
+                itemSize={100}
+                itemCount={getComments.data.getComments.length}
                 overscanCount={5}
             >
                 {renderRow}

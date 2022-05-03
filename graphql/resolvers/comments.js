@@ -5,7 +5,7 @@ module.exports = {
         async getComments(_, { comicOrStoryId }){
 
             try {
-                const comments = await Comment.find({comicOrStoryId});
+                const comments = await Comment.find({comicOrStoryId}).sort({ createdAt: -1 });;
                 return comments;
             } catch (err){
                 throw new Error(err);
@@ -13,15 +13,13 @@ module.exports = {
         }
     },
     Mutation: {
-        async createComment(_, {body, username, comicOrStoryId, userId }){
-
+        async createComment(_, {body, username, comicOrStoryId}){
             try {
                 const newcomment = new Comment({
                     body: body,
                     username: username,
-                    createdAt: new Date().toISOString(),
+                    createdAt: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
                     comicOrStoryId: comicOrStoryId,
-                    userId: userId
                 })
                 const comments = await newcomment.save();
                 return comments;
@@ -30,11 +28,11 @@ module.exports = {
             }
 
         },
-        async deleteComment(_, { id,userId }) {
+        async deleteComment(_, { id, username }) {
     
           try {
             const comment = await Comment.findById(id);
-            if (userId === comment.userId) {
+            if (username  === comment.username) {
               await comment.delete();
               return 'Comment Deleted Successfully';
             } else {

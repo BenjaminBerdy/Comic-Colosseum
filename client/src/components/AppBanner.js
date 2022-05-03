@@ -8,7 +8,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from '@mui/material/Link';
+import {useNavigate } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import { useContext } from "react";
 import { useLocation } from 'react-router-dom';
@@ -59,13 +60,7 @@ export default function MenuAppBar() {
   const handleLogout = (event) => {
     setAnchorEl(null);
     logout();
-    if(location.pathname.includes("create") || location.pathname.includes("userprofile")){
-      if(location.pathname.includes("comic")){
-        navigate('/comic/homepage/')
-      }else if(location.pathname.includes("story")){
-        navigate('/story/homepage/')
-      }
-    }
+    navigate('/')
   };
   const theme = createTheme({
     palette: {
@@ -78,10 +73,10 @@ export default function MenuAppBar() {
   let header;
   let comicstory;
   if (location.pathname.includes("comic")) {
-    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Comic Colosseum</Link>
+    header = <Link href='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Comic Colosseum</Link>
     comicstory = 'comic'
   }else if(location.pathname.includes("story")){
-    header = <Link to='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Story Colosseum</Link>
+    header = <Link href='/' style={{ color: 'white', textDecoration: 'none', fontFamily: 'fantasy' }}>Story Colosseum</Link>
     comicstory = 'story'
   }
   return (
@@ -119,7 +114,7 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem component={Link} to={'/'+ comicstory +'/userprofile/' + user.id}>Profile</MenuItem>
+                <MenuItem component={Link} href={'/'+ comicstory +'/userprofile/' + user.id}>Profile</MenuItem>
                 <MenuItem onClick={handleLogout}>LogOut</MenuItem>
               </Menu>
             </div>

@@ -5,6 +5,8 @@ const {UserInputError} = require('apollo-server');
 const {validateRegisterInput, validateLoginInput, validatePasswordInput} = require('../../util/validators')
 const {SECRET_KEY} = require('../../config');
 const User = require('../../models/User');
+const Comic = require('../../models/Comic');
+const Story = require('../../models/Story');
 
 function generateToken(user){
     return jwt.sign({
@@ -173,31 +175,59 @@ module.exports = {
             }
 
         },
-        async follow(_, { id, followeduserid, follow}) {
+        async follow(_, { id, followeduserid}) {
             try {
                 var user = await User.findById(id);
                 var otheruser = await User.findById(followeduserid);
-                user = await User.findByIdAndUpdate(id, {followedCreators: [...user.followedCreators, followeduserid]});
-                otheruser = await User.findByIdAndUpdate(followeduserid, {totalfollowers: otheruser.totalfollowers + follow})
+                if(user.followedCreators.includes(followeduserid)){
+                    var followedCreators = user.followedCreators.filter(function(e) { return e !== followeduserid })
+                    user = await User.findByIdAndUpdate(id, {followedCreators: followedCreators});
+                    otheruser = await User.findByIdAndUpdate(followeduserid, {totalfollowers: otheruser.totalfollowers - 1})
+                }else{
+                    user = await User.findByIdAndUpdate(id, {followedCreators: [...user.followedCreators, followeduserid]});
+                    otheruser = await User.findByIdAndUpdate(followeduserid, {totalfollowers: otheruser.totalfollowers + 1})
+                }
                 return user;
             } catch (err) {
                 throw new Error(err);
             }
         },
-        async likedComicsListUpdate(_, { id, likedComicId }) {
+        async likeComic(_, { id, likedComicId }) {
             try {
                 var user = await User.findById(id);
-                user = await User.findByIdAndUpdate(id, {likedComics: user.likedComics.push(likedComicId)});
+                var comic = await Comic.findById(likedComicId);
+                var otheruser = await User.findById(comic.authorId);
+                if(user.likedComics.includes(likedComicId)){
+                    var likedcomics = user.likedComics.filter(function(e) { return e !== likedComicId })
+                    user = await User.findByIdAndUpdate(id, {likedComics: likedcomics});
+                    comic = await Comic.findByIdAndUpdate(likedComicId, {likes: comic.likes - 1})
+                    otheruser = await User.findByIdAndUpdate(comic.authorId, {totallikes: otheruser.totallikes - 1})
+                }else{
+                    user = await User.findByIdAndUpdate(id, {likedComics: [...user.likedComics, likedComicId]});
+                    comic = await Comic.findByIdAndUpdate(likedComicId, {likes: comic.likes + 1})
+                    otheruser = await User.findByIdAndUpdate(comic.authorId, {totallikes: otheruser.totallikes + 1})
+                }
                 return user;
             } catch (err) {
                 throw new Error(err);
             }
         },
-        async likedStoriesListUpdate(_, { id, likedStoryId }) {
+        async likeStory(_, { id, likedStoryId }) {
 
             try {
                 var user = await User.findById(id);
-                user = await User.findByIdAndUpdate(id, {likedStories: user.likedStories.push(likedStoryId)});
+                var story = await Story.findById(likedStoryId);
+                var otheruser = await User.findById(story.authorId);
+                if(user.likedStories.includes(likedStoryId)){
+                    var likedstories = user.likedStories.filter(function(e) { return e !== likedStoryId })
+                    user = await User.findByIdAndUpdate(id, {likedStories: likedstories});
+                    story = await Story.findByIdAndUpdate(likedStoryId, {likes: story.likes - 1})
+                    otheruser = await User.findByIdAndUpdate(story.authorId, {totallikes: otheruser.totallikes - 1})
+                }else{
+                    user = await User.findByIdAndUpdate(id, {likedStories: [...user.likedStories, likedStoryId]});
+                    story = await Story.findByIdAndUpdate(likedStoryId, {likes: story.likes + 1})
+                    otheruser = await User.findByIdAndUpdate(story.authorId, {totallikes: otheruser.totallikes + 1})
+                }
                 return user;
             } catch (err) {
                 throw new Error(err);

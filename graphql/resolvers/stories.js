@@ -8,7 +8,7 @@ module.exports = {
   Query: {
     async getStories() {
       try {
-        const stories = await Story.find().sort({ createdAt: -1 });
+        const stories = await Story.find().sort({ publishDate: -1 });
         return stories;
       } catch (err) {
         throw new Error(err);
@@ -25,25 +25,7 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    },
-    async searchStoryTitle(_, { title }) {
-
-      try {
-          const stories = await Story.find({title});
-          return stories;
-      } catch (err) {
-          throw new Error(err);
-      }
-  },
-  async searchStoryAuthor(_, { author }) {
-
-      try {
-          const stories = await Story.find({author});
-          return stories;
-      } catch (err) {
-          throw new Error(err);
-      }
-  }
+    }
   },
   Mutation: {
     async createStory(_, { author, authorId }) {
@@ -108,18 +90,7 @@ module.exports = {
     async publishStory(_, { id }) {
 
         try {
-            const story = await Story.findByIdAndUpdate(id, {publishDate: new Date().toISOString()});
-            return story;
-        } catch (err) {
-            throw new Error(err);
-        }
-    },
-    async likeStory(_, { id, like, authorId }) {
-        try {
-            var story = await Story.findById(id);
-            var author = await User.findById(authorId);
-            author = await User.findByIdAndUpdate(author, {totallikes: author.totallikes + like});
-            story = await Story.findByIdAndUpdate(id, {likes: story.likes+like});
+            const story = await Story.findByIdAndUpdate(id, {publishDate: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()});
             return story;
         } catch (err) {
             throw new Error(err);

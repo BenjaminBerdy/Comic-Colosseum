@@ -8,7 +8,7 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import EnhancedTable from "./EnhancedTable";
 import Button from '@mui/material/Button'
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -18,6 +18,8 @@ import { AuthContext } from '../context/auth';
 import { useContext } from "react";
 import gql from 'graphql-tag'
 import {useQuery, useMutation} from '@apollo/react-hooks'
+import Link from '@mui/material/Link';
+
 
 const GET_USER = gql`
   query($id:ID!){
@@ -203,7 +205,7 @@ export default function UserProfile(props){
             <AppBanner/>  
             <div id = "userbar" style={{backgroundColor: '#4B284F', color: "white", width: "100%", maxWidth: 250, textAlign: "center"}}>
             <h1>{user.username}</h1>
-            <h3>Followers: {data.getUser.totalfollowers}</h3> <h3>Likes: {data.getUser.totalfollowers}</h3>
+            <h3>Followers: {data.getUser.totalfollowers}</h3> <h3>Likes: {data.getUser.totallikes}</h3>
             {createbutton}
             <Box
                 sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: '#4B284F' }}
@@ -211,7 +213,7 @@ export default function UserProfile(props){
               <br/>
               <UnpublishedList/>
             </Box>
-            <Link to={'/changepassword/'+user.id}><Button variant="outlined" size="small" color="secondary" style={{marginLeft: "-11.5vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Change Password</Button></Link>
+            <Link href={'/changepassword/'+user.id}><Button variant="outlined" size="small" color="secondary" style={{marginLeft: "-11.5vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Change Password</Button></Link>
             <Button onClick={handleClickOpen} variant="outlined" size="small" color="secondary" style={{marginLeft: "-4vw", marginRight: "50vw", position: "absolute", fontSize: 10, bottom: "4.2vw", color: "white", width: "7vw", height: "3vw"}}>Delete Profile</Button>
             </div>    
             <React.Fragment>

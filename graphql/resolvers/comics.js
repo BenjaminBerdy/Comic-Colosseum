@@ -7,7 +7,7 @@ module.exports = {
   Query: {
     async getComics() {
       try {
-        const comics = await Comic.find().sort({ createdAt: -1 });
+        const comics = await Comic.find().sort({ publishDate: -1 });
         return comics;
       } catch (err) {
         throw new Error(err);
@@ -24,24 +24,6 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    },
-    async searchComicTitle(_, { title }) {
-
-        try {
-            const comics = await Comic.find({title});
-            return comics;
-        } catch (err) {
-            throw new Error(err);
-        }
-    },
-    async searchComicAuthor(_, { author }) {
-
-        try {
-            const comics = await Comic.find({author});
-            return comics;
-        } catch (err) {
-            throw new Error(err);
-        }
     }
   },
   Mutation: {
@@ -110,19 +92,7 @@ module.exports = {
     async publishComic(_, { id }) {
 
         try {
-            const comic = await Comic.findByIdAndUpdate(id, {publishDate: new Date().toISOString()});
-            return comic;
-        } catch (err) {
-            throw new Error(err);
-        }
-    },
-    async likeComic(_, { id, like, authorId }) {
-
-        try {
-            var comic = await Comic.findById(id);
-            var author = await User.findById(authorId);
-            author = await User.findByIdAndUpdate(author, {totallikes: author.totallikes + like});
-            comic = await Comic.findByIdAndUpdate(id, {likes: comic.likes+like});
+            const comic = await Comic.findByIdAndUpdate(id, {publishDate: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()});
             return comic;
         } catch (err) {
             throw new Error(err);

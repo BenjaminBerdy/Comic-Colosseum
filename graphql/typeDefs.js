@@ -70,10 +70,6 @@ module.exports = gql`
         getComic(id: ID!): Comic!
         getStories: [Story]!
         getStory(id: ID!): Story!
-        searchComicTitle(title: String!): [Comic]!
-        searchComicAuthor(author: String!): [Comic]!
-        searchStoryTitle(title: String!): [Story]!
-        searchStoryAuthor(author: String!): [Story]!
         getComments(comicOrStoryId: String!): [Comment]!
     }
     type Mutation{
@@ -83,9 +79,9 @@ module.exports = gql`
         forgotPassword(email:String!): String!
         resetPassword(token: String! id:ID!, newpassword:String!,confirmpassword:String!): User!
 
-        follow(id: ID!, followeduserid: ID!, follow: Int!): User!
-        likedComicsListUpdate(id: ID!, likedComicId: ID!): User!
-        likedStoriesListUpdate(id: ID!, likedStories: [String]!): User!
+        follow(id: ID!, followeduserid: ID!): User!
+        likeComic(id: ID!, likedComicId: ID!): User!
+        likeStory(id: ID!, likedStoryId: ID!): User!
         deleteUser(id: ID!): String!
 
         createComic(author: String!, authorId: String!): Comic!
@@ -93,17 +89,15 @@ module.exports = gql`
             points: [[Float]]!, strokeWidth: [Int]!, stroke: [String]!, fontFamily: [String]!,
             fontSize: [Int]!, text: [String]!, textcolor: [String]!, textx: [Int]!, texty: [Int]!): Comic!
         publishComic(id: ID!): Comic!
-        likeComic(id: ID!, like: Int!, authorId: ID!): Comic!
         deleteComic(id: ID!, authorId: ID!): String!
 
         createStory(author: String!, authorId: String!): Story!
         updateStory(id: ID!, title: String!, backgroundColor: String!, fontFamily: [String]!, fontStyle: [String]!, textDecoration: [String]!,
             textColor:[String]!, fontSize: [Int]!, text: [String]!, textx: [Int]!, texty: [Int]!): Story!
         publishStory(id: ID!): Story!
-        likeStory(id: ID!, like: Int!, authorId: ID!): Story!
         deleteStory(id: ID!, authorId: ID!): String!
 
-        createComment(body: String!, username: String!, comicOrStoryId: String!, userId: String!): Comment!
-        deleteComment(id: ID!, userId: ID!): String!
+        createComment(body: String!, username: String!, comicOrStoryId: String!): Comment!
+        deleteComment(id: ID!, username: String!): String!
     }
 `

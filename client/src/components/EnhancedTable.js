@@ -1,6 +1,5 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,15 +14,30 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import SearchIcon from '@mui/icons-material/Search';
 import { visuallyHidden } from '@mui/utils';
-import { Link } from 'react-router-dom';
+import Link from '@mui/material/Link';
 import { useLocation } from 'react-router-dom';
 import gql from 'graphql-tag';
 import {useQuery } from '@apollo/react-hooks';
 import { useParams } from "react-router-dom";
+import { AuthContext } from '../context/auth';
+import { useContext } from "react";
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import { styled, alpha } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
 
+const GET_USER = gql`
+  query($id:ID!){
+    getUser(id:$id){
+     id
+     username
+     likedComics
+     likedStories
+    }
+}`;
 
 const GET_COMICS = gql`
   query{
@@ -170,65 +184,177 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
 
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          {header}
-        </Typography>
-      )}
 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
+export default function EnhancedTable() {
+  const[filter, setFilter] = React.useState("New")
+  const[searchtext, setSearchText] = React.useState("")
+  const[search,setSearch] = React.useState("")
+
+  const EnhancedTableToolbar = (props) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const { numSelected } = props;
+    const handleMenu = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+  
+    const handleFilterNew = () => {
+      handleClose()
+      setFilter("New")
+      console.log(filter);
+    }
+  
+    const handleFilterLiked = () => {
+      handleClose()
+      setFilter("Liked")
+      console.log(filter);
+    }
+
+    const handleSearchText = (e) =>{
+      setSearchText(e.target.value)
+    }
+
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      setSearch(searchtext)
+    }
+
+
+    const Search = styled('div')(({ theme }) => ({
+      position: 'relative',
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: alpha(theme.palette.common.white, 0.15),
+      '&:hover': {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+      },
+      marginRight: theme.spacing(2),
+      marginLeft: 0,
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing(3),
+        width: 'auto',
+      },
+    }));
+  
+    const SearchIconWrapper = styled('div')(({ theme }) => ({
+      padding: theme.spacing(0, 2),
+      height: '100%',
+      position: 'absolute',
+      pointerEvents: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }));
+  
+    const StyledInputBase = styled(InputBase)(({ theme }) => ({
+      color: 'inherit',
+      '& .MuiInputBase-input': {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('md')]: {
+          width: '20ch',
+        },
+      },
+    }));
+  
+    return (
+      <Toolbar
+        sx={{
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 },
+          ...(numSelected > 0 && {
+            bgcolor: (theme) =>
+              alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+          }),
+        }}
+      >
+        {numSelected > 0 ? (
+          <Typography
+            sx={{ flex: '1 1 100%' }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {numSelected} selected
+          </Typography>
+        ) : (
+          <Typography
+            sx={{ flex: '1 1 100%' }}
+            variant="h6"
+            id="tableTitle"
+            component="div"
+          >
+            {header}
+          </Typography>
+        )}
+        <React.Fragment>
+            <Toolbar id="toolbar" style={{ marginRight: '15vw'}}>
+                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                    <Search >
+                        <SearchIconWrapper>
+                        <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                        placeholder="Search…"
+                        inputProps={{ 'aria-label': 'search' }}
+                        value={searchtext}
+                        onChange={handleSearchText}
+                        autoFocus
+                    />
+                    </Search>
+                </Box>
+            </Toolbar>
+            </React.Fragment>
+        {user && (<div className='rowC'>
+        <Typography style={{marginTop: ".5vw"}}>{filter}</Typography>
         <Tooltip title="Filter list">
-          <IconButton >
+          <IconButton onClick={handleMenu}>
             <FilterListIcon style={{ color: 'white'}}/>
           </IconButton>
         </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
+        </div>)}
+        <Menu
+          id="menu-appbar"
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleFilterNew}>New {header}</MenuItem>
+          <MenuItem onClick={handleFilterLiked}>Liked {header}</MenuItem>
+        </Menu>
+      </Toolbar>
+    );
+  };
+  
+  EnhancedTableToolbar.propTypes = {
+    numSelected: PropTypes.number.isRequired,
+  };
 
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
 
-export default function EnhancedTable() {
   rows= []
   const { id } = useParams();
   const location = useLocation();
+  const{user}= useContext(AuthContext);
+  var userid;
+  if(user){
+    userid = user.id
+  }
   let query;
   if (location.pathname.includes("comic")) {
     comicstory = "comic"
@@ -241,6 +367,7 @@ export default function EnhancedTable() {
   }  
   const {loading, data} = useQuery(query,{fetchPolicy: "network-only"});
 
+  const getUser = useQuery(GET_USER, {variables: {id: userid},fetchPolicy: "network-only"})
 
 
   const [order, setOrder] = React.useState('asc');
@@ -272,7 +399,7 @@ export default function EnhancedTable() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
  
-  if(loading === true){
+  if(loading === true || getUser.loading === true){
     return(<h1 style={{color:"white"}}>Loading...</h1>)
 }else{
   if(location.pathname.includes("comic")){
@@ -281,14 +408,43 @@ export default function EnhancedTable() {
     contentData = data.getStories
   }
 
+  rows=[]
+  let correctrows = [];
+  let allrows= [];
   for(let i = 0; i < contentData.length; i++){
     if(contentData[i].publishDate !== ""){
       if(location.pathname.includes("user")){
         if(id === contentData[i].authorId){
-          rows.push(createData(contentData[i].title, contentData[i].author, contentData[i].publishDate, contentData[i].likes, contentData[i].id))
+          correctrows.push(contentData[i])
         }
       }else{
-        rows.push(createData(contentData[i].title, contentData[i].author, contentData[i].publishDate, contentData[i].likes, contentData[i].id))
+        correctrows.push(contentData[i])
+      }
+    }
+  }
+
+  for(let i = 0; i < correctrows.length; i++){
+    if(search.trim() !== ""){
+      if(correctrows[i].title.toLowerCase() === search.toLowerCase() || correctrows[i].author.toLowerCase() === search.toLowerCase()){
+        allrows.push(correctrows[i]);
+      }
+    }else{
+      allrows = Array.from(correctrows);
+    }
+  }
+  
+  for(let i = 0; i < allrows.length; i++){
+    if(filter === "New"){
+      rows.push(createData(allrows[i].title, allrows[i].author, allrows[i].publishDate, allrows[i].likes, allrows[i].id))
+    }else if(filter === "Liked"){
+      if(comicstory === "comic"){
+        if(getUser.data.getUser.likedComics.includes(allrows[i].id)){
+          rows.push(createData(allrows[i].title, allrows[i].author, allrows[i].publishDate, allrows[i].likes, allrows[i].id))
+        }
+      }else if(comicstory === "story"){
+        if(getUser.data.getUser.likedStories.includes(allrows[i].id)){
+          rows.push(createData(allrows[i].title, allrows[i].author, allrows[i].publishDate, allrows[i].likes, allrows[i].id))
+        }
       }
     }
   }
@@ -322,7 +478,7 @@ export default function EnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      component={Link} to={'/'+ comicstory +'/viewcontent/' + row.id} style={{ color: 'white', textDecoration: 'none' }}
+                      component={Link} href={'/'+ comicstory +'/viewcontent/' + row.id} style={{ color: 'white', textDecoration: 'none' }}
                       /*onClick={(event) => handleClick(event, row.title)}*/
                       role="checkbox"
                       aria-checked={isItemSelected}
