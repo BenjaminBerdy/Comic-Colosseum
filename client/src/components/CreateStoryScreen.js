@@ -378,11 +378,11 @@ React.useEffect(() => {
     setTextDecoration(e.target.value);
   }
 
-  if(currentselection === ""){
-    currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: None</Typography>
-  }else{
-    currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: Text {currentselection.attrs.index+1}</Typography>
-  }
+  // if(currentselection === ""){
+  //   currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: None</Typography>
+  // }else{
+  //   currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: Text {currentselection.attrs.index+1}</Typography>
+  // }
 
     return(
         <div>
@@ -419,6 +419,7 @@ React.useEffect(() => {
                     aria-labelledby="input-slider"
                     color="secondary"
                     valueLabelDisplay="auto"
+                    size="small"
                 />
                 </Grid>
                 <Grid item>
@@ -426,7 +427,7 @@ React.useEffect(() => {
             </Grid>
             </Box>
         <br/>
-        <Box sx={{minWidth: 80 }} style={{marginBottom: ".5vw"}}>
+        <Box sx={{minWidth: 80 }} style={{marginBottom: ".8vw", marginTop: "-1vw"}}>
       <FormControl focused> 
         <InputLabel id="demo-simple-select-label" variant="filled" color="secondary" focused>Font</InputLabel>
         <Select
@@ -435,7 +436,7 @@ React.useEffect(() => {
           value={fontFamily}
           onChange={handleChangeFontFamily}
           color="secondary"
-          style={{color:"white"}}
+          style={{color:"white", height:"4vw"}}
         >
           <MenuItem value={"Arial"}>Arial</MenuItem>
           <MenuItem value={"Bahnschrift"}>Bahnschrift</MenuItem>
@@ -459,7 +460,7 @@ React.useEffect(() => {
       </FormControl>
     </Box>
     <div className="rowC">           
-    <Box sx={{minWidth: 80 }} style={{marginBottom: ".5vw", marginLeft: "1vw"}}>
+    <Box sx={{minWidth: 80 }} style={{marginBottom: ".5vw"}}>
       <FormControl focused> 
         <InputLabel id="demo-simple-select-label" variant="filled" color="secondary" focused>Font Style</InputLabel>
         <Select
@@ -499,12 +500,15 @@ React.useEffect(() => {
         <TextField
           id="standard-helperText"
           label="Text"
+          rows={4}
           value={valuetext}
           variant="standard"
-          style={{ marginBottom: '1vw' }}
+          style={{ marginBottom: '1vw', width:"20vw" }}
           sx={{ input: { color: 'white' } }}
           color="secondary"
           focused
+          multiline
+          inputProps={{ style: { color: "white" } }}
           onChange={handleChangeValueText}
         />
         </div>
