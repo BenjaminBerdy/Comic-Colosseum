@@ -4,6 +4,8 @@ import EnhancedTable from "./EnhancedTable";
 import FollowedCreatorsBar from "./followedCreatorsBar";
 import { useContext } from "react";
 import { AuthContext } from '../context/auth';
+import Toolbar from '@mui/material/Toolbar';
+
 
 
 export default function HomePage(){
@@ -12,6 +14,7 @@ export default function HomePage(){
         <div>
             <AppBanner/>               
             {user && <FollowedCreatorsBar/>}
+            <Toolbar id="toolbar"/>
             <div id="enhancedtable">
             <EnhancedTable/>
             </div>
