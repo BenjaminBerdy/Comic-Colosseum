@@ -13,13 +13,14 @@ module.exports = {
         }
     },
     Mutation: {
-        async createComment(_, {body, username, comicOrStoryId}){
+        async createComment(_, {body, username, comicOrStoryId, userId}){
             try {
                 const newcomment = new Comment({
                     body: body,
                     username: username,
                     createdAt: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
                     comicOrStoryId: comicOrStoryId,
+                    userId: userId
                 })
                 const comments = await newcomment.save();
                 return comments;
@@ -36,7 +37,7 @@ module.exports = {
               await comment.delete();
               return 'Comment Deleted Successfully';
             } else {
-              throw new AuthenticationError('Action not allowed');
+              throw new Error('Action not allowed');
             }
           } catch (err) {
             throw new Error(err);

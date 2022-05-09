@@ -75,6 +75,7 @@ const GET_COMMENT = gql`
       username
       createdAt
       comicOrStoryId
+      userId
     }
 }`;
 
@@ -119,14 +120,15 @@ const GET_USER = gql`
 }`;
 
 const CREATE_COMMENT = gql`
-mutation createComment($body: String!, $username: String!, $comicOrStoryId: String!){
-  createComment(body: $body, username: $username, comicOrStoryId: $comicOrStoryId, )
+mutation createComment($body: String!, $username: String!, $comicOrStoryId: String!, $userId: String!){
+  createComment(body: $body, username: $username, comicOrStoryId: $comicOrStoryId, userId: $userId)
   {
     id
     body
     username
     createdAt
     comicOrStoryId
+    userId
   }
 }`;
 
@@ -155,16 +157,12 @@ mutation deleteComment($id: ID!, $username: String!){
     const [dialogTitle,setDialogTitle] = React.useState("");
     const [dialogMessage,setDialogMessage] = React.useState("");
 
+
     let query;
     let comicstory;
     let contentData = "";
     let deleteButton;
     let canvas;
-    React.useEffect(() => {
-      if(commentId !== ""){
-        deletecomment()
-      } 
-    }, [commentId]) // eslint-disable-line react-hooks/exhaustive-deps
     if (location.pathname.includes("comic")) {
         comicstory = 'comic'
         query = GET_COMIC
@@ -233,7 +231,8 @@ mutation deleteComment($id: ID!, $username: String!){
       variables: {
         body: commentText,
         username: username,
-        comicOrStoryId: id
+        comicOrStoryId: id,
+        userId: userid
       }
     });
 
@@ -269,14 +268,20 @@ mutation deleteComment($id: ID!, $username: String!){
 
     const handleDelete = (event) => {
       event.preventDefault();
-      if(comicstory === "comic"){
-        deletecomic();
-      }else if(comicstory === "story"){
-        deletestory()
+      if(commentId !== ""){
+        handleClose();
+        deletecomment();
+      }else{
+        if(comicstory === "comic"){
+          deletecomic();
+        }else if(comicstory === "story"){
+          deletestory()
+        }
       }
     };    
   
-    const handleClickOpen = (title,message) => {
+    const handleClickOpen = (title,message,id) => {
+      setCommentId(id)
       setDialogTitle(title)
       setDialogMessage(message)
       setOpen(true);
@@ -340,38 +345,23 @@ mutation deleteComment($id: ID!, $username: String!){
 
   function renderRow(props) {
     const { index, style } = props;
-    console.log(style)
+    let pagename = '/viewuser/'
+    if(userid && (getComments.data.getComments[index].userId === userid)){
+      pagename = '/userprofile/'
+    }
+
     let clearicon;
     if(username === getComments.data.getComments[index].username){
-      clearicon = <Button onClick={()=>{handleClickOpen("Delete Comment?","Are you sure you want to delete your comment? This action cannot be undone.")}} variant="text" style={{color: "white"}}><ClearIcon/></Button>
+      clearicon = <Button onClick={()=>{handleClickOpen("Delete Comment?","Are you sure you want to delete your comment? This action cannot be undone.",getComments.data.getComments[index].id)}} variant="text" style={{color: "white"}}><ClearIcon/></Button>
     }
     return (
         <ListItem style={style} key={index} component="div" disablePadding alignItems="flex-start">
             <ListItemText 
-            primary= {getComments.data.getComments[index].username + ": " + getComments.data.getComments[index].createdAt}
-            secondary={<Typography style={{ color: '#999999' }}>{getComments.data.getComments[index].body}</Typography>}/>
-            {clearicon}
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">
-                {dialogTitle}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  {dialogMessage}
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-              <Button onClick={() => {handleClose(); setCommentId(getComments.data.getComments[index].id);}}>Confirm</Button>
-                <Button onClick={handleClose} autoFocus>
-                  Dismiss
-                </Button>
-              </DialogActions>
-            </Dialog>
+            primary= {<Typography>{<Link href={'/' + comicstory + pagename + getComments.data.getComments[index].userId} style={{ color: '#D23CFD', textDecoration: 'none'}}>
+              {getComments.data.getComments[index].username}</Link>}{": "+ getComments.data.getComments[index].createdAt}</Typography>}
+            secondary={<Typography style={{ color: '#999999' }}>{getComments.data.getComments[index].body}</Typography>}
+            />
+          {clearicon}
         </ListItem>
     );
 }
@@ -467,7 +457,7 @@ const getComments = useQuery(GET_COMMENT, {variables: {comicOrStoryId: id},fetch
           }
     let page = '/viewuser/'
     if(user && user.id === contentData.authorId){
-      deleteButton = <Button onClick={()=>{handleClickOpen("Delete Published Content?","Are you sure you want to delete published content? This action cannot be undone.")}} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: "1vw", marginTop: "1vw",color: "white", height: "2.5vw"}}>Delete</Button>
+      deleteButton = <Button onClick={()=>{handleClickOpen("Delete Published Content?","Are you sure you want to delete published content? This action cannot be undone.","")}} id="whitebuttontext" variant="outlined" size="small" color="secondary" style={{marginLeft: "1vw", marginTop: "1vw",color: "white", height: "2.5vw"}}>Delete</Button>
       page = '/userprofile/'
     }
 

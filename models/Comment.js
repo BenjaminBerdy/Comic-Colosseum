@@ -5,6 +5,7 @@ const commentSchema = new Schema({
     username: String,
     createdAt: String,
     comicOrStoryId: String,
+    userId: String,
 })
 
 module.exports = model('Comment', commentSchema)

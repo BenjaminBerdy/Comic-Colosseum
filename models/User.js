@@ -6,6 +6,7 @@ const userSchema = new Schema({
     email: String,
     createdAt: String,
     followedCreators: [String],
+    followers: [String],
     likedComics: [String],
     likedStories: [String],
     totallikes: Number,

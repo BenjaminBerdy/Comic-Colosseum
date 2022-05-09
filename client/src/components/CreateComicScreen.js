@@ -178,7 +178,7 @@ let currentselectionbar;
 }, [values]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== ""){
+  if(currentselection !== "" && currentselection.attrs.type === "line"){
       let templines = Array.from(lines)
       templines[currentselection.attrs.index].stroke = stroke;
       edithistory = true;
@@ -187,7 +187,7 @@ React.useEffect(() => {
 }, [stroke]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== ""){
+  if(currentselection !== "" && currentselection.attrs.type === "text"){
       let temptext = Array.from(text)
       temptext[currentselection.attrs.index].fill = textcolor;
       edithistory = true;
@@ -196,7 +196,7 @@ React.useEffect(() => {
 }, [textcolor]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== ""){
+  if(currentselection !== "" && currentselection.attrs.type === "text"){
       let temptext = Array.from(text)
       temptext[currentselection.attrs.index].text = valuetext;
       edithistory = true;
@@ -205,7 +205,7 @@ React.useEffect(() => {
 }, [valuetext]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== ""){
+  if(currentselection !== "" && currentselection.attrs.type === "text"){
     let temptext = Array.from(text)
     temptext[currentselection.attrs.index].fontFamily = fontFamily;
     edithistory = true;
@@ -214,7 +214,7 @@ React.useEffect(() => {
 }, [fontFamily]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== ""){
+  if(currentselection !== "" && currentselection.attrs.type === "text"){
     let temptext = Array.from(text)
     temptext[currentselection.attrs.index].fontSize = fontSize;
     edithistory = true;
@@ -223,7 +223,7 @@ React.useEffect(() => {
 }, [fontSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== ""){
+  if(currentselection !== "" && currentselection.attrs.type === "text"){
     let temptext = Array.from(text)
     temptext[currentselection.attrs.index].fontSize = fontSize;
     edithistory = true;
@@ -232,7 +232,7 @@ React.useEffect(() => {
 }, [fontSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== ""){
+  if(currentselection !== "" && currentselection.attrs.type === "line"){
     let templines = Array.from(lines)
     templines[currentselection.attrs.index].strokeWidth = strokeWidth;
     edithistory = true;
@@ -589,6 +589,7 @@ React.useEffect(() => {
               y = {txt.y}
               key={i}
               index = {i}
+              type = "text"
               fontFamily= {txt.fontFamily}
               fontSize={txt.fontSize}
               draggable = {tool[1]}
@@ -622,6 +623,7 @@ React.useEffect(() => {
               x={line.x}
               y={line.y}
               index = {i}
+              type = "line"
               points={line.points}
               stroke={line.stroke}
               strokeWidth={line.strokeWidth}

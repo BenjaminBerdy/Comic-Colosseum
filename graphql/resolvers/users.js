@@ -181,11 +181,14 @@ module.exports = {
                 var otheruser = await User.findById(followeduserid);
                 if(user.followedCreators.includes(followeduserid)){
                     var followedCreators = user.followedCreators.filter(function(e) { return e !== followeduserid })
+                    var followers = otheruser.followers.filter(function(e) {return e !== id})
                     user = await User.findByIdAndUpdate(id, {followedCreators: followedCreators});
-                    otheruser = await User.findByIdAndUpdate(followeduserid, {totalfollowers: otheruser.totalfollowers - 1})
+                    otheruser = await User.findByIdAndUpdate(followeduserid, {totalfollowers: otheruser.totalfollowers - 1, 
+                        followers: followers})
                 }else{
                     user = await User.findByIdAndUpdate(id, {followedCreators: [...user.followedCreators, followeduserid]});
-                    otheruser = await User.findByIdAndUpdate(followeduserid, {totalfollowers: otheruser.totalfollowers + 1})
+                    otheruser = await User.findByIdAndUpdate(followeduserid, {totalfollowers: otheruser.totalfollowers + 1, 
+                        followers: [...otheruser.followers, id]})
                 }
                 return user;
             } catch (err) {
@@ -199,12 +202,13 @@ module.exports = {
                 var otheruser = await User.findById(comic.authorId);
                 if(user.likedComics.includes(likedComicId)){
                     var likedcomics = user.likedComics.filter(function(e) { return e !== likedComicId })
+                    var likers = comic.likers.filter(function(e) { return e !== id })
                     user = await User.findByIdAndUpdate(id, {likedComics: likedcomics});
-                    comic = await Comic.findByIdAndUpdate(likedComicId, {likes: comic.likes - 1})
+                    comic = await Comic.findByIdAndUpdate(likedComicId, {likes: comic.likes - 1, likers: likers})
                     otheruser = await User.findByIdAndUpdate(comic.authorId, {totallikes: otheruser.totallikes - 1})
                 }else{
                     user = await User.findByIdAndUpdate(id, {likedComics: [...user.likedComics, likedComicId]});
-                    comic = await Comic.findByIdAndUpdate(likedComicId, {likes: comic.likes + 1})
+                    comic = await Comic.findByIdAndUpdate(likedComicId, {likes: comic.likes + 1, likers: [...comic.likers, id]})
                     otheruser = await User.findByIdAndUpdate(comic.authorId, {totallikes: otheruser.totallikes + 1})
                 }
                 return user;
@@ -220,12 +224,13 @@ module.exports = {
                 var otheruser = await User.findById(story.authorId);
                 if(user.likedStories.includes(likedStoryId)){
                     var likedstories = user.likedStories.filter(function(e) { return e !== likedStoryId })
+                    var likers = story.likers.filter(function(e) { return e !== id })
                     user = await User.findByIdAndUpdate(id, {likedStories: likedstories});
-                    story = await Story.findByIdAndUpdate(likedStoryId, {likes: story.likes - 1})
+                    story = await Story.findByIdAndUpdate(likedStoryId, {likes: story.likes - 1, likers: likers})
                     otheruser = await User.findByIdAndUpdate(story.authorId, {totallikes: otheruser.totallikes - 1})
                 }else{
                     user = await User.findByIdAndUpdate(id, {likedStories: [...user.likedStories, likedStoryId]});
-                    story = await Story.findByIdAndUpdate(likedStoryId, {likes: story.likes + 1})
+                    story = await Story.findByIdAndUpdate(likedStoryId, {likes: story.likes + 1, likers: [...story.likers, id]})
                     otheruser = await User.findByIdAndUpdate(story.authorId, {totallikes: otheruser.totallikes + 1})
                 }
                 return user;
@@ -241,6 +246,69 @@ module.exports = {
                 errors.general = 'User not found'
                 throw new UserInputError('User not found',{errors});
             }
+            for(let i = 0; i < user.followedCreators.length; i++){
+                var otheruser = await User.findById(user.followedCreators[i]);
+                if(otheruser){
+                    var followers = otheruser.followers.filter(function(e) {return e !== id})
+                    otheruser = await User.findByIdAndUpdate(user.followers[i], {totalfollowers: otheruser.totalfollowers - 1, followers: followers}) 
+                }
+            }
+
+            for(let i = 0; i < user.followers.length; i++){
+                var otheruser = await User.findById(user.followers[i]);
+                if(otheruser){
+                    var followedCreators = otheruser.followedCreators.filter(function(e) {return e !== id})
+                    otheruser = await User.findByIdAndUpdate(user.followers[i], {followedCreators: followedCreators}) 
+                }
+            }
+
+            for(let i = 0; i < user.likedComics.length; i++){
+                var comic = await Comic.findById(user.likedComics[i]);
+                if(comic){
+                    var otheruser = await User.findById(comic.authorId)
+                    var likers = comic.likers.filter(function(e) {return e !== id})
+                    comic = await Comic.findByIdAndUpdate(user.likedComics[i], {likes: comic.likes - 1, likers: likers})
+                    otheruser = await User.findByIdAndUpdate(comic.authorId, {totallikes: otheruser.totallikes - 1}) 
+                }
+            }
+
+            for(let i = 0; i < user.likedStories.length; i++){
+                var story = await Story.findById(user.likedStories[i]);
+                if(story){
+                    var otheruser = await User.findById(story.authorId)
+                    var likers = story.likers.filter(function(e) {return e !== id})
+                    story = await Story.findByIdAndUpdate(user.likedStories[i], {likes: story.likes - 1, likers: likers})
+                    otheruser = await User.findByIdAndUpdate(story.authorId, {totallikes: otheruser.totallikes - 1}) 
+ 
+                }
+            }
+
+            const comics = await Comic.find()
+            for(let i = 0; i < comics.length; i++){
+                if(comics[i].authorId === id){
+                    for(let j = 0; j < comics[i].likers.length; j++){
+                        var otheruser = await User.findById(comics[i].likers[j])
+                        likedComics = otheruser.likedComics.filter(function(e) {return e !== comics[i].id})
+                        otheruser = await User.findByIdAndUpdate(comics[i].likers[j], {likedComics: likedComics})
+                    }
+                    await comics[i].delete();
+                }
+            }
+
+            const stories = await Story.find()
+            for(let i = 0; i < stories.length; i++){
+                if(stories[i].authorId === id){
+                    for(let j = 0; j < stories[i].likers.length; j++){
+                        var otheruser = await User.findById(stories[i].likers[j])
+                        likedStories = otheruser.likedStories.filter(function(e) {return e !== stories[i].id})
+                        otheruser = await User.findByIdAndUpdate(stories[i].likers[j], {likedStories: likedStories})
+                    }
+                    await stories[i].delete();
+                }
+            }
+
+
+
             await User.findByIdAndDelete(user.id);
             return 'User Deleted Successfully';
         }

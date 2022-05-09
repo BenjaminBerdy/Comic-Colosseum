@@ -41,6 +41,7 @@ module.exports = {
         authorId: authorId,
         publishDate: "",
         likes: 0,
+        likers: [],
         backgroundColor: "#ffffff",
         linex: [],
         liney: [],
@@ -61,19 +62,27 @@ module.exports = {
     },
     async deleteComic(_, { id, authorId }) {
       const errors = {};
-      const user = await User.findById(authorId);
+      var user = await User.findById(authorId);
       if(!user){
         errors.general = 'User not found'
         throw new UserInputError('User not found',{errors});
       }
 
       try {
-        const comic = await Comic.findById(id);
+        var comic = await Comic.findById(id);
         if (authorId === comic.authorId) {
+          user = await User.findByIdAndUpdate(authorId, {totallikes: user.totallikes - comic.likes})
+      
+          for(let i = 0; i < comic.likers.length; i++){
+            var otheruser = await User.findById(comic.likers[i])
+            likedComics = otheruser.likedComics.filter(function(e) {return e !== id})
+            otheruser = await User.findByIdAndUpdate(comic.likers[i], {likedComics: likedComics})
+          }
+
           await comic.delete();
           return 'Comic Deleted Successfully';
         } else {
-          throw new AuthenticationError('Action not allowed');
+          throw new Error('Action not allowed');
         }
       } catch (err) {
         throw new Error(err);

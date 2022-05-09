@@ -42,6 +42,7 @@ module.exports = {
         authorId: authorId,
         publishDate: "",
         likes: 0,
+        likers: [],
         backgroundColor: "",
         fontFamily: [],
         fontSize: [],
@@ -59,19 +60,28 @@ module.exports = {
     },
     async deleteStory(_, { id, authorId }) {
       const errors = {};
-      const user = await User.findById(authorId);
+      var user = await User.findById(authorId);
       if(!user){
         errors.general = 'User not found'
         throw new UserInputError('User not found',{errors});
       }
 
       try {
-        const story = await Story.findById(id);
+        var story = await Story.findById(id);
         if (authorId === story.authorId) {
+          user = await User.findByIdAndUpdate(authorId, {totallikes: user.totallikes - story.likes})
+      
+          for(let i = 0; i < story.likers.length; i++){
+            var otheruser = await User.findById(story.likers[i])
+            likedStories = otheruser.likedStories.filter(function(e) {return e !== id})
+            otheruser = await User.findByIdAndUpdate(story.likers[i], {likedStories: likedStories})
+          }
+
+
           await story.delete();
           return 'Story Deleted Successfully';
         } else {
-          throw new AuthenticationError('Action not allowed');
+          throw new Error('Action not allowed');
         }
       } catch (err) {
         throw new Error(err);

@@ -6,6 +6,7 @@ const comicSchema = new Schema({
     authorId: String,
     publishDate: String,
     likes: Number,
+    likers: [String],
     backgroundColor: String,
     linex: [Number],
     liney: [Number],

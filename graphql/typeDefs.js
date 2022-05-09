@@ -20,8 +20,9 @@ module.exports = gql`
         email: String!
         token: String!
         username: String!
-        followedCreators: [ID]!
-        likedComics: [ID]!
+        followedCreators: [String]!
+        followers: [String]!
+        likedComics: [String]!
         likedStories: [String]!
         totallikes: Int!
         totalfollowers: Int!
@@ -33,6 +34,7 @@ module.exports = gql`
         authorId: String!
         publishDate: String!
         likes: Int!
+        likers: [String]!
         backgroundColor: String!
         linex: [Int]!
         liney: [Int]!
@@ -53,6 +55,7 @@ module.exports = gql`
         authorId: String!
         publishDate: String!
         likes: Int!
+        likers: [String]!
         backgroundColor: String!
         fontFamily: [String]!
         fontStyle: [String]!
@@ -97,7 +100,7 @@ module.exports = gql`
         publishStory(id: ID!): Story!
         deleteStory(id: ID!, authorId: ID!): String!
 
-        createComment(body: String!, username: String!, comicOrStoryId: String!): Comment!
+        createComment(body: String!, username: String!, comicOrStoryId: String!, userId: String!): Comment!
         deleteComment(id: ID!, username: String!): String!
     }
 `

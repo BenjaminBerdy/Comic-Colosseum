@@ -6,6 +6,7 @@ const storySchema = new Schema({
     authorId: String,
     publishDate: String,
     likes: Number,
+    likers: [String],
     backgroundColor: String,
     fontFamily: [String],
     fontSize: [Number],
