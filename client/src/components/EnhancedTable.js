@@ -295,7 +295,6 @@ export default function EnhancedTable() {
           </Typography>
         )}
         <React.Fragment>
-            <Toolbar id="toolbar" style={{ marginRight: '15vw'}}>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                     <Search >
                         <SearchIconWrapper>
@@ -310,7 +309,6 @@ export default function EnhancedTable() {
                     />
                     </Search>
                 </Box>
-            </Toolbar>
             </React.Fragment>
         {user && (<div className='rowC'>
         <Typography style={{marginTop: ".5vw"}}>{filter}</Typography>
@@ -425,7 +423,7 @@ export default function EnhancedTable() {
 
   for(let i = 0; i < correctrows.length; i++){
     if(search.trim() !== ""){
-      if(correctrows[i].title.toLowerCase() === search.toLowerCase() || correctrows[i].author.toLowerCase() === search.toLowerCase()){
+      if(correctrows[i].title.toLowerCase().includes(search.toLowerCase()) || correctrows[i].author.toLowerCase().includes(search.toLowerCase())){
         allrows.push(correctrows[i]);
       }
     }else{
