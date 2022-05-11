@@ -285,6 +285,13 @@ module.exports = {
                 }
             }
 
+            var comments = await Comment.find()
+            for(let i = 0; i < comments.length; i++){
+                if(comments[i].userId === id){
+                    await comments[i].delete()
+                }
+            }
+
             const comics = await Comic.find()
             for(let i = 0; i < comics.length; i++){
                 if(comics[i].authorId === id){
@@ -294,9 +301,9 @@ module.exports = {
                         otheruser = await User.findByIdAndUpdate(comics[i].likers[j], {likedComics: likedComics})
                     }
 
-                    var comments = await Comment.find()
+                    comments = await Comment.find()
                     for(let j = 0; j < comments.length; j++){
-                        if(comments[j].id === comics[i].id){
+                        if(comments[j].comicOrStoryId === comics[i].id){
                             await comments[j].delete();
                         }
                     }
@@ -314,16 +321,15 @@ module.exports = {
                         otheruser = await User.findByIdAndUpdate(stories[i].likers[j], {likedStories: likedStories})
                     }
 
-                    var comments = await Comment.find()
+                    comments = await Comment.find()
                     for(let j = 0; j < comments.length; j++){
-                        if(comments[j].id === stories[i].id){
-                            await comments.delete();
+                        if(comments[j].comicOrStoryId === stories[i].id){
+                            await comments[j].delete();
                         }
                     }
                     await stories[i].delete();
                 }
             }
-
 
             await User.findByIdAndDelete(user.id);
             return 'User Deleted Successfully';

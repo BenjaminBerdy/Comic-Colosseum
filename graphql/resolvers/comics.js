@@ -83,7 +83,7 @@ module.exports = {
 
           const comments = await Comment.find()
           for(let i = 0; i < comments.length; i++){
-            if(comments[i].id === id){
+            if(comments[i].comicOrStoryId === id){
               await comments[i].delete();
             }
           }
