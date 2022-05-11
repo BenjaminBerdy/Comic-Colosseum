@@ -81,10 +81,10 @@ module.exports = {
             otheruser = await User.findByIdAndUpdate(comic.likers[i], {likedComics: likedComics})
           }
 
-          const comments = await Story.find()
+          const comments = await Comment.find()
           for(let i = 0; i < comments.length; i++){
             if(comments[i].id === id){
-              await comment.delete();
+              await comments[i].delete();
             }
           }
 

@@ -294,10 +294,10 @@ module.exports = {
                         otheruser = await User.findByIdAndUpdate(comics[i].likers[j], {likedComics: likedComics})
                     }
 
-                    var comments = await Comments.find()
+                    var comments = await Comment.find()
                     for(let j = 0; j < comments.length; j++){
                         if(comments[j].id === comics[i].id){
-                            await comments.delete();
+                            await comments[j].delete();
                         }
                     }
 
@@ -314,7 +314,7 @@ module.exports = {
                         otheruser = await User.findByIdAndUpdate(stories[i].likers[j], {likedStories: likedStories})
                     }
 
-                    var comments = await Comments.find()
+                    var comments = await Comment.find()
                     for(let j = 0; j < comments.length; j++){
                         if(comments[j].id === stories[i].id){
                             await comments.delete();
