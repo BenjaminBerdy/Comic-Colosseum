@@ -5,7 +5,7 @@ module.exports = {
         async getComments(_, { comicOrStoryId }){
 
             try {
-                const comments = await Comment.find({comicOrStoryId}).sort({ createdAt: -1 });;
+                const comments = await Comment.find({comicOrStoryId}).sort({ createdAt: 1 });;
                 return comments;
             } catch (err){
                 throw new Error(err);
