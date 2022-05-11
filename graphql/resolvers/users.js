@@ -2,11 +2,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs/dist/bcrypt');
 const {UserInputError} = require('apollo-server');
 
+
 const {validateRegisterInput, validateLoginInput, validatePasswordInput} = require('../../util/validators')
 const {SECRET_KEY} = require('../../config');
 const User = require('../../models/User');
 const Comic = require('../../models/Comic');
 const Story = require('../../models/Story');
+const Comment = require('../../models/Comment');
 
 function generateToken(user){
     return jwt.sign({
@@ -291,6 +293,14 @@ module.exports = {
                         likedComics = otheruser.likedComics.filter(function(e) {return e !== comics[i].id})
                         otheruser = await User.findByIdAndUpdate(comics[i].likers[j], {likedComics: likedComics})
                     }
+
+                    var comments = await Comments.find()
+                    for(let j = 0; j < comments.length; j++){
+                        if(comments[j].id === comics[i].id){
+                            await comments.delete();
+                        }
+                    }
+
                     await comics[i].delete();
                 }
             }
@@ -303,10 +313,16 @@ module.exports = {
                         likedStories = otheruser.likedStories.filter(function(e) {return e !== stories[i].id})
                         otheruser = await User.findByIdAndUpdate(stories[i].likers[j], {likedStories: likedStories})
                     }
+
+                    var comments = await Comments.find()
+                    for(let j = 0; j < comments.length; j++){
+                        if(comments[j].id === stories[i].id){
+                            await comments.delete();
+                        }
+                    }
                     await stories[i].delete();
                 }
             }
-
 
 
             await User.findByIdAndDelete(user.id);

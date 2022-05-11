@@ -2,6 +2,8 @@ const { UserInputError } = require('apollo-server');
 
 const Comic = require('../../models/Comic');
 const User = require('../../models/User');
+const Comment = require('../../models/Comment');
+
 
 module.exports = {
   Query: {
@@ -77,6 +79,13 @@ module.exports = {
             var otheruser = await User.findById(comic.likers[i])
             likedComics = otheruser.likedComics.filter(function(e) {return e !== id})
             otheruser = await User.findByIdAndUpdate(comic.likers[i], {likedComics: likedComics})
+          }
+
+          const comments = await Story.find()
+          for(let i = 0; i < comments.length; i++){
+            if(comments[i].id === id){
+              await comment.delete();
+            }
           }
 
           await comic.delete();
