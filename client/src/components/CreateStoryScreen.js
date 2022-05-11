@@ -74,7 +74,6 @@ let historyStep = 0;
 let saved = false;
 let loadhistory = false;
 let edithistory = false;
-let currentselectionbar;
 let unselect = false;
 
   export default function CreateStoryScreen() {
@@ -377,13 +376,6 @@ React.useEffect(() => {
   const handleChangeTextDecoration = (e) => {
     setTextDecoration(e.target.value);
   }
-
-  // if(currentselection === ""){
-  //   currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: None</Typography>
-  // }else{
-  //   currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: Text {currentselection.attrs.index+1}</Typography>
-  // }
-
     return(
         <div>
           <AppBanner/>
@@ -408,7 +400,6 @@ React.useEffect(() => {
         <Button onClick={() => {unselect = true; setHighlight(""); setTool(['text',false]); }} variant="text" style={{marginTop: "1vw", color: "white"}}><TextFormatIcon/></Button>
 
         </div>
-        {currentselectionbar}
             <Box sx={{ width: 250 }}>
             <Typography id="input-slider" gutterBottom>Font Size</Typography>
             <Grid container spacing={2} alignItems="center">

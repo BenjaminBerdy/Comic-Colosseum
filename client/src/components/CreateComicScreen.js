@@ -6,6 +6,7 @@ import Button from '@mui/material/Button'
 import CreateIcon from '@mui/icons-material/Create';
 import MouseIcon from '@mui/icons-material/Mouse';
 import PanToolIcon from '@mui/icons-material/PanTool';
+import TextFormatIcon from '@mui/icons-material/TextFormat';
 import { Typography } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
@@ -78,7 +79,8 @@ let historyStep = 0;
 let saved = false;
 let loadhistory = false;
 let edithistory = false;
-let currentselectionbar;
+let unselect = false;
+
 
   export default function CreateComicScreen() {
     const { id } = useParams();
@@ -99,7 +101,8 @@ let currentselectionbar;
     const [textcolor,setTextColor] = React.useState('#000000');
     const [title,setTitle] = React.useState('Untitled Comic'); 
     const [backgroundColor,setBackgroundColor] = React.useState('#FFFFFF');  
-    const [currentselection, setCurrentSelection] = React.useState("");
+    const [currentselection, setCurrentSelection] = React.useState(["",""]);
+    const [highlight, setHighlight] = React.useState("");
     const [values, setValues] = React.useState({
         id: id,
         title: 'Untitled Comic',
@@ -162,7 +165,7 @@ let currentselectionbar;
         }
         for(let i = 0; i < data.getComic.text.length; i++){
           setText((oldValue) => [...oldValue, {x: data.getComic.textx[i], y:data.getComic.texty[i], text:data.getComic.text[i], 
-            fontFamily:data.getComic.fontFamily[i], fontSize:data.getComic.fontSize[i], fill:data.getComic.textcolor[i]}]);
+            fontFamily:data.getComic.fontFamily[i], fontSize:data.getComic.fontSize[i], fill:data.getComic.textcolor[i], highlight: ""}]);
         }
         setBackgroundColor(data.getComic.backgroundColor)
         setTitle(data.getComic.title);
@@ -178,67 +181,86 @@ let currentselectionbar;
 }, [values]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== "" && currentselection.attrs.type === "line"){
+  if(currentselection[0] !== "" && currentselection[0].attrs.type === "line"){
       let templines = Array.from(lines)
-      templines[currentselection.attrs.index].stroke = stroke;
+      templines[currentselection[0].attrs.index].stroke = stroke;
       edithistory = true;
       setLines(templines);
   }
 }, [stroke]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== "" && currentselection.attrs.type === "text"){
+  if(currentselection[0] !== "" && currentselection[0].attrs.type === "text"){
       let temptext = Array.from(text)
-      temptext[currentselection.attrs.index].fill = textcolor;
+      temptext[currentselection[0].attrs.index].fill = textcolor;
       edithistory = true;
       setText(temptext);
   }
 }, [textcolor]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== "" && currentselection.attrs.type === "text"){
+  if(currentselection[0] !== "" && currentselection[0].attrs.type === "text"){
       let temptext = Array.from(text)
-      temptext[currentselection.attrs.index].text = valuetext;
+      temptext[currentselection[0].attrs.index].text = valuetext;
       edithistory = true;
       setText(temptext);
   }
 }, [valuetext]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== "" && currentselection.attrs.type === "text"){
+  if(currentselection[0] !== "" && currentselection[0].attrs.type === "text"){
     let temptext = Array.from(text)
-    temptext[currentselection.attrs.index].fontFamily = fontFamily;
+    temptext[currentselection[0].attrs.index].fontFamily = fontFamily;
     edithistory = true;
     setText(temptext);
   }
 }, [fontFamily]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== "" && currentselection.attrs.type === "text"){
+  if(currentselection[0] !== "" && currentselection[0].attrs.type === "text"){
     let temptext = Array.from(text)
-    temptext[currentselection.attrs.index].fontSize = fontSize;
+    temptext[currentselection[0].attrs.index].fontSize = fontSize;
     edithistory = true;
     setText(temptext);
   }
 }, [fontSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== "" && currentselection.attrs.type === "text"){
+  if(currentselection[0] !== "" && currentselection[0].attrs.type === "text"){
     let temptext = Array.from(text)
-    temptext[currentselection.attrs.index].fontSize = fontSize;
+    temptext[currentselection[0].attrs.index].fontSize = fontSize;
     edithistory = true;
     setText(temptext);
   }
 }, [fontSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(currentselection !== "" && currentselection.attrs.type === "line"){
+  if(currentselection[0] !== "" && currentselection[0].attrs.type === "line"){
     let templines = Array.from(lines)
-    templines[currentselection.attrs.index].strokeWidth = strokeWidth;
+    templines[currentselection[0].attrs.index].strokeWidth = strokeWidth;
     edithistory = true;
     setLines(templines);
   }
 }, [strokeWidth]) // eslint-disable-line react-hooks/exhaustive-deps
+
+React.useEffect(() => {
+  if(highlight !== ""){
+    let temptext = Array.from(text)
+    temptext[currentselection[0].attrs.index].highlight = highlight;
+    setText(temptext);
+  }else if(unselect === true && currentselection[0] !== ""){
+    let temptext = Array.from(text)
+    temptext[currentselection[0].attrs.index].highlight = highlight;
+    setText(temptext);
+    setCurrentSelection(["",""]);
+  }
+}, [highlight]) // eslint-disable-line react-hooks/exhaustive-deps
+
+React.useEffect(() => {
+  if(currentselection[0] !== ""){
+    setHighlight("#ff00ff")
+  } 
+}, [currentselection]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const [saveComic] = useMutation(UPDATE_COMIC,{
       onCompleted(updatedata){
@@ -306,7 +328,14 @@ React.useEffect(() => {
       const pos = e.target.getStage().getPointerPosition();
       setLines([...lines, {x:0, y:0, points: [pos.x, pos.y], stroke:stroke, strokeWidth:strokeWidth }]);
       }else if(tool[0] === 'select'){
-        setCurrentSelection("");
+        unselect = true;
+        setHighlight("");
+      }else if(tool[0] === 'text'){
+        if(valuetext.trim() !== ""){
+          const pos = e.target.getStage().getPointerPosition();
+          edithistory = true;
+          setText([...text, {x: Math.round(pos.x), y:Math.round(pos.y),  text:valuetext,fontFamily:fontFamily, fontSize:fontSize, fill:textcolor, highlight:""}]);
+        }
       }
   };
 
@@ -432,23 +461,6 @@ React.useEffect(() => {
     setStrokeWidth(e.target.value);
   }
 
-  const handleAddText = (e) =>{
-    if(valuetext.trim() !== ""){
-    edithistory = true;
-    setText([...text, {x: 20, y:20, text:valuetext,fontFamily:fontFamily, fontSize:fontSize, fill:textcolor}]);
-    }
-  }
-
-
-
-  if(currentselection === ""){
-    currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: None</Typography>
-  }else if(currentselection.attrs.text){
-    currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: {currentselection.attrs.text}</Typography>
-  }else{
-    currentselectionbar = <Typography id="input-slider" style={{marginTop: "1vw",marginBottom: "1vw"}} gutterBottom>Current Selection: Line {currentselection.attrs.index}</Typography>
-  }
-
     return(
         <div>
           <AppBanner/>
@@ -467,14 +479,15 @@ React.useEffect(() => {
         />  
         <Typography id="input-slider" gutterBottom>Current tool: {tool[0]}</Typography>
         <div className="rowC">
-        <Button onClick={() => {setTool(['select',false])}} variant="text" style={{marginTop: "1vw", color: "white"}}><MouseIcon/></Button>
-        <Button onClick={() => {setTool(['draw',false]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
-        <Button onClick={() => {setTool(['erase',false])}} variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
-        <Button onClick={() => {setTool(['drag',true]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><PanToolIcon/></Button>
+        <Button onClick={() => {setTool(['select',false]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><MouseIcon/></Button>
+        <Button onClick={() => {unselect = true; setHighlight(""); setTool(['draw',false]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><CreateIcon/></Button>
+        <Button onClick={() => {unselect = true; setHighlight(""); setTool(['erase',false]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><Icon icon="mdi:eraser" color="white" width="24" height="24"/></Button>
+        <Button onClick={() => {unselect = true; setHighlight(""); setTool(['drag',true]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><PanToolIcon/></Button>
+        <Button onClick={() => {unselect = true; setHighlight(""); setTool(['text',false]);}} variant="text" style={{marginTop: "1vw", color: "white"}}><TextFormatIcon/></Button>
+
         </div>
-        {currentselectionbar}
             <Box sx={{ width: 250 }}>
-            <Typography id="input-slider" gutterBottom>Stroke Width</Typography>
+            <Typography style={{marginTop: "1vw"}} id="input-slider" gutterBottom>Stroke Width</Typography>
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs>
                 <Slider
@@ -545,13 +558,15 @@ React.useEffect(() => {
           label="Text"
           value={valuetext}
           variant="standard"
-          style={{ marginBottom: '1vw' }}
+          style={{ marginBottom: '1vw',width:"18vw" }}
           sx={{ input: { color: 'white' } }}
           color="secondary"
           focused
+          multiline
+          rows={2}
+          inputProps={{ style: { color: "white" } }}
           onChange={handleChangeValueText}
         />
-        <Button onClick={handleAddText}id="whitebuttontext" size="small" variant="outlined" color="secondary" style={{marginLeft: "1vw", height: "3vw", color: "white"}}>Add Text</Button>
         </div>
         <div>
         Text Color: <input style={{marginBottom: ".5vw"}} id="color" type="color" value ={textcolor} onChange={handleTextColorChange}/>
@@ -583,6 +598,39 @@ React.useEffect(() => {
           fill={backgroundColor}
           shadowBlur={10}
         />
+        {lines.map((line, i) => (
+            <Line
+              key={i}
+              x={line.x}
+              y={line.y}
+              index = {i}
+              type = "line"
+              points={line.points}
+              stroke={line.stroke}
+              opacity = {(currentselection[1] === "lines" && currentselection[0].attrs.index === i) ? 0.5 : 1}
+              strokeWidth={line.strokeWidth}
+              tension={0.5}
+              lineCap="round"
+              draggable = {tool[1]}
+              onClick={(e) =>{
+                if(tool[0] === 'erase'){
+                  edithistory = true;
+                  setLines(lines.filter((_, j) => j !== i))
+                }else if(tool[0] === 'select'){
+                  setCurrentSelection([e.target,"lines"]);
+                  setStrokeWidth(e.target.attrs.strokeWidth);
+                  setStroke(e.target.attrs.stroke);
+                }
+              }}
+              onDragEnd={(e) => {
+                let templines = Array.from(lines)
+                templines[i].x = e.target.x();
+                templines[i].y = e.target.y();
+                edithistory = true;
+                setLines(templines);
+              }}
+            />
+          ))}
         {text.map((txt, i) => (
             <Text
               x = {txt.x}
@@ -590,6 +638,8 @@ React.useEffect(() => {
               key={i}
               index = {i}
               type = "text"
+              stroke = {(currentselection[1] === "text" && currentselection[0].attrs.index === i) ? txt.highlight : ""}
+              strokeWidth= {.5}
               fontFamily= {txt.fontFamily}
               fontSize={txt.fontSize}
               draggable = {tool[1]}
@@ -600,7 +650,7 @@ React.useEffect(() => {
                   edithistory = true;
                   setText(text.filter((_, j) => j !== i))
                 }else if(tool[0] === 'select'){
-                  setCurrentSelection(e.target)
+                  setCurrentSelection([e.target,"text"])
                   setFontFamily(e.target.attrs.fontFamily)
                   setFontSize(e.target.attrs.fontSize)
                   setTextColor(e.target.attrs.fill)
@@ -615,38 +665,6 @@ React.useEffect(() => {
                 setText(temptext);
               }}
               
-            />
-          ))}
-          {lines.map((line, i) => (
-            <Line
-              key={i}
-              x={line.x}
-              y={line.y}
-              index = {i}
-              type = "line"
-              points={line.points}
-              stroke={line.stroke}
-              strokeWidth={line.strokeWidth}
-              tension={0.5}
-              lineCap="round"
-              draggable = {tool[1]}
-              onClick={(e) =>{
-                if(tool[0] === 'erase'){
-                  edithistory = true;
-                  setLines(lines.filter((_, j) => j !== i))
-                }else if(tool[0] === 'select'){
-                  setCurrentSelection(e.target);
-                  setStrokeWidth(e.target.attrs.strokeWidth);
-                  setStroke(e.target.attrs.stroke);
-                }
-              }}
-              onDragEnd={(e) => {
-                let templines = Array.from(lines)
-                templines[i].x = e.target.x();
-                templines[i].y = e.target.y();
-                edithistory = true;
-                setLines(templines);
-              }}
             />
           ))}
         </Layer>

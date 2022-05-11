@@ -396,6 +396,16 @@ const getComments = useQuery(GET_COMMENT, {variables: {comicOrStoryId: id},fetch
                   fill={backgroundColor}
                   shadowBlur={10}
                 />
+                {lines.map((line, i) => (
+                    <Line
+                      key={i}
+                      points={line.points}
+                      stroke={line.stroke}
+                      strokeWidth={line.strokewidth}
+                      tension={0.5}
+                      lineCap="round"
+                    />
+                  ))}
                 {text.map((txt, i) => (
                     <Text
                       x = {txt.x}
@@ -406,16 +416,6 @@ const getComments = useQuery(GET_COMMENT, {variables: {comicOrStoryId: id},fetch
                       text = {txt.text}
                       fill ={txt.fill}      
                       
-                    />
-                  ))}
-                  {lines.map((line, i) => (
-                    <Line
-                      key={i}
-                      points={line.points}
-                      stroke={line.stroke}
-                      strokeWidth={line.strokewidth}
-                      tension={0.5}
-                      lineCap="round"
                     />
                   ))}
                 </Layer>
