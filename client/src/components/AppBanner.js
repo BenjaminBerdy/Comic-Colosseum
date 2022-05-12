@@ -14,40 +14,12 @@ import { createTheme } from '@mui/material/styles';
 import { useContext } from "react";
 import { useLocation } from 'react-router-dom';
 import { AuthContext} from '../context/auth';
-import gql from 'graphql-tag'
-import {useMutation} from '@apollo/react-hooks'
-
-const LOGIN_USER = gql`
-  mutation login($username:String!,$password:String!){
-    login(username: $username,password: $password){
-      id
-      email
-      username
-      token
-    }
-}`;
-
-
 
 export default function MenuAppBar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const{user,login,logout}= useContext(AuthContext);
-
-  const [loginUser] = useMutation(LOGIN_USER,{
-    update(_,{data:{login:userData}}){
-      login(userData);
-    },
-    variables: {
-      username: "testuser", 
-      password: "testpassword"
-    }
-  })
-
-  const handleTestLogin = (event) => {
-    loginUser();
-  };
+  const{user,logout}= useContext(AuthContext);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -121,7 +93,6 @@ export default function MenuAppBar() {
           )}
           {!user && (
             <div>
-              <Button onClick={handleTestLogin} color="inherit" style={{ fontFamily: 'system-ui' }}>Login(Test)</Button>
               <Button href='/login/' color="inherit" style={{ fontFamily: 'system-ui' }}>Login</Button>
               |
               <Button href='/register/'color="inherit" style={{ fontFamily: 'system-ui' }}>Register</Button>

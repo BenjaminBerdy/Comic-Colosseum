@@ -244,14 +244,16 @@ React.useEffect(() => {
 }, [strokeWidth]) // eslint-disable-line react-hooks/exhaustive-deps
 
 React.useEffect(() => {
-  if(highlight !== ""){
+  if(highlight !== "" && currentselection[1]==="text"){
     let temptext = Array.from(text)
     temptext[currentselection[0].attrs.index].highlight = highlight;
     setText(temptext);
-  }else if(unselect === true && currentselection[0] !== ""){
+  }else if(unselect === true && currentselection[0] !== "" && currentselection[1]==="text"){
     let temptext = Array.from(text)
     temptext[currentselection[0].attrs.index].highlight = highlight;
     setText(temptext);
+    setCurrentSelection(["",""]);
+  }else if(unselect === true && currentselection[0] !== "" && currentselection[1]==="line"){
     setCurrentSelection(["",""]);
   }
 }, [highlight]) // eslint-disable-line react-hooks/exhaustive-deps
