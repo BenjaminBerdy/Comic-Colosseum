@@ -22,7 +22,7 @@ module.exports = {
     Query:{
         async getUsers(){
             try{
-                const user = await User.find();
+                const user = await User.find().sort({ totallikes: -1 });
                 return user;
             }catch(err){
                 throw new Error(err);

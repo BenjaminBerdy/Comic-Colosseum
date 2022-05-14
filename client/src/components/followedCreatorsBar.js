@@ -68,11 +68,11 @@ export default function FollowedCreatorsBar() {
 
   return (
     <Box
-      sx={{position:"fixed", left: 0, width: '100%', height: '100%', maxWidth: 250, bgcolor: '#4B284F', color: "white", textAlign: "center"}}
+      sx={{position:"fixed", left: 0, top: 350, width: '100%', height: '100%', maxWidth: 250, bgcolor: '#4B284F', color: "white", textAlign: "center"}}
     >
     <h2 styles={{fontFamily: "fantasy", textAlign: "center"}}>Followed Creators</h2>
       <FixedSizeList
-        height={600}
+        height={200}
         width={250}
         itemSize={46}
         itemCount={userData.length}
