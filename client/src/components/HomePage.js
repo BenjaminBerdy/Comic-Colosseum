@@ -26,25 +26,28 @@ const GET_USERS = gql`
 }`;
 
 let comicstory;
-
-
-function renderRow(props) {
-    const { index, style } = props;
-    return (
-      <ListItem style={style} key={index} component="div" disablePadding>
-        <ListItemButton component={Link} href={'/'+ comicstory +'/viewuser/' + userData[index].id} style={{ color: 'white', textDecoration: 'none'}}>
-          <ListItemText primary={index+1 + ": " + userData[index].username+" (Likes: " + userData[index].totallikes + ") "} />
-        </ListItemButton>
-      </ListItem>
-    );
-  }
-
+let pagename;
 let userData;
 
 export default function HomePage(){
   const {user} = useContext(AuthContext);
   const {loading, data} = useQuery(GET_USERS,{fetchPolicy: "network-only"});
   const location = useLocation();
+
+  function renderRow(props) {
+    const { index, style } = props;
+    pagename = '/viewuser/'
+    if(user && user.id === userData[index].id){
+      pagename = '/userprofile/'
+    }
+    return (
+      <ListItem style={style} key={index} component="div" disablePadding>
+        <ListItemButton component={Link} href={'/' + comicstory + pagename + userData[index].id} style={{ color: 'white', textDecoration: 'none'}}>
+          <ListItemText primary={index+1 + ": " + userData[index].username+" (Likes: " + userData[index].totallikes + ") "} />
+        </ListItemButton>
+      </ListItem>
+    );
+  }
 
   if(loading === true){
     return(<h1 style={{color:"white"}}>Loading...</h1>)
